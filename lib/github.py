@@ -1,0 +1,140 @@
+"""
+lib/github.py — shared GitHub API helpers.
+
+Used by both bootstrap.py and build.py.
+Run scripts from the repo root so this module is importable.
+"""
+
+import base64
+import tomllib
+from typing import Any
+
+import httpx
+
+BASE_URL = "https://api.github.com"
+
+
+# --------------------------------------------------------------------------- #
+# Client
+# --------------------------------------------------------------------------- #
+
+def make_client(token: str) -> httpx.Client:
+    """Return a configured httpx.Client with auth and GitHub API headers."""
+    return httpx.Client(
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+        timeout=15.0,
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Pagination
+# --------------------------------------------------------------------------- #
+
+def paginate(client: httpx.Client, url: str, params: dict) -> list[dict]:
+    """Fetch all pages from a paginated GitHub API endpoint."""
+    results = []
+    while url:
+        response = client.get(url, params=params)
+        response.raise_for_status()
+        results.extend(response.json())
+        url = response.links.get("next", {}).get("url")
+        params = {}  # already encoded in the next URL
+    return results
+
+
+# --------------------------------------------------------------------------- #
+# README fetching
+# --------------------------------------------------------------------------- #
+
+def fetch_repo_readme(client: httpx.Client, username: str, repo_name: str) -> str:
+    """
+    Fetch the README for a repo.
+    GitHub returns the content base64-encoded — we decode it here.
+    Returns an empty string if no README exists.
+    """
+    url = f"{BASE_URL}/repos/{username}/{repo_name}/readme"
+    try:
+        response = client.get(url)
+        response.raise_for_status()
+        return base64.b64decode(response.json()["content"]).decode("utf-8")
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 404:
+            return ""
+        raise
+
+
+def fetch_gist_readme(client: httpx.Client, gist: dict) -> str:
+    """
+    Fetch the first .md file from a gist.
+    The gist dict is the full API response object (from /gists or /gists/{id}).
+    Returns an empty string if no .md file exists.
+    """
+    md_filename = next(
+        (fname for fname in gist["files"] if fname.endswith(".md")), None
+    )
+    if not md_filename:
+        return ""
+    raw_url = gist["files"][md_filename]["raw_url"]
+    response = client.get(raw_url)
+    response.raise_for_status()
+    return response.text
+
+
+# --------------------------------------------------------------------------- #
+# portfolio.toml fetching
+# --------------------------------------------------------------------------- #
+
+def fetch_repo_portfolio(
+    client: httpx.Client, username: str, repo_name: str
+) -> dict[str, Any]:
+    """
+    Fetch and parse portfolio.toml from a repo's root.
+    Returns {} if the file doesn't exist or can't be parsed.
+    """
+    url = f"{BASE_URL}/repos/{username}/{repo_name}/contents/portfolio.toml"
+    try:
+        response = client.get(url)
+        response.raise_for_status()
+        raw = base64.b64decode(response.json()["content"]).decode("utf-8")
+        return tomllib.loads(raw)
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 404:
+            return {}
+        raise
+    except tomllib.TOMLDecodeError as e:
+        print(f"  [warn] portfolio.toml parse error in {repo_name}: {e}")
+        return {}
+
+
+def fetch_gist_portfolio(client: httpx.Client, gist: dict) -> dict[str, Any]:
+    """
+    Fetch and parse portfolio.toml from a gist's files.
+    Returns {} if the file doesn't exist or can't be parsed.
+    """
+    if "portfolio.toml" not in gist["files"]:
+        return {}
+    raw_url = gist["files"]["portfolio.toml"]["raw_url"]
+    try:
+        response = client.get(raw_url)
+        response.raise_for_status()
+        return tomllib.loads(response.text)
+    except tomllib.TOMLDecodeError as e:
+        print(f"  [warn] portfolio.toml parse error in gist {gist['id']}: {e}")
+        return {}
+
+
+# --------------------------------------------------------------------------- #
+# Topics (tags)
+# --------------------------------------------------------------------------- #
+
+def extract_topics(repo: dict) -> list[str]:
+    """
+    Extract GitHub topics from a repo API response object.
+    Topics are already present in the repo dict — no extra API call needed.
+    Returns [] if none are set.
+    """
+    return repo.get("topics", [])

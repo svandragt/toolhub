@@ -1,0 +1,179 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "httpx",
+#   "python-dotenv",
+#   "ruamel.yaml",
+# ]
+# ///
+"""
+bootstrap.py — seed projects.yaml from your public GitHub repos and gists.
+
+Usage (run from repo root):
+    uv run bootstrap.py
+
+Reads from .env:
+    GITHUB_TOKEN    — personal access token (read-only contents scope)
+    GITHUB_USERNAME — your GitHub username
+
+Output:
+    projects.yaml   — review and trim this manually; live_url/docs_url are
+                      extracted automatically from portfolio.toml at build time.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# Guard: must be run from the repo root so lib/ is importable
+if not Path("lib/github.py").exists():
+    sys.exit("ERROR: Run this script from the repo root directory.")
+
+import httpx
+from dotenv import load_dotenv
+from ruamel.yaml import YAML
+
+from lib.github import (
+    extract_topics,
+    fetch_gist_portfolio,
+    fetch_repo_portfolio,
+    make_client,
+    paginate,
+)
+
+# --------------------------------------------------------------------------- #
+# Config
+# --------------------------------------------------------------------------- #
+
+load_dotenv()
+
+TOKEN = os.getenv("GITHUB_TOKEN")
+USERNAME = os.getenv("GITHUB_USERNAME")
+
+if not TOKEN or not USERNAME:
+    sys.exit(
+        "ERROR: GITHUB_TOKEN and GITHUB_USERNAME must be set in .env\n"
+        "See .env.example for reference."
+    )
+
+BASE_URL = "https://api.github.com"
+OUTPUT_FILE = Path("projects.yaml")
+
+
+# --------------------------------------------------------------------------- #
+# Fetch repos and gists
+# --------------------------------------------------------------------------- #
+
+def fetch_repos(client: httpx.Client) -> list[dict]:
+    """Return all public repos for the authenticated user."""
+    return paginate(
+        client,
+        f"{BASE_URL}/user/repos",
+        {"type": "public", "per_page": 100, "sort": "updated"},
+    )
+
+
+def fetch_gists(client: httpx.Client) -> list[dict]:
+    """Return gists that contain at least one .md file."""
+    all_gists = paginate(client, f"{BASE_URL}/gists", {"per_page": 100})
+    return [g for g in all_gists if any(f.endswith(".md") for f in g["files"])]
+
+
+# --------------------------------------------------------------------------- #
+# Shape into projects.yaml entries
+# --------------------------------------------------------------------------- #
+
+def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
+    """
+    Convert a repo API response to a projects.yaml entry.
+    Fetches portfolio.toml and GitHub topics automatically.
+    """
+    name = repo["name"]
+    print(f"  [repo] {name}")
+    portfolio = fetch_repo_portfolio(client, USERNAME, name)
+    topics = extract_topics(repo)
+
+    return {
+        "name": name,
+        "type": "repo",
+        "repo_url": repo["html_url"],
+        "description": repo["description"] or "",
+        "tags": topics,
+    }
+
+
+def gist_to_entry(client: httpx.Client, gist: dict) -> dict:
+    """
+    Convert a gist API response to a projects.yaml entry.
+    Fetches portfolio.toml automatically.
+    Gists have no topics so tags always come from portfolio.toml.
+    """
+    name = gist["description"] or gist["id"]
+    print(f"  [gist] {name}")
+    md_file = next(f for f in gist["files"] if f.endswith(".md"))
+    portfolio = fetch_gist_portfolio(client, gist)
+
+    return {
+        "name": name,
+        "type": "gist",
+        "gist_id": gist["id"],
+        "gist_url": gist["html_url"],
+        "md_file": md_file,
+        "description": gist["description"] or "",
+        "tags": portfolio.get("tags", []),
+    }
+
+
+# --------------------------------------------------------------------------- #
+# Write output
+# --------------------------------------------------------------------------- #
+
+def write_yaml(entries: list[dict]) -> None:
+    yaml = YAML()
+    yaml.default_flow_style = False
+    yaml.indent(mapping=2, sequence=4, offset=2)
+
+    data = {"projects": entries}
+
+    with OUTPUT_FILE.open("w") as f:
+        f.write("# projects.yaml — curated list of tools and projects\n")
+        f.write("#\n")
+        f.write("# live_url and docs_url are NOT stored here — add a portfolio.toml\n")
+        f.write("# to each repo/gist instead. See portfolio.toml.example.\n")
+        f.write("#\n")
+        f.write("# Tags for repos come from GitHub Topics.\n")
+        f.write("# Tags for gists come from portfolio.toml.\n")
+        f.write("# Delete any entries you don't want to appear on the site.\n\n")
+        yaml.dump(data, f)
+
+    print(f"\nWritten {len(entries)} entries to {OUTPUT_FILE}")
+
+
+# --------------------------------------------------------------------------- #
+# Main
+# --------------------------------------------------------------------------- #
+
+def main() -> None:
+    with make_client(TOKEN) as client:
+        print("Fetching public repos...")
+        repos = fetch_repos(client)
+        print(f"  Found {len(repos)} repos\n")
+
+        print("Fetching gists (filtering to .md only)...")
+        gists = fetch_gists(client)
+        print(f"  Found {len(gists)} gists with .md files\n")
+
+        print("Building entries (fetching portfolio.toml where present)...")
+        repo_entries = [repo_to_entry(client, r) for r in repos]
+        gist_entries = [gist_to_entry(client, g) for g in gists]
+
+    write_yaml(repo_entries + gist_entries)
+
+    print("\nNext steps:")
+    print("  1. Review projects.yaml — remove anything you don't want")
+    print("  2. Add portfolio.toml to each repo/gist (see portfolio.toml.example)")
+    print("  3. Run: uv run build.py")
+
+
+if __name__ == "__main__":
+    main()
