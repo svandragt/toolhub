@@ -139,7 +139,22 @@ templates_dir = "my-theme/templates"
 static_dir    = "my-theme/static"
 ```
 
-### 7. Build the site locally
+### 7. Enable the Atom feed (optional)
+
+If you want `output/atom.xml` generated, add `base_url` to your `site.toml`:
+
+```toml
+base_url = "https://yourusername.github.io/toolhub"
+```
+
+Without `base_url` the feed is skipped entirely — no `atom.xml` is written and no
+autodiscovery `<link>` is added to the HTML.
+
+When enabled, the feed contains one entry per active/pinned project (archived
+projects are excluded) with title, summary, tags, and a link back to the project
+page. The feed URL is `{base_url}/atom.xml`.
+
+### 8. Build the site locally
 
 ```bash
 uv run build.py
@@ -147,7 +162,7 @@ uv run build.py
 
 Open `output/index.html` in your browser to preview.
 
-### 8. Deploy to GitHub Pages
+### 9. Deploy to GitHub Pages
 
 **First-time setup:**
 
@@ -165,7 +180,7 @@ From then on, every push to `main` triggers a rebuild and deploy automatically. 
 > **Note:** CI builds without `site.toml` and uses the default branding. If you want
 > your customised branding on the deployed site, commit your `site.toml` to the repo.
 
-### 9. Deploy to a server via SCP (alternative to GitHub Pages)
+### 10. Deploy to a server via SCP (alternative to GitHub Pages)
 
 After building locally, copy the `output/` directory to any web server:
 
