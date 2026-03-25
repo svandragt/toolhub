@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block stylesheets %}<link rel="stylesheet" href="../static/style.css">{% endblock %}
+{% block home_href %}../index.html{% endblock %}
+
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block content %}
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>{{ project.name }}</h1>
+
+  {% if project.description %}
+  <div class="project-header__desc">{{ project.description }}</div>
+  {% endif %}
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">{{ project.type }}</span>
+    {% for tag in project.tags %}
+    <span class="badge">{{ tag }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="project-header__actions">
+    {% if project.live_url %}
+    <a class="btn btn--primary" href="{{ project.live_url }}">&#8599; Live site</a>
+    {% endif %}
+    {% if project.docs_url %}
+    <a class="btn" href="{{ project.docs_url }}">&#8599; Docs</a>
+    {% endif %}
+    {% if project.repo_url %}
+    <a class="btn" href="{{ project.repo_url }}">&#8599; GitHub</a>
+    {% elif project.gist_url %}
+    <a class="btn" href="{{ project.gist_url }}">&#8599; Gist</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="readme">
+  {{ readme_html | safe }}
+</div>
+{% endblock %}
