@@ -14,7 +14,7 @@ Usage (run from repo root):
 
 Reads from .env:
     GITHUB_TOKEN    — personal access token (read-only contents scope)
-    GITHUB_USERNAME — your GitHub username
+    GH_USERNAME — your GitHub username
 
 Output:
     projects.yaml   — review and trim this manually; live_url/docs_url are
@@ -49,11 +49,11 @@ from lib.github import (
 load_dotenv()
 
 TOKEN = os.getenv("GITHUB_TOKEN")
-USERNAME = os.getenv("GITHUB_USERNAME")
+USERNAME = os.getenv("GH_USERNAME")
 
 if not TOKEN or not USERNAME:
     sys.exit(
-        "ERROR: GITHUB_TOKEN and GITHUB_USERNAME must be set in .env\n"
+        "ERROR: GITHUB_TOKEN and GH_USERNAME must be set in .env\n"
         "See .env.example for reference."
     )
 

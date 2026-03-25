@@ -20,7 +20,7 @@ jobs:
         run: uv run build.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: ${{ vars.GITHUB_USERNAME }}
+          GH_USERNAME: ${{ vars.GH_USERNAME }}
           CACHE_TTL_HOURS: "0"
 
       - name: Deploy to gh-pages

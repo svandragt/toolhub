@@ -57,5 +57,5 @@ Index sections: Pinned / Active projects / Archived. Filter bar (JS) and TOC (sh
 
 ## CI
 `.github/workflows/build.yml` — triggers on push to main and `workflow_dispatch`.
-Requires repo variable `GITHUB_USERNAME` (Settings → Secrets and variables → Actions → Variables).
+Requires repo variable `GH_USERNAME` (Settings → Secrets and variables → Actions → Variables).
 Uses built-in `GITHUB_TOKEN`. Deploys `output/` to `gh-pages` via `peaceiris/actions-gh-pages@v4`.

@@ -86,7 +86,7 @@ Edit `.env`:
 
 ```ini
 GITHUB_TOKEN=ghp_yourtoken
-GITHUB_USERNAME=yourusername
+GH_USERNAME=yourusername
 CACHE_TTL_HOURS=1.0
 ```
 
@@ -153,7 +153,7 @@ Open `output/index.html` in your browser to preview.
 
 1. Push this repo to GitHub.
 2. Go to your repo **Settings → Secrets and variables → Actions → Variables** and add:
-   - `GITHUB_USERNAME` = your GitHub username
+   - `GH_USERNAME` = your GitHub username
 3. Go to **Settings → Pages** and set the source to the `gh-pages` branch.
 
 From then on, every push to `main` triggers a rebuild and deploy automatically. You can also trigger it manually from the **Actions** tab.
@@ -197,7 +197,7 @@ the remote in sync with your build.
 | Variable | Default | Description |
 |---|---|---|
 | `GITHUB_TOKEN` | — | GitHub personal access token |
-| `GITHUB_USERNAME` | — | Your GitHub username |
+| `GH_USERNAME` | — | Your GitHub username |
 | `CACHE_TTL_HOURS` | `1.0` | Hours before a cached README is re-fetched. Set to `0` to always re-fetch. |
 
 ---

@@ -16,7 +16,7 @@ Usage (run from repo root):
 
 Reads from .env:
     GITHUB_TOKEN      — personal access token (read-only contents scope)
-    GITHUB_USERNAME   — your GitHub username
+    GH_USERNAME   — your GitHub username
     CACHE_TTL_HOURS   — float, how old a cached README can be before re-fetching
                         (default: 1.0 — set to 0 on CI to always re-fetch)
 
@@ -59,12 +59,12 @@ from lib.github import (
 load_dotenv()
 
 TOKEN = os.getenv("GITHUB_TOKEN")
-USERNAME = os.getenv("GITHUB_USERNAME")
+USERNAME = os.getenv("GH_USERNAME")
 CACHE_TTL_HOURS = float(os.getenv("CACHE_TTL_HOURS", "1.0"))
 
 if not TOKEN or not USERNAME:
     sys.exit(
-        "ERROR: GITHUB_TOKEN and GITHUB_USERNAME must be set in .env\n"
+        "ERROR: GITHUB_TOKEN and GH_USERNAME must be set in .env\n"
         "See .env.example for reference."
     )
 
