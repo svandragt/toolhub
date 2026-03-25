@@ -161,6 +161,23 @@ From then on, every push to `main` triggers a rebuild and deploy automatically. 
 > **Note:** CI builds without `site.toml` and uses the default branding. If you want
 > your customised branding on the deployed site, commit your `site.toml` to the repo.
 
+### 9. Deploy to a server via SCP (alternative to GitHub Pages)
+
+After building locally, copy the `output/` directory to any web server:
+
+```bash
+scp -r output/ user@yourserver.example.com:/var/www/html/portfolio/
+```
+
+Or with `rsync` (faster for incremental updates — only changed files are transferred):
+
+```bash
+rsync -az --delete output/ user@yourserver.example.com:/var/www/html/portfolio/
+```
+
+The `--delete` flag removes files on the server that no longer exist locally, keeping
+the remote in sync with your build.
+
 ---
 
 ## Keeping the portfolio up to date
