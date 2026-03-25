@@ -119,13 +119,16 @@ def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
     portfolio = fetch_repo_portfolio(client, USERNAME, name)
     topics = extract_topics(repo)
 
-    return {
+    entry = {
         "name": name,
         "type": "repo",
         "repo_url": repo["html_url"],
         "description": repo["description"] or "",
         "tags": topics,
     }
+    if repo.get("homepage"):
+        entry["homepage"] = repo["homepage"]
+    return entry
 
 
 def gist_to_entry(client: httpx.Client, gist: dict) -> dict:

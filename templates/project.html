@@ -24,6 +24,8 @@
   <div class="project-header__actions">
     {% if project.live_url %}
     <a class="btn btn--primary" href="{{ project.live_url }}">&#8599; Live site</a>
+    {% elif project.homepage %}
+    <a class="btn btn--primary" href="{{ project.homepage }}">&#8599; Website</a>
     {% endif %}
     {% if project.docs_url %}
     <a class="btn" href="{{ project.docs_url }}">&#8599; Docs</a>
