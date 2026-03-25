@@ -48,14 +48,24 @@ output/                ← deployed to GitHub Pages via CI
 ├── lib/
 │   └── github.py                  # shared GitHub API helpers
 ├── output/                        # gitignored locally — generated site
+│   ├── atom.xml                   # Atom feed (only when base_url is set)
+│   ├── index.html
+│   └── {slug}/index.html
 ├── portfolio.toml.example         # convention template for your projects
 ├── projects.yaml                  # your curated project list
+├── pyproject.toml                 # pytest configuration and test dependencies
+├── site.toml.example              # instance config template
 ├── static/
 │   └── style.css
-└── templates/
-    ├── base.html
-    ├── index.html
-    └── project.html
+├── templates/
+│   ├── atom.xml                   # Atom 1.0 feed template
+│   ├── base.html
+│   ├── index.html
+│   └── project.html
+├── tests/
+│   ├── conftest.py
+│   └── test_atom_feed.py
+└── uv.lock
 ```
 
 ---
@@ -242,9 +252,19 @@ the remote in sync with your build.
 
 ---
 
+## Running tests
+
+```bash
+uv run --group test pytest
+```
+
+Tests cover the Atom feed template output, the `build.py` conditional feed logic, and HTML autodiscovery link behaviour.
+
+---
+
 ## Requirements
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/)
 
-Dependencies are declared inline in each script via [PEP 723](https://peps.python.org/pep-0723/) and installed automatically by `uv run`.
+Dependencies are declared inline in each script via [PEP 723](https://peps.python.org/pep-0723/) and installed automatically by `uv run`. Test dependencies are declared in `pyproject.toml` under `[dependency-groups]`.
