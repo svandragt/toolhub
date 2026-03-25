@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>phar-web</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>phar-web</h1>
+
+  
+  <div class="project-header__desc">Proof of concept using single file PHP archives to distribute web projects.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">php</span>
+    
+    <span class="badge">php-phar</span>
+    
+    <span class="badge">proof-of-concept</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/phar-web">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <p>How to create a phar archive that's a portable PHP executable that can be served as a website and/or a commandline application.</p>
+<h1>Requirements</h1>
+<ol>
+<li><a href="https://box-project.github.io/box/">humbug/box</a>. This is used to manage phar file creation.
+a. If you have <a href="https://github.com/phar-io/phive">phive</a> installed, install box by running <code>phive install</code>.</li>
+<li>(optional)<a href="https://github.com/svandragt/taskfile">Taskfile</a>. This is used as a task runner. Alternatively read the .Taskfile and execute the contents manually, it's bash.</li>
+</ol>
+<h1>Anatomy</h1>
+<pre><code>.
+├── bootstrap.php
+├── build
+│   └── index.phar
+├── dist
+│   └── index-*.zip
+└── src
+    └── index.php
+
+</code></pre>
+<ul>
+<li>The <code>src</code> directory contains the source files of the PHP project.</li>
+<li>Box compiles a <code>build/index.phar</code>, which is included by the <code>bootstrap.php</code> file.</li>
+<li>The dist task creates a timestamped <code>dist/index-*.zip</code> file which can be uncompressed on the production server or ran from a Docker container.</li>
+</ul>
+<h1>Building the phar</h1>
+<pre><code class="language-shell"># Compile in the build/ directory for inspection
+t compile
+
+# Compile and run via the commandline:
+t crun
+
+# Compile and serve
+t cserve
+
+# Create a zip file for distribution
+t dist
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

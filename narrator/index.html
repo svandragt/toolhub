@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>narrator</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>narrator</h1>
+
+  
+  <div class="project-header__desc">David Attenborough narrates your life</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/narrator">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>narrator</h1>
+<p>David Attenborough narrates your life.
+https://twitter.com/charliebholtz/status/1724815159590293764</p>
+<h2>Setup</h2>
+<p>Clone this repo, and setup and activate a virtualenv:</p>
+<pre><code class="language-bash">python3 -m pip install virtualenv
+python3 -m virtualenv venv
+source venv/bin/activate
+</code></pre>
+<p>Then, install the dependencies:
+<code>pip install -r requirements.txt</code></p>
+<p>Make an OpenAI and ElevenLabs (https://elevenlabs.io) account and set your tokens:</p>
+<pre><code>export OPENAI_API_KEY=&lt;token&gt;
+export ELEVENLABS_API_KEY=&lt;eleven-token&gt;
+</code></pre>
+<p>Make a new voice in Eleven and get the voice id of that voice using their <a href="https://elevenlabs.io/docs/api-reference/voices">get voices</a> API.</p>
+<h2>Run it!</h2>
+<pre><code class="language-bash">python capture.py
+</code></pre>
+<p>In one terminal. In the other, run the narrator:</p>
+<pre><code class="language-bash">python narrator.py
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

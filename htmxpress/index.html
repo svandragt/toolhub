@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>htmxpress</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>htmxpress</h1>
+
+  
+  <div class="project-header__desc">WIP plugin to power WordPress with HTMX</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">htmx</span>
+    
+    <span class="badge">prototype</span>
+    
+    <span class="badge">wordpress</span>
+    
+    <span class="badge">wordpress-plugin</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/htmxpress">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>HTMXpress</h1>
+<p><a href="https://htmx.org/">HTMX</a> for WordPress!</p>
+<p>By using the <a href="https://make.wordpress.org/plugins/2012/06/07/rewrite-endpoints-api/">Rewrite Endpoints API</a> to create a
+custom endpoint; and a bit of custom template logic, we can output a serverside partial or custom theme template.</p>
+<p>Using this setup, WordPress can leverage HTML over the wire solutions such as HTMX.</p>
+<p>HTMX then allows us to do dynamic serverside based rendering; live search and other features without the overhead and
+complexity of reactive JavaScript frameworks, whilst benefiting from trusted object and full page caching solutions.
+This repository is exploring the opportunities.</p>
+<h2>Demo</h2>
+<ol>
+<li>Activate plugin (or run <code>wp-env start</code> to spin up a WP environment with the plugin activated).</li>
+<li>go to <code>/htmx</code> (Endpoint test)</li>
+<li>go to <code>/htmx/ascii</code> and <code>/html/partial-ascii</code> (template loader test)</li>
+<li>Inspect html source of theme (enqueued script test)</li>
+<li>go to <code>/htmx/demo</code></li>
+</ol>
+<p>What else can you do?</p>
+<ul>
+<li>CSS Transitions https://htmx.org/docs/#css_transitions</li>
+<li>Boosting https://htmx.org/docs/#boosting</li>
+<li>Polling + Server Sent Events https://htmx.org/docs/#sse</li>
+<li>Progressbars (eg serverside file upload processing) https://htmx.org/examples/progress-bar/</li>
+<li>More examples https://htmx.org/examples/</li>
+</ul>
+<h2>Screencast of Demo</h2>
+<p>https://user-images.githubusercontent.com/594871/183612860-b2eb29f7-cfa0-4de1-97fc-b2a5f393cfd2.mp4</p>
+<h1>Project use</h1>
+<ol>
+<li><strong>By default HTMX is loaded from an external CDN</strong>. While the CDN approach is extremely simple, you may want
+to <a href="https://blog.wesleyac.com/posts/why-not-javascript-cdn">consider not using CDNs in production</a>: Download a
+<a href="https://unpkg.com/htmx.org/dist/htmx.min.js">minified copy of htmx</a> and put it into
+the <code>mytheme/third-party/</code> folder so WordPress can find it, updating the version number.</li>
+</ol>
+<pre><code class="language-php"># mytheme/functions.php
+const PRIORITY_AFTER_HTMX = 20;
+add_action( 'wp_enqueue_scripts', function() {
+    wp_dequeue_script( 'htmx');
+    wp_enqueue_script( 'htmx', trailingslashit( dirname( __FILE__ ) ) . 'third-party/htmx.min.js', '', '1.9.2' );
+}, PRIORITY_AFTER_HTMX );
+</code></pre>
+<ol start="2">
+<li><strong>Add your own templates to the htmx endpoint</strong>: Here's how to add to the template paths to point to your site's templates. The demo HTMXpress templates are only registered if the filter is unused:</li>
+</ol>
+<pre><code class="language-php"># mytheme/functions.php
+add_filter( 'htmx.template_paths', static function ( $paths ) {
+	$paths[] = __DIR__ . '/templates';
+
+	return $paths;
+} );
+
+# A template mytheme/templates/example.php will then be accessible from `/htmx/example`
+</code></pre>
+<h1>See Also</h1>
+<ul>
+<li><a href="https://github.com/svandragt/htmxpress-serverside-block/">HTMXpress Serverside Block</a> A scaffolded serverside block HTMXpress implementation example.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

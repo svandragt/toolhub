@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ia2web</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>ia2web</h1>
+
+  
+  <div class="project-header__desc">Static site generation of iA Markdown files.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/ia2web">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>ia2web</h1>
+<p>Static site generation of iA Writer (and compatible) Markdown files.<br>
+<a href="https://github.com/svandragt/ia2web">View on GitHub</a></p>
+<p><img src="https://user-images.githubusercontent.com/594871/127234909-a06ddd05-f163-416e-8f51-b744d8cd2737.png" alt="Screenshot" /></p>
+<h2>Setup</h2>
+<p>In the directory of markdown files:</p>
+<pre><code># install
+git clone https://github.com/svandragt/ia2web.git .export &amp;&amp; cd .export &amp;&amp; composer install
+
+# start watcher
+php ia2web.php
+</code></pre>
+<p>A new <code>html</code> folder containing a static website is created.</p>
+<h2>Features</h2>
+<ul>
+<li>Watches notes folders for content changes, generating html on the fly.</li>
+<li>Simple script, hack away.</li>
+<li>Handles <code>.md</code> and <code>.txt</code> notes.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

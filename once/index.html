@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>once</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>once</h1>
+
+  
+  <div class="project-header__desc">run anything, but never twice too soon.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">automation</span>
+    
+    <span class="badge">bash</span>
+    
+    <span class="badge">cli-utility</span>
+    
+    <span class="badge">cooldown</span>
+    
+    <span class="badge">idempotent</span>
+    
+    <span class="badge">job-scheduler</span>
+    
+    <span class="badge">run-once</span>
+    
+    <span class="badge">shell-script</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://vandragt.com/tag/projects">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/once">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>once</h1>
+<p><strong>Run any command — but never twice too soon.</strong></p>
+<p><code>once</code> is a lightweight Bash wrapper that ensures a command executes <strong>at most once per time period</strong> (hour/day/week/month) or within a <strong>custom cooldown window</strong> (like “6h” or “2d”).
+It’s perfect for scripts, CI jobs, or ad-hoc shell tasks you don’t want to repeat accidentally.</p>
+<p>Instead of scheduling jobs in cron, you just prefix your command and run it however many times you want:</p>
+<pre><code class="language-bash"># Run it every time you login or something.
+$ once --period day -- ./backup.sh
+$ once --window 6h -- make deploy
+
+# only once though
+$ once --window 1h -- echo 'yoohoo'
+yoohoo
+$ once --window 1h -- echo 'yoohoo'
+Skipped: ran 1s ago; window 1h.
+</code></pre>
+<p><code>once</code> automatically:</p>
+<ul>
+<li>Creates a unique hash for the command (including args and working dir).</li>
+<li>Tracks when it was last run.</li>
+<li>Skips repeated runs within the defined time window.</li>
+<li>Prevents concurrent duplicates via lockfiles.</li>
+<li>Works anywhere — interactive shells, scripts, CI — no cron required.</li>
+</ul>
+<p>In short: <strong>run anything, but never twice too soon.</strong></p>
+<hr />
+<h2>🚀 Quick Start</h2>
+<pre><code class="language-bash"># Safe install (download → review → install)
+curl -fsSL https://raw.githubusercontent.com/svandragt/once/main/once.sh -o /tmp/once.sh
+less /tmp/once.sh # inspect before running and making it executable
+
+sudo install -m 0755 /tmp/once.sh /usr/local/bin/once
+chmod +x /usr/local/bin/once
+
+# EXAMPLES
+# Run something once per day
+once --period day -- ./backup.sh
+
+# Or with a rolling cooldown
+once --window 6h -- ./sync.sh
+
+# Explain what would happen
+once --explain --dry-run -- ./job.sh
+</code></pre>
+<hr />
+<h2>🧠 How it works</h2>
+<ul>
+<li>
+<p>Each command’s <strong>identity</strong> is based on its executable path, arguments, working directory, and an optional <code>--key-extra</code> string.</p>
+</li>
+<li>
+<p>The identity is <strong>hashed</strong> (SHA-256) and recorded under:</p>
+<pre><code>~/.local/state/once/
+</code></pre>
+</li>
+<li>
+<p>When invoked again, <code>once</code> checks whether that command has already run during:</p>
+<ul>
+<li>The same <strong>calendar period</strong> (<code>hour</code>, <code>day</code>, <code>week</code>, <code>month</code>), <strong>or</strong></li>
+<li>Within a <strong>rolling window</strong> (e.g., 6h or 2d).</li>
+</ul>
+</li>
+<li>
+<p>If it has, it <strong>skips</strong> execution and exits with code <strong>3</strong>.</p>
+</li>
+<li>
+<p>It uses atomic <strong>lock directories</strong> to prevent concurrent runs.</p>
+</li>
+</ul>
+<hr />
+<h2>🧩 Usage</h2>
+<pre><code class="language-bash">once [--period {hour|day|week|month} | --window {Nh|Nd}] [options] -- &lt;command&gt; [args...]
+</code></pre>
+<h3>Options</h3>
+<p>| Option              | Description                                                                     |
+| ------------------- | ------------------------------------------------------------------------------- |
+| <code>--period &lt;p&gt;</code>      | Use calendar periods (hour/day/week/month).                                     |
+| <code>--window &lt;d&gt;</code>      | Use a rolling cooldown (e.g. <code>6h</code>, <code>2d</code>).                                       |
+| <code>--key-extra &lt;s&gt;</code>   | Add extra material to identity key (useful for environments like prod/staging). |
+| <code>--state-dir &lt;dir&gt;</code> | Override state directory (default: <code>$XDG_STATE_HOME/once</code>).                     |
+| <code>--force</code>           | Always run, ignoring cooldown.                                                  |
+| <code>--dry-run</code>         | Don’t execute — just print what would happen.                                   |
+| <code>--explain</code>         | Show derived hash, stamp path, etc.                                             |
+| <code>-h, --help</code>        | Show help.                                                                      |</p>
+<h3>Exit codes</h3>
+<p>| Code | Meaning                                                    |
+| ---- | ---------------------------------------------------------- |
+| 0    | Command executed successfully (or would with <code>--dry-run</code>). |
+| 1    | Underlying command failed.                                 |
+| 3    | Skipped — already ran in this period/window.               |
+| 4    | Another instance already running (lock held).              |</p>
+<hr />
+<h2>🧪 Examples</h2>
+<pre><code class="language-bash"># Once per hour
+once --period hour -- ./poll-api.sh
+
+# Once per week (ISO weeks)
+once --period week -- ./report.sh
+
+# Once every 36 hours
+once --window 36h -- ./rebuild-index.sh
+
+# Add environment context to key
+once --period day --key-extra prod -- ./backup.sh
+
+# Forced run ignoring window
+once --force -- ./backup.sh
+</code></pre>
+<hr />
+<h2>⚙️ Internals</h2>
+<ul>
+<li>
+<p><strong>Hashes:</strong> SHA-256 of a canonical identity string (exe, args, cwd, key-extra).</p>
+</li>
+<li>
+<p><strong>State:</strong></p>
+<ul>
+<li>Period mode: <code>~/.local/state/once/periods/YYYY-MM-DD/&lt;hash&gt;.stamp</code></li>
+<li>Window mode: <code>~/.local/state/once/windows/&lt;hash&gt;.stamp</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Locks:</strong> Atomic <code>mkdir</code> in <code>~/.local/state/once/locks/&lt;hash&gt;.lock</code></p>
+</li>
+<li>
+<p><strong>Concurrency:</strong> Locks prevent two simultaneous invocations of the same job.</p>
+</li>
+<li>
+<p><strong>Security:</strong> State dir is <code>0700</code> (owner-only). No arguments are logged by default.</p>
+</li>
+</ul>
+<hr />
+<h2>🧹 Cleanup</h2>
+<p>Stamps accumulate over time. You can safely remove old entries:</p>
+<pre><code class="language-bash">find ~/.local/state/once/periods -type d -mtime +60 -exec rm -rf {} +
+find ~/.local/state/once/windows -type f -mtime +90 -delete
+</code></pre>
+<p>A future version will include a <code>--gc</code> command for automatic cleanup.</p>
+<hr />
+<h2>💡 When to use <code>once</code></h2>
+<p>✅ You should use it when:</p>
+<ul>
+<li>You trigger tasks manually or via scripts, but want <strong>idempotent frequency control</strong>.</li>
+<li>You want to <strong>avoid cron</strong>, or you’re running in <strong>containers/CI</strong> where time-based scheduling isn’t reliable.</li>
+<li>You have multiple scripts sharing cooldown logic.</li>
+</ul>
+<p>❌ You don’t need it when:</p>
+<ul>
+<li>Your task is already handled by cron/systemd timers/anacron.</li>
+<li>You need distributed coordination across multiple hosts (use Redis locks, etc. instead).</li>
+</ul>
+<hr />
+<h2>📜 License</h2>
+<p>GPL © 2025 Sander van Dragt</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

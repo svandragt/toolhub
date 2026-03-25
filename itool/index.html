@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>itool</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>itool</h1>
+
+  
+  <div class="project-header__desc">local internal docker tools runner</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">docker</span>
+    
+    <span class="badge">homeserver</span>
+    
+    <span class="badge">localhost</span>
+    
+    <span class="badge">runner</span>
+    
+    <span class="badge">tools</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/itool">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>itool — local internal tools runner</h1>
+<p><strong><code>itool.sh</code></strong> is a small CLI for running many independent internal tools on a single machine in a predictable, conflict-free way using Docker.</p>
+<p>The design is intentionally conservative: machine-local facts live in a registry, application facts stay inside projects, and <code>itool</code> only glues the two together.</p>
+<hr />
+<h2>What’s in this repository</h2>
+<pre><code>.
+├── itool.sh      # the CLI (symlink this into your PATH)
+└── README.md     # this document
+</code></pre>
+<p>After cloning, install it like this:</p>
+<pre><code class="language-bash">ln -s $(pwd)/itool.sh ~/.local/bin/itool
+</code></pre>
+<hr />
+<h2>Goals</h2>
+<ul>
+<li>Run many <strong>independent internal tools</strong> on one machine</li>
+<li>Zero port collisions</li>
+<li>Stable URLs per machine</li>
+<li>No guessing or duplication of app configuration</li>
+<li>Minimal, human-editable registry</li>
+<li>Docker-based, but not tied to Traefik, Avahi subdomains, or shared proxies</li>
+<li>Clear separation between <strong>machine concerns</strong> and <strong>project concerns</strong></li>
+</ul>
+<hr />
+<h2>Core invariants</h2>
+<ol>
+<li>
+<p><strong>The registry owns machine-local facts only</strong></p>
+<ul>
+<li>Project path</li>
+<li>Host port (unique per machine)</li>
+</ul>
+</li>
+<li>
+<p><strong>Projects own application facts</strong></p>
+<ul>
+<li>Container port (<code>PORT</code> in <code>.env</code>)</li>
+<li>How the server is started</li>
+<li>Docker image and runtime config</li>
+</ul>
+</li>
+<li>
+<p><strong><code>itool</code> never guesses</strong></p>
+<ul>
+<li>If the project doesn’t declare its container port, startup fails</li>
+<li>No “smart defaults” for app internals</li>
+</ul>
+</li>
+<li>
+<p><strong>Ports are assigned once and stay stable</strong></p>
+<ul>
+<li>Auto-assigned at registration</li>
+<li>Persisted in the registry</li>
+<li>Reboots do not change them</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>File layout (outside this repo)</h2>
+<p><code>itool</code> keeps all machine-local state under <code>~/.config/itools</code>:</p>
+<pre><code>~/.config/itools/
+  registry.ini
+</code></pre>
+<p>Each internal tool is a normal project directory:</p>
+<pre><code>project/
+  docker-compose.yml
+  docker-compose.override.yml   # generated, machine-local (DO NOT COMMIT)
+  .env
+  Dockerfile
+</code></pre>
+<hr />
+<h2>Registry format (one file for all tools)</h2>
+<p>The registry lives at:</p>
+<pre><code>~/.config/itools/registry.ini
+</code></pre>
+<p>Each tool is a section containing <strong>only</strong> its path and host port.</p>
+<h3>Example</h3>
+<pre><code class="language-ini">[taskpe]
+path = /home/username/dev/python/task-progress-estimator
+port = 8611
+
+[search]
+path = /home/username/dev/internal/search-service
+port = 8612
+</code></pre>
+<p>That is the <strong>entire registry contract</strong>.</p>
+<hr />
+<h2>Port management</h2>
+<ul>
+<li>
+<p><code>itool register</code> automatically allocates a host port from a reserved range
+(default: <strong>8600–8999</strong>)</p>
+</li>
+<li>
+<p>The chosen port must:</p>
+<ul>
+<li>not already be assigned in the registry</li>
+<li>not currently be in use on the host</li>
+</ul>
+</li>
+<li>
+<p>An explicit port can be requested with <code>--port</code></p>
+</li>
+<li>
+<p>Once registered, a tool’s port does not change unless you edit the registry</p>
+</li>
+</ul>
+<hr />
+<h2>Project requirements</h2>
+<p>Every project <strong>must</strong> define its container port itself.</p>
+<h3><code>.env</code></h3>
+<pre><code class="language-env">PORT=8501
+</code></pre>
+<p>This is the port the application listens on <strong>inside the container</strong>.</p>
+<h3><code>docker-compose.yml</code></h3>
+<p>The base compose file <strong>must not hardcode host ports</strong>:</p>
+<pre><code class="language-yaml">services:
+  app:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+</code></pre>
+<hr />
+<h2>Machine-local wiring (generated)</h2>
+<p><code>itool</code> generates a compose override per project:</p>
+<h3><code>docker-compose.override.yml</code></h3>
+<pre><code class="language-yaml"># Generated by itool (machine-local). DO NOT COMMIT.
+services:
+  app:
+    ports:
+      - &quot;8611:${PORT}&quot;
+</code></pre>
+<p>This file is:</p>
+<ul>
+<li>machine-specific</li>
+<li>regenerated automatically</li>
+<li>the only place where host ↔ container ports are connected</li>
+</ul>
+<hr />
+<h2>Commands</h2>
+<h3><code>itool register &lt;name&gt; &lt;path&gt; [--port N]</code></h3>
+<ul>
+<li>Registers a project</li>
+<li>Auto-assigns a unique host port</li>
+<li>Writes the registry entry</li>
+<li>Generates <code>docker-compose.override.yml</code></li>
+</ul>
+<h3><code>itool edit-registry</code></h3>
+<ul>
+<li>Opens <code>registry.ini</code> in <code>$EDITOR</code></li>
+<li>Validates all entries on save</li>
+<li>Regenerates all overrides</li>
+</ul>
+<h3><code>itool list</code></h3>
+<ul>
+<li>Lists registered tools with name, port, and path</li>
+</ul>
+<h3><code>itool info &lt;name&gt;</code></h3>
+<ul>
+<li>Shows details for one tool</li>
+</ul>
+<h3><code>itool &lt;name&gt; up</code></h3>
+<ul>
+<li>Starts the tool with Docker Compose</li>
+<li>Fails fast if <code>.env</code> or <code>PORT</code> is missing</li>
+<li>Prints and opens the tool URL</li>
+</ul>
+<h3>Other lifecycle helpers</h3>
+<pre><code>itool &lt;name&gt; down
+itool &lt;name&gt; restart
+itool &lt;name&gt; logs
+itool &lt;name&gt; ps
+itool &lt;name&gt; build
+itool &lt;name&gt; path
+</code></pre>
+<hr />
+<h2>URLs and networking</h2>
+<p>Each tool is reachable at:</p>
+<pre><code>http://&lt;name&gt;.local:&lt;host_port&gt;
+</code></pre>
+<p>Name resolution is intentionally outside the registry:</p>
+<ul>
+<li>via <code>/etc/hosts</code> automation or wildcard DNS (e.g. <code>dnsmasq</code>)</li>
+<li>no Traefik reuse</li>
+<li>no Avahi subdomain management</li>
+<li>no shared reverse proxy required</li>
+</ul>
+<hr />
+<h2>Example: <code>taskpe</code> (a webapp)</h2>
+<p>Project defines:</p>
+<pre><code class="language-env">PORT=8501
+</code></pre>
+<p>Registry assigns:</p>
+<pre><code class="language-ini">port = 8611
+</code></pre>
+<p>Resulting URL:</p>
+<pre><code>http://taskpe.local:8611
+</code></pre>
+<p>The webapp still runs on 8501 internally; only the host port is machine-specific.</p>
+<hr />
+<h2>Behavior on reboot</h2>
+<ul>
+<li>Docker restarts containers (<code>restart: unless-stopped</code>)</li>
+<li>Registry and overrides persist</li>
+<li>URLs remain stable</li>
+<li>No manual action required</li>
+</ul>
+<hr />
+<h2>What <code>itool</code> intentionally does <strong>not</strong> do</h2>
+<ul>
+<li>Guess container ports</li>
+<li>Infer application types</li>
+<li>Modify <code>.env</code> contents</li>
+<li>Share ports or proxies with unrelated systems</li>
+<li>Hide configuration errors</li>
+</ul>
+<hr />
+<h2>Mental model</h2>
+<ul>
+<li><strong>Registry</strong> = machine facts</li>
+<li><strong>Project</strong> = application facts</li>
+<li><strong>Compose override</strong> = glue</li>
+<li><strong><code>itool</code></strong> = invariant enforcer</li>
+</ul>
+<p>If something is wrong, it fails loudly and early.</p>
+<hr />
+<h2>Running itool on a home-server setup</h2>
+<p>This section explains how to run <code>itool</code> on an always-on home server (NUC, mini-PC, NAS, or spare machine) so tools are reachable from your LAN and survive reboots without manual intervention.</p>
+<hr />
+<h3>Assumptions</h3>
+<ul>
+<li>The machine runs Linux with systemd</li>
+<li>Docker and Docker Compose v2 are installed</li>
+<li>The machine has a <strong>stable hostname</strong> (e.g. <code>homeserver</code>)</li>
+<li>Tools are internal / trusted (no public internet exposure by default)</li>
+</ul>
+<hr />
+<h3>Networking model (recommended)</h3>
+<ul>
+<li>
+<p>Each tool:</p>
+<ul>
+<li>runs in its own container</li>
+<li>listens on its <strong>container port</strong> (<code>PORT</code> in <code>.env</code>)</li>
+<li>is mapped to a <strong>unique host port</strong> (from the registry)</li>
+</ul>
+</li>
+<li>
+<p>Containers bind to <code>0.0.0.0</code> so they’re reachable from the LAN</p>
+</li>
+<li>
+<p>No reverse proxy required</p>
+</li>
+</ul>
+<p>Resulting URLs from other devices on your network:</p>
+<pre><code>http://homeserver:8611
+http://homeserver:8612
+</code></pre>
+<p>This is the simplest, most robust setup for a home server.</p>
+<hr />
+<h3>Project configuration for LAN access</h3>
+<p>In each project’s <code>.env</code>:</p>
+<pre><code class="language-env">PORT=8501
+HOST=0.0.0.0
+</code></pre>
+<p>Ensure the app actually listens on <code>0.0.0.0</code>:</p>
+<ul>
+<li>Streamlit: <code>--server.address=0.0.0.0</code></li>
+<li>ASGI servers: <code>--host 0.0.0.0</code></li>
+</ul>
+<p>If the app only binds to <code>127.0.0.1</code>, it will not be reachable from other machines.</p>
+<hr />
+<h3>Docker restart behavior</h3>
+<p>All tools should include in <code>docker-compose.yml</code>:</p>
+<pre><code class="language-yaml">restart: unless-stopped
+</code></pre>
+<p>This ensures:</p>
+<ul>
+<li>Containers start automatically after a reboot</li>
+<li>Tools come back online without running <code>itool up</code> again</li>
+</ul>
+<p>Verify Docker itself is enabled:</p>
+<pre><code class="language-bash">sudo systemctl enable docker
+</code></pre>
+<hr />
+<h3>Firewall considerations</h3>
+<p>If a firewall is enabled (e.g. <code>ufw</code>), allow the itool port range:</p>
+<pre><code class="language-bash">sudo ufw allow 8600:8999/tcp
+</code></pre>
+<p>Or selectively allow only ports in use:</p>
+<pre><code class="language-bash">sudo ufw allow 8611/tcp
+sudo ufw allow 8612/tcp
+</code></pre>
+<hr />
+<h3>Name resolution on the LAN</h3>
+<h4>Option 1: Use the hostname (simplest)</h4>
+<p>Most home networks already support this:</p>
+<pre><code>http://homeserver:8611
+</code></pre>
+<p>No additional configuration required.</p>
+<h4>Option 2: Local DNS (optional)</h4>
+<p>If you run a local DNS (router, Pi-hole, dnsmasq):</p>
+<ul>
+<li>
+<p>Create DNS entries pointing to the server IP:</p>
+<pre><code>taskpe.homelab → 192.168.1.10
+</code></pre>
+</li>
+<li>
+<p>Access as:</p>
+<pre><code>http://taskpe.homelab:8611
+</code></pre>
+</li>
+</ul>
+<p>This is purely cosmetic and not required for <code>itool</code>.</p>
+<hr />
+<h3>Managing tools remotely</h3>
+<p>From the server itself:</p>
+<pre><code class="language-bash">itool list
+itool taskpe restart
+itool search logs
+</code></pre>
+<p>From another machine:</p>
+<ul>
+<li>
+<p>Use SSH for control:</p>
+<pre><code class="language-bash">ssh homeserver
+itool taskpe restart
+</code></pre>
+</li>
+<li>
+<p>Access the UI via browser over LAN</p>
+</li>
+</ul>
+<hr />
+<h3>Backups and persistence</h3>
+<p>Machine-local state to back up:</p>
+<ul>
+<li><code>~/.config/itools/registry.ini</code></li>
+</ul>
+<p>Project data:</p>
+<ul>
+<li>Project directories themselves</li>
+<li>Any Docker volumes defined by tools</li>
+</ul>
+<p>Containers can always be recreated; the registry is what preserves stable ports.</p>
+<hr />
+<h3>Security notes</h3>
+<ul>
+<li>
+<p>This setup assumes a <strong>trusted LAN</strong></p>
+</li>
+<li>
+<p>Tools are not authenticated by default</p>
+</li>
+<li>
+<p>Do not forward these ports to the public internet without:</p>
+<ul>
+<li>authentication</li>
+<li>TLS</li>
+<li>and ideally a reverse proxy</li>
+</ul>
+</li>
+</ul>
+<p>If you later need remote access, put a proxy (Caddy, Nginx) in front of selected tools explicitly—<code>itool</code> stays unchanged.</p>
+<hr />
+<h3>Summary for home-server usage</h3>
+<ul>
+<li>Use fixed host ports from the registry</li>
+<li>Bind apps to <code>0.0.0.0</code></li>
+<li>Rely on Docker’s restart policy for persistence</li>
+<li>Access tools via <code>hostname:port</code></li>
+<li>Keep <code>itool</code> focused on orchestration, not networking policy</li>
+</ul>
+<p>This keeps the home-server setup simple, resilient, and easy to reason about.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

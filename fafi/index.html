@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fafi</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>fafi</h1>
+
+  
+  <div class="project-header__desc">Web content indexing and search tool</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">bookmarks</span>
+    
+    <span class="badge">cli</span>
+    
+    <span class="badge">favourites</span>
+    
+    <span class="badge">firefox</span>
+    
+    <span class="badge">indexer</span>
+    
+    <span class="badge">python</span>
+    
+    <span class="badge">search-engine</span>
+    
+    <span class="badge">tui</span>
+    
+    <span class="badge">webui</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/fafi">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>fafi</h1>
+<p>Web content indexing and search tool.</p>
+<ol>
+<li>Easily index your browser bookmarks: importing list of files, a live Firefox profile, and individual URLs</li>
+<li>Store the readability content of each bookmark</li>
+<li>Full text search matching the title and contents of the collection.</li>
+</ol>
+<p>In the latest incarnation:</p>
+<ul>
+<li>Aim of the rewrite in GO is to have a single binary that starts a webserver which can be started via systemd and queried via firefox.</li>
+<li>On launch it will index any missing bookmarks (in a background process)</li>
+</ul>
+<p>This is how it looks:</p>
+<p><img src="https://github.com/svandragt/fafi/assets/594871/c7f9a06c-fa2a-430b-a9be-2bc66b0615d3" alt="image" /></p>
+<h2>Environment variables</h2>
+<p>If the working directory contains a <code>.env</code> file, then the following configuration can be declared:</p>
+<pre><code class="language-env"># Defaults are below:
+
+# Port number for the webserver.
+FAFI_PORT=8080
+# Set to non-empty value to skip populating the database with sample records.
+FAFI_SKIP_RECORDS=0
+# Set to 0 to disable indexing on startup
+FAFI_ENABLE_INDEXING=1
+# Default database path:
+FAFI_DB_FILEPATH=/home/user/fafi.sqlite3
+
+# Enable importing bookmarks from Firefox profile db:
+FAFI_FIREFOX=/home/san.../32kuswpy.default-release/places.sqlite
+
+</code></pre>
+<h2>Command-line arguments</h2>
+<p>Each of the environment variables are available as a longform command-line argument by discarding <code>FAFI_</code> and lower-casing the result, replacing underscores with dashes. For example <code>FAFI_ENABLE_INDEXING=0</code> and <code>--enable-indexing=0</code> are equivalent.</p>
+<h2>Build and run</h2>
+<pre><code class="language-shell"># build with full-text search
+$ go build --tags fts5 -o tmp/fafi2 fafi2 
+# run, eg indexing your Firefox places database
+$ tmp/fafi2 --firefox=/path/to/firefox/profile/places.sqlite
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

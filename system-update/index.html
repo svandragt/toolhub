@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>system-update</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>system-update</h1>
+
+  
+  <div class="project-header__desc">Linux system update script for developers</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/system-update">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>system-update</h1>
+<p>A system update script for developers, using Ubuntu / Debian / elementaryOS based systems or OpenSUSE based systems.</p>
+<h2>Usage</h2>
+<pre><code># Daily Example - system packages from apt / zypper / snap / flatpak
+./system-update.sh
+
+# Weekly example, update everything
+./system-update.sh --full
+</code></pre>
+<h2>Features</h2>
+<ul>
+<li>Only runs updates for tools that are currently installed.</li>
+<li>Prunes unused Docker containers</li>
+<li>Optionally prunes leftover tooling caches</li>
+</ul>
+<p>Support for other tools / operating systems are welcome.</p>
+<h2>Tools</h2>
+<p>The following tools are supported (this list is periodically updated):</p>
+<ul>
+<li>apt</li>
+<li>asdf</li>
+<li>caches</li>
+<li>cargo</li>
+<li>composer</li>
+<li>devbox</li>
+<li>docker</li>
+<li>flatpak</li>
+<li>pipx</li>
+<li>pyenv</li>
+<li>snap</li>
+<li>uv</li>
+<li>zypper</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

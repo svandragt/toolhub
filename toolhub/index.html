@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>toolhub</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>toolhub</h1>
+
+  
+  <div class="project-header__desc">Generate portfolio hub site for github repos and gists.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/toolhub">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>ToolHub</h1>
+<p>A static site generator that turns a curated list of GitHub repos and gists into a personal tools portfolio — no CMS, no framework, no manual copy-pasting.</p>
+<p>Each project page is built from its README, rendered to HTML at build time. Live URLs and docs links are extracted automatically from a <code>portfolio.toml</code> convention file you add to each project. Tags come from GitHub Topics (repos) or <code>portfolio.toml</code> (gists).</p>
+<p>The site deploys automatically to GitHub Pages on every push to <code>main</code>.</p>
+<hr />
+<h2>Screenshots</h2>
+<img width="1478" height="1014" alt="index" src="https://github.com/user-attachments/assets/2cb81233-96a9-4a6a-a69b-e98d71f84758" />
+<img width="1478" height="1014" alt="detail" src="https://github.com/user-attachments/assets/a3492bca-6c9c-4ca7-94f1-d9e16e221e35" />
+<hr />
+<h2>How it works</h2>
+<pre><code>portfolio.toml         ← add to each repo/gist (live_url, docs_url)
+GitHub Topics          ← set on each repo for tags
+        ↓
+bootstrap.py           ← seeds projects.yaml from the GitHub API (run once)
+        ↓
+projects.yaml          ← your curated project list (edit to remove unwanted entries)
+        ↓
+build.py               ← fetches READMEs, renders HTML, writes output/
+        ↓
+output/                ← deployed to GitHub Pages via CI
+</code></pre>
+<hr />
+<h2>Project structure</h2>
+<pre><code>.
+├── .cache/                        # gitignored — cached README files
+├── .env                           # gitignored — secrets and config
+├── .env.example                   # committed — safe config template
+├── .github/
+│   └── workflows/
+│       └── build.yml              # CI: build and deploy on push to main
+├── .gitignore
+├── bootstrap.py                   # one-time seed script
+├── build.py                       # site generator
+├── lib/
+│   └── github.py                  # shared GitHub API helpers
+├── output/                        # gitignored locally — generated site
+├── portfolio.toml.example         # convention template for your projects
+├── projects.yaml                  # your curated project list
+├── static/
+│   └── style.css
+└── templates/
+    ├── base.html
+    ├── index.html
+    └── project.html
+</code></pre>
+<hr />
+<h2>Setup</h2>
+<h3>1. Clone the repo</h3>
+<pre><code class="language-bash">git clone https://github.com/yourusername/dev-portfolio-hub
+cd dev-portfolio-hub
+</code></pre>
+<h3>2. Create a GitHub personal access token</h3>
+<p>Go to <a href="https://github.com/settings/tokens">github.com/settings/tokens</a> and create a <strong>fine-grained token</strong> with:</p>
+<ul>
+<li><strong>Repository access:</strong> All public repositories (read-only)</li>
+<li><strong>Permissions:</strong> <code>Contents: Read</code>, <code>Metadata: Read</code></li>
+</ul>
+<h3>3. Configure your environment</h3>
+<pre><code class="language-bash">cp .env.example .env
+</code></pre>
+<p>Edit <code>.env</code>:</p>
+<pre><code class="language-ini">GITHUB_TOKEN=ghp_yourtoken
+GH_USERNAME=yourusername
+CACHE_TTL_HOURS=1.0
+</code></pre>
+<h3>4. Seed your project list</h3>
+<pre><code class="language-bash">uv run bootstrap.py
+</code></pre>
+<p>This generates <code>projects.yaml</code> from your public repos and gists.</p>
+<p>To permanently exclude repos or gists, create an <code>exclude.txt</code> (one repo name or gist ID per line, <code>#</code> for comments) before running bootstrap. See <code>exclude.txt.example</code>.</p>
+<h3>5. Add <code>portfolio.toml</code> to your projects</h3>
+<p>For any project that has a live URL or docs site, add a <code>portfolio.toml</code> to its root:</p>
+<pre><code class="language-toml">live_url = &quot;https://mytool.example.com&quot;
+docs_url = &quot;https://docs.example.com/mytool&quot;
+</code></pre>
+<p>For gists, you can also add tags (repos use GitHub Topics instead):</p>
+<pre><code class="language-toml">tags = [&quot;python&quot;, &quot;cli&quot;]
+</code></pre>
+<p>See <code>portfolio.toml.example</code> for a full reference.</p>
+<h3>6. Customise branding (optional)</h3>
+<p>By default the site uses the built-in branding (<code>~/tools</code>, <code>Tools &amp; Projects</code>, etc.).
+To change it, copy <code>site.toml.example</code> to <code>site.toml</code> and edit:</p>
+<pre><code class="language-bash">cp site.toml.example site.toml
+</code></pre>
+<p><code>site.toml</code> is gitignored — it's your instance config. CI builds without it and
+falls back to the defaults, so <strong>you only need this file if you want to change the
+branding or use a custom theme</strong>.</p>
+<p>To use a custom theme, point <code>theme.templates_dir</code> and <code>theme.static_dir</code> at your
+own directories:</p>
+<pre><code class="language-toml">[theme]
+templates_dir = &quot;my-theme/templates&quot;
+static_dir    = &quot;my-theme/static&quot;
+</code></pre>
+<h3>7. Build the site locally</h3>
+<pre><code class="language-bash">uv run build.py
+</code></pre>
+<p>Open <code>output/index.html</code> in your browser to preview.</p>
+<h3>8. Deploy to GitHub Pages</h3>
+<p><strong>First-time setup:</strong></p>
+<ol>
+<li>Push this repo to GitHub.</li>
+<li>Go to your repo <strong>Settings → Secrets and variables → Actions → Variables</strong> and add:
+<ul>
+<li><code>GH_USERNAME</code> = your GitHub username</li>
+</ul>
+</li>
+<li>Go to <strong>Settings → Pages</strong> and set the source to the <code>gh-pages</code> branch.</li>
+</ol>
+<p>From then on, every push to <code>main</code> triggers a rebuild and deploy automatically. You can also trigger it manually from the <strong>Actions</strong> tab.</p>
+<blockquote>
+<p><strong>Note:</strong> CI builds without <code>site.toml</code> and uses the default branding. If you want
+your customised branding on the deployed site, commit your <code>site.toml</code> to the repo.</p>
+</blockquote>
+<h3>9. Deploy to a server via SCP (alternative to GitHub Pages)</h3>
+<p>After building locally, copy the <code>output/</code> directory to any web server:</p>
+<pre><code class="language-bash">scp -r output/ user@yourserver.example.com:/var/www/html/portfolio/
+</code></pre>
+<p>Or with <code>rsync</code> (faster for incremental updates — only changed files are transferred):</p>
+<pre><code class="language-bash">rsync -az --delete output/ user@yourserver.example.com:/var/www/html/portfolio/
+</code></pre>
+<p>The <code>--delete</code> flag removes files on the server that no longer exist locally, keeping
+the remote in sync with your build.</p>
+<hr />
+<h2>Keeping the portfolio up to date</h2>
+<p>| Task | What to do |
+|---|---|
+| Add a new project | Re-run <code>uv run bootstrap.py</code>, review <code>projects.yaml</code> |
+| Add a live URL | Add <code>portfolio.toml</code> to that repo/gist |
+| Update tags (repo) | Set GitHub Topics on the repo |
+| Update tags (gist) | Edit <code>portfolio.toml</code> in the gist |
+| Refresh README content | Cache expires per <code>CACHE_TTL_HOURS</code>, or push to trigger CI |</p>
+<hr />
+<h2>Configuration reference</h2>
+<p>| Variable | Default | Description |
+|---|---|---|
+| <code>GITHUB_TOKEN</code> | — | GitHub personal access token |
+| <code>GH_USERNAME</code> | — | Your GitHub username |
+| <code>CACHE_TTL_HOURS</code> | <code>1.0</code> | Hours before a cached README is re-fetched. Set to <code>0</code> to always re-fetch. |</p>
+<hr />
+<h2>Constraints &amp; known limitations</h2>
+<p>| Constraint | Detail |
+|---|---|
+| Personal GitHub accounts only | The pinned items query uses the GraphQL <code>user</code> type, which doesn't apply to organisations |
+| Public repos and gists only | Private content is intentionally excluded — this is a public portfolio tool |
+| Gists must contain a <code>.md</code> file | Gists without markdown are skipped by bootstrap |
+| Maximum 6 pinned items | GitHub's own limit on pinned profile items |</p>
+<hr />
+<h2>Requirements</h2>
+<ul>
+<li>Python 3.11+</li>
+<li><a href="https://docs.astral.sh/uv/">uv</a></li>
+</ul>
+<p>Dependencies are declared inline in each script via <a href="https://peps.python.org/pep-0723/">PEP 723</a> and installed automatically by <code>uv run</code>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

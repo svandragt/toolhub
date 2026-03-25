@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>phpunit-zero-config</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>phpunit-zero-config</h1>
+
+  
+  <div class="project-header__desc">Zero configuration setup for PHPUnit</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/phpunit-zero-config">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>PHPUnit Zero Configuration Setup</h1>
+<p>Requires <a href="https://www.jetify.com/devbox">devbox</a>.</p>
+<pre><code class="language-shell"># open the devbox shell
+$ devbox shell
+Starting a devbox shell...
+
+# run phpunit using the provided configuration
+(devbox) $ phpunit
+PHPUnit 12.1.0 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.6
+Configuration: phpunit.dist.xml
+
+..                                                                  2 / 2 (100%)
+
+Time: 00:00.002, Memory: 8.00 MB
+
+OK (2 tests, 2 assertions)
+
+</code></pre>
+<ul>
+<li>Entering the shell runs the <code>init_hook</code> in <code>devbox.json</code>, which runs <code>composer install</code>, which sets up the autoloader, required for the phpunit bootstrap.</li>
+<li>You can also run <code>devbox run test</code> to run <code>phpunit</code>, included to demonstrate how to add scripts.</li>
+<li>The test php code has been adapted from <a href="https://phpunit.de/getting-started/phpunit-12.html">PHPUnit's documentation</a>.</li>
+<li>PHPStorm configuration added.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

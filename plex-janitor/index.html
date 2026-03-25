@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>plex-janitor</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>plex-janitor</h1>
+
+  
+  <div class="project-header__desc">Delete watched episodes and films</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">maintenance</span>
+    
+    <span class="badge">plex</span>
+    
+    <span class="badge">plex-media-server</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/plex-janitor">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>PLEX Janitor</h1>
+<p>This script lists and optionally deletes watched episodes and films in Plex.</p>
+<ul>
+<li>It keeps the last seen episode of a show, so you can continue where you left off.</li>
+<li>Prevent your favourites from being deleted by putting series / films in a Keep collection.</li>
+</ul>
+<p>It requires python 3.9+ and <a href="https://python-poetry.org/">poetry</a>.</p>
+<p>Install:</p>
+<p>Create <code>config.ini</code> with the following contents:</p>
+<pre><code class="language-ini">[Plex]
+username = &lt;username&gt;
+password = &lt;password&gt;
+servername = &lt;plex servername&gt;
+</code></pre>
+<p>Run the script:</p>
+<pre><code class="language-shell">poetry install
+poetry run python plexjanitor.py
+</code></pre>
+<p>The script makes the following assumptions:</p>
+<ul>
+<li>There's two sections: &quot;TV Shows&quot; and &quot;Films&quot;</li>
+<li>The TV Shows section has a collection &quot;Keep&quot; and a collection &quot;Deletable TV&quot;</li>
+<li>The Films section has a collection &quot;Keep&quot; and a collection &quot;Deletable Films&quot;</li>
+<li>Add items to the Keep collection manually (for TV Shows tag the show, not the episode). These will not be deleted.</li>
+<li>The Deletable* collections must have these filters:
+<ul>
+<li>Plays is greater than 0</li>
+<li>AND Collection is not Keep</li>
+</ul>
+</li>
+</ul>
+<p>This script will then go through each section and list deletable items. For TV Shows the most recent episode will be kept, as a marker for the last seen episode.</p>
+<p>By default deletable items are listed but not deleted. By passing <code>delete</code> as a script parameter, items will be actually deleted!</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

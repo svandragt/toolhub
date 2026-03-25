@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>psh</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>psh</h1>
+
+  
+  <div class="project-header__desc">PHP Virtual Environment Shell</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/psh">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>psh - a PHP Shell.</h1>
+<p>Tired of switching tooling versions between PHP projects? Perhaps you've used a Python virtual environment before? This is an approximation of the same idea for PHP projects. It doesn't deal with installing packages though.</p>
+<p>Features:</p>
+<ul>
+<li>Support for PHP , Composer, Node.</li>
+<li>Fuzzy matching (sometimes).</li>
+<li>Project dependencies are defined in a bash environment compatible file format.</li>
+</ul>
+<p>Supports</p>
+<ul>
+<li>PHP installed via Homebrew or PHPS (latter untested)</li>
+<li>Composer</li>
+<li>Node installed via NVM or Volta.</li>
+</ul>
+<p>Demo:
+<a href="https://asciinema.org/a/64Bbwm4QJqW67Xrf9NWGpJtKX"><img src="https://asciinema.org/a/64Bbwm4QJqW67Xrf9NWGpJtKX.svg" alt="asciicast" /></a></p>
+<h2>Install and Setup</h2>
+<p>Note that you need to have the tooling pre-installed.</p>
+<ol>
+<li>Symlink <code>src/psh.sh</code> to <code>psh</code> in your path. eg <code>cd src; ln -s $PWD/psh.src $HOME/bin/psh</code></li>
+<li>Add a <code>pshrc</code> file to your project folder ala:</li>
+</ol>
+<pre><code>php=7.3
+composer=1.10
+node=15.
+</code></pre>
+<ol start="3">
+<li>type <code>psh</code> to start a subshell with tooling set to those versions. Type <code>exit</code> to exit the subshell.</li>
+</ol>
+<h2>Tip</h2>
+<p>If you're using zsh you can use the following function to automatically enter the subshell:</p>
+<pre><code>function chpwd() {
+    if [ -r $PWD/pshrc ]; then
+        psh
+        return
+    fi
+}
+</code></pre>
+<p>You can override tooling versions by passing options to <code>psh</code>. They take priority over matching <code>pshrc</code> versions:</p>
+<pre><code>$  psh --help
+
+   Usage: psh &lt;[options]&gt;
+   Options:
+      -h   --help           Show this message
+      --composer=x.[y.z]    Set Composer version
+      --php=x.[y.z]         Set PHP version
+      --node=x.[y.z]        Set Node version
+
+example: psh --php=7.3.
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

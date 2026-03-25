@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>streamcables</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>streamcables</h1>
+
+  
+  <div class="project-header__desc">Stream nowplaying info to services like twitter.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://streamcables.com">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/streamcables">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Introduction</h1>
+<p>StreamCables, on the most basic level, is a tool that connects to audio streams and sends information to other place. It's been primarily written to connect to icecast and shoutcast streams, and stream tracklists to social media. However, it can connect read and write to multiple services, and is written for extensibility.</p>
+<p>Currently it supports these readers:</p>
+<ul>
+<li>icecast</li>
+</ul>
+<p>Currently it supports these writers:</p>
+<ul>
+<li>stdout (the screen)</li>
+<li>Twitter</li>
+</ul>
+<p>Feel free to submit a pull request if your workflow is missing.</p>
+<h1>Prerequisites</h1>
+<p>On OpenSUSE Tumbleweed the python development libraries must be installed to compile
+StreamCables' dependencies:</p>
+<pre><code>sudo zypper install gcc
+sudo zypper install python3-devel-3.6.5-3.3
+</code></pre>
+<h1>Setup</h1>
+<p>StreamCables requires  <a href="https://docs.python-guide.org/">Python 3.6, pip and pipenv</a>.
+Installation:</p>
+<pre><code>git clone &lt;repository url&gt; streamcables
+cd streamcables
+pipenv install
+</code></pre>
+<p>Run the program as follows:</p>
+<pre><code>pipenv run python streamcables/streamcables.py
+# shorter version
+make run
+</code></pre>
+<h1>Settings and Configuration</h1>
+<p>You will be asked to create a settings file, the location will be printed to the screen if it doesn't exist. This settings file must contain one reader and one or more writers. To use Twitter functionality, a registered Twitter developer account and application is required which provides the key and secret.</p>
+<p>Example settings.toml:</p>
+<pre><code>[main]
+reader = 'icecast'
+writers = ['stdout', 'twitter']
+refresh-rate = 20
+
+[icecast]
+url=&quot;http://localhost:8000/status.xsl&quot;
+
+[twitter]
+consumer-key=&quot;Your twitter app consumer key&quot;
+consumer-secret=&quot;Your twitter app consumer secret&quot;
+</code></pre>
+<h1>readers</h1>
+<p>Readers must return a dict containing hash and now</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

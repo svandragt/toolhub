@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>wmm</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>wmm</h1>
+
+  
+  <div class="project-header__desc">Sane WordPress local environment</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/wmm">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>wmm</h1>
+<p>As a developer<br>
+I want to work on WP plugins/themes<br>
+Without overcomplicated local environment.</p>
+<p>As a developer<br>
+I want to script my particular edge cases<br>
+So that my local environment can accommodate them.</p>
+<h2>Summary</h2>
+<p>Setup a simple WordPress local environment in a few minutes, using Multipass and shell scripting. It's currently
+suitable for bundle-less WordPress plugin and theme development that doesn't require a task queue and content search.</p>
+<p>Provisioner features:</p>
+<ul>
+<li>Provision a server using a list of scripts, ran in alphabetical order.</li>
+<li>Allows multiple instances with dynamic hostnames</li>
+<li>All tooling is installed in the guest.</li>
+</ul>
+<p>WordPress Features:</p>
+<ul>
+<li>All supported PHP versions (8.0-8.2) and latest
+WordPress. <a href="https://launchpad.net/~ondrej/+archive/ubuntu/php">Only maintained PHP versions</a> can be installed.</li>
+<li>Object cache using Redis</li>
+<li>Full page caching using Surge</li>
+<li>Self signed HTTPS using Caddy</li>
+<li>Minimal default theme using Susty</li>
+<li>Pretty permalinks</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>https://multipass.run/</li>
+<li>A working knowledge of bash scripting.</li>
+</ul>
+<p>You do not need to know Docker or Ansible, Terraform or Chef, because this project keeps it simple.</p>
+<h2>Installation</h2>
+<ol>
+<li>Run <code>./host.sh</code> then provide the admin/database password when asked.</li>
+<li>Reset your environment by running the <code>reset.sh</code> script.</li>
+</ol>
+<h2>What's with the name wmm?</h2>
+<p>I'm <a href="https://github.com/svandragt/wmm/issues/11">looking for a new name</a>.</p>
+<h2>Advanced use</h2>
+<h3>How to use a custom hostname</h3>
+<p>The hostname is based on the directory the scripts are running in. To provide a custom hostname prefix <code>host.sh</code>
+or <code>reset.sh</code> with <code>WMM_HOSTNAME=myhostname</code> eg: <code>$ WMM_HOSTNAME=dolly ./host.sh</code>. Note: <code>WMM_HOSTNAME</code> values should
+not include periods of tlds, the domain for the environment will end in <code>.multipass</code>.</p>
+<h3>How to setup an environment using a different PHP version</h3>
+<ul>
+<li>Change the version string in <code>00-config.sh</code>. The environment will be setup with the requested PHP version.</li>
+</ul>
+<h3>How to add multiple PHP versions on a single environment</h3>
+<ul>
+<li>Login to the shell <code>multipass shell &lt;hostname&gt;</code> for example <code>wmm</code>. Once in the guest, run <code>install_php &lt;major.minor&gt;</code>
+for example <code>8.2</code>. Switch PHP versions by running <code>switch_php &lt;major.minor&gt;</code></li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

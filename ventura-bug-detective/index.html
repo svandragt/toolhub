@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ventura-bug-detective</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>ventura-bug-detective</h1>
+
+  
+  <div class="project-header__desc">Bug detective</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/ventura-bug-detective">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Ventura - Bug Detective</h1>
+<p>A minimal PHP error and exception handler designed to capture, group, and store errors using extensible storage
+providers.</p>
+<p><img src="https://github.com/user-attachments/assets/a4e3882f-3478-4e2c-bef5-a2b69cec766c" alt="deepimg-1746361786008" /></p>
+<h2>Features</h2>
+<ul>
+<li><strong>Error Handling:</strong> Captures PHP errors (Warnings, Notices, Errors, etc.) using <code>set_error_handler</code>.</li>
+<li><strong>Exception Handling:</strong> Catches uncaught exceptions using <code>set_exception_handler</code>.</li>
+<li><strong>Error Grouping:</strong> Groups identical errors based on their code, message, file, line, and type using an SHA256 hash
+before storing.</li>
+<li><strong>Contextual Data:</strong> Captures global context (<code>$GLOBALS</code>) at the time of the error/exception (Note: Capturing
+<code>$GLOBALS</code> can be memory-intensive and may include sensitive data; consider refining this in the future).</li>
+<li><strong>Extensible Storage:</strong> Uses a <code>StorageProvider</code> interface (implied, based on configuration logic) allowing different
+storage backends.</li>
+<li><strong>Configurable:</strong> Configuration primarily through environment variables.</li>
+<li><strong>Included Provider:</strong> Comes with a <code>RedBeanStorageProvider</code> for storing errors using RedBeanPHP (in a
+SQLite database by default).</li>
+</ul>
+<h2>Storage Providers</h2>
+<p>Ventura is designed to work with different storage backends via implementations. <code>StorageProvider</code></p>
+<ul>
+<li><strong>(Default):<code>Ventura\Storage\RedBeanStorageProvider</code></strong> Uses the RedBeanPHP library to store error data. By default, it
+creates a SQLite database file within the configured storage directory. Configure the storage location using the
+<code>VENTURA_STORAGE_DATA_DIR</code> environment variable (defaults to <code>src/data</code>). Ensure you have <code>gabordemooij/redbean</code>
+required in
+your <code>composer.json</code>.</li>
+</ul>
+<p>You can create your own provider by implementing the necessary methods (likely <code>initialize</code>, <code>saveError</code>) and
+configuring Ventura to use your class via the environment variable. <code>VENTURA_STORAGE_PROVIDER_CLASS</code></p>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit pull requests or open issues on the project repository.</p>
+<h2>License</h2>
+<p>This project is licensed under the GNU General Public License v3.0 - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

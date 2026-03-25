@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google Calendar - Busy or free</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>Google Calendar - Busy or free</h1>
+
+  
+  <div class="project-header__desc">Google Calendar - Busy or free</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">gist</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://gist.github.com/svandragt/81ca692e8fe5b865e0299e4661acf592">&#8599; Gist</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Google Calendar Busy Check</h1>
+<p>A small Python script that reports your current availability from Google Calendar, using <strong>uv</strong> inline dependencies.</p>
+<p>It outputs:</p>
+<ul>
+<li><code>Busy until HH:MM</code> — you are currently in a meeting that counts as busy.</li>
+<li><code>Free until HH:MM</code> — you are not busy, and the next busy meeting starts at that time.</li>
+<li><code>Free</code> — no busy meetings ahead in the look-ahead window.</li>
+</ul>
+<p>Then it logs a list of all remaining events for today, marking each as <strong>BUSY</strong> or <strong>FREE</strong> according to the same rules.</p>
+<hr />
+<h2>Requirements</h2>
+<ul>
+<li>Python 3.12+</li>
+<li><a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a></li>
+<li>A Google account with access to the calendar you want to read</li>
+</ul>
+<hr />
+<h2>Setup</h2>
+<ol>
+<li>
+<p><strong>Clone / download this gist</strong></p>
+<pre><code class="language-bash">git clone https://gist.github.com/&lt;your-gist-id&gt;.git
+cd &lt;gist-dir&gt;
+
+
+</code></pre>
+</li>
+<li>
+<p><strong>Enable the Google Calendar API</strong></p>
+<ul>
+<li>
+<p>Open Google Cloud Console.</p>
+</li>
+<li>
+<p>Create (or select) a project.</p>
+</li>
+<li>
+<p>Enable <strong>Google Calendar API</strong>.</p>
+</li>
+<li>
+<p>Create <strong>OAuth 2.0 Client ID</strong> credentials → <strong>Desktop App</strong>.</p>
+</li>
+<li>
+<p>Download the credentials JSON and save it in this directory as:</p>
+<pre><code>credentials.json
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>First run (auth flow)</strong></p>
+<pre><code class="language-bash">uv run check_busy.py
+</code></pre>
+<ul>
+<li>A browser window opens to authorize access.</li>
+<li>After approval, the script writes <code>token.json</code> locally.</li>
+<li>Subsequent runs reuse <code>token.json</code> and won’t prompt again.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>Usage</h2>
+<p>Run from the terminal:</p>
+<pre><code class="language-bash">uv run check_busy.py
+</code></pre>
+<p>Example output:</p>
+<pre><code>Busy until 14:30
+
+Today's remaining events:
+- 14:00–14:30  [BUSY]  Client sync
+- 15:00–15:30  [FREE]  Focus time
+- 16:00–17:00  [BUSY]  Project planning
+</code></pre>
+<hr />
+<h2>Busy / Free Rules</h2>
+<p>An event is considered <strong>BUSY</strong> if:</p>
+<ul>
+<li>
+<p>It has a specific time window (not all-day), <strong>and</strong></p>
+</li>
+<li>
+<p>It is time-blocking (not <code>transparent</code>), <strong>and</strong></p>
+</li>
+<li>
+<p>It is <strong>not</strong>:</p>
+<ul>
+<li>a Focus Time block (<code>&quot;focus&quot;</code> in title),</li>
+<li>an Out-of-Office block (<code>&quot;ooo&quot;</code> in title),</li>
+<li>an <code>outOfOffice</code> event type,</li>
+<li><strong>or</strong> a meeting you have <strong>declined</strong>.</li>
+</ul>
+</li>
+</ul>
+<p>Declined meetings are treated as if they don’t exist:</p>
+<ul>
+<li>they do <strong>not</strong> make you busy,</li>
+<li>they do <strong>not</strong> show up in the “Today’s remaining events” log.</li>
+</ul>
+<p>All-day events are treated as <strong>FREE (all-day)</strong> and don’t affect busy/free state.</p>
+<hr />
+<h2>What the Script Does</h2>
+<ol>
+<li>
+<p>Reads your primary calendar.</p>
+</li>
+<li>
+<p>Looks ahead ~4 hours to decide:</p>
+<ul>
+<li>whether you’re in a busy event now,</li>
+<li>or when the next busy event starts.</li>
+</ul>
+</li>
+<li>
+<p>Lists all remaining events today and tags each BUSY/FREE.</p>
+</li>
+</ol>
+<p>You can tweak horizons and logic in:</p>
+<ul>
+<li><code>get_current_and_next_event()</code> (look-ahead window)</li>
+<li><code>is_event_busy()</code> (classification rules)</li>
+</ul>
+<hr />
+<h2>Security Notes</h2>
+<ul>
+<li>OAuth tokens are stored locally in <code>token.json</code>.</li>
+<li>Scope is read-only: <code>calendar.readonly</code>.</li>
+<li>Revoke access at Google Account → Security → Third-party access.</li>
+</ul>
+<hr />
+<h2>Reset / Cleanup</h2>
+<p>To force re-authorization:</p>
+<pre><code class="language-bash">rm token.json
+uv run check_busy.py
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

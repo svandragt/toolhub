@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>phphotos</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>phphotos</h1>
+
+  
+  <div class="project-header__desc">Mostly ChatGPT generated PHP photo gallery</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">gallery</span>
+    
+    <span class="badge">php</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://photos.vandragt.com/">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/phphotos">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>PHPhotos</h1>
+<p>This is a mostly ChatGPT generated PHP photo gallery application. Demo at https://photos.vandragt.com/</p>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#installation">Installation</a></li>
+</ul>
+<h2>Installation</h2>
+<ol>
+<li>Clone this repository to your local machine:</li>
+</ol>
+<pre><code class="language-shell">git clone https://github.com/svandragt/phphotos.git
+cd phphotos
+php -S localhost:5000 -t src   
+</code></pre>
+<p>Put PNG or JPG files in src/photos/. Thumbs will be cached in src/cache/, so that needs to be writable by the PHP user.</p>
+<p>It requires PHP 8.1 and the GD extension.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

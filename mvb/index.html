@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mvb</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>mvb</h1>
+
+  
+  <div class="project-header__desc">Minimum viable blog.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/mvb">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Minimal Viable Blog</h1>
+<p>This project was an experiment in how little code is required to build a blog.
+It aimed to be a single file blog script.</p>
+<p><em>However it turns out it's just reimplementing <a href="https://github.com/svandragt/cuttlefish">Cuttlefish</a>, which you should be using instead.</em></p>
+<h2>Setup</h2>
+<p>Download a copy of this repo. Install the project dependencies using <code>composer install</code>. Then, add content to folders in the repo root they will correspond to URLs (<code>pages/about-us.md</code> becomes <code>/pages/about-us/</code>).</p>
+<p>Each page can optionally contain front-matter or metadata in the following format:</p>
+<pre><code>key: value
+another-key: another value.
+
+
+# Markdown content
+
+Leave two empty lines between the metadata and the markdown content.
+</code></pre>
+<h2>Running</h2>
+<p>Use the local webserver <code>php -S localhost:8080</code> or any other.</p>
+<h2>Misc</h2>
+<p>Questions, feedback, issues and merge-requests are welcome.</p>
+<p>~Sander</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>silverstripe-svdrequirements</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>silverstripe-svdrequirements</h1>
+
+  
+  <div class="project-header__desc">Combined requirements per page class extendable by modules</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/silverstripe-svdrequirements">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>SvdRequirements</h1>
+<p>This is a convenience module enforcing best practices for using Requirements.</p>
+<h2>Features:</h2>
+<ul>
+<li>Combine a mixed list of JS / CSS assets using a single method.</li>
+<li>Access to the <code>$this-&gt;theme_dir</code> variable in your page controllers.</li>
+</ul>
+<p>SvdRequirements will seperate the js from the css files, and combine them for each controller.</p>
+<h2>Usage:</h2>
+<ol>
+<li>Install using composer: <code>composer require &quot;svandragt/silverstripe-svdrequirements:*&quot;</code></li>
+</ol>
+<p>Example: you might have a <code>Page</code> and <code>HomePage extends Page</code> class, each with dozen JS and CSS requirements. Add
+<code>SvdRequirements::combine($assets);</code> to each init method.</p>
+<p>Done!</p>
+<p>In our example the site will now have the following files:</p>
+<pre><code>page_controller.css
+homepage_controller.css
+page_controller.js
+homepage_controller.js
+</code></pre>
+<h2>Quick access to theme folder</h2>
+<p>This optional SvdRequirementsExtension (enabled by default) adds a shortcut to the theme folder by setting a <code>$theme_dir</code> property to the Page_controller which you can access through <code>$this-&gt;theme_dir</code> - which would return 'themes/simple' for example.</p>
+<p>You can convert the simple theme to use requirements in 2 steps:</p>
+<ol>
+<li>Remove all calls to CSS and JS from the templates.</li>
+<li>to the Page's init() method add the following code:</li>
+</ol>
+<pre><code class="language-php">$assets = array(
+	&quot;{$this-&gt;theme_dir}/css/reset.css&quot;,
+	&quot;{$this-&gt;theme_dir}/css/layout.css&quot;,
+	&quot;{$this-&gt;theme_dir}/css/typography.css&quot;,
+	&quot;{$this-&gt;theme_dir}/css/form.css&quot;,
+	&quot;{$this-&gt;theme_dir}/javscript/script.js&quot;,
+);
+SvdRequirements::combine($assets);
+</code></pre>
+<p>I keep a <a href="https://github.com/svandragt/silverstripe-svdrequirements/issues">list of known bugs</a>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>top-php-errorlog</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>top-php-errorlog</h1>
+
+  
+  <div class="project-header__desc">Top PHP errors from an error log</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/top-php-errorlog">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Top Errors Script</h1>
+<p>This is a Python-based CLI tool that helps in analyzing and identifying the most common errors occurring in your server logs. The script reads a given PHP error_log file, finds PHP error message, counts their occurrence and sorts them by frequency. The top 10 most common errors are then written into a CSV file and displayed on the screen.</p>
+<h2>Usage:</h2>
+<pre><code># minimal
+python top-errors.py &lt;log_file&gt;
+
+# practical - uses https://github.com/Textualize/rich-cli
+grep &quot;2024&quot; php_errors.log &gt; 2024.log
+python top-errors.py 2024.log | rich - --csv
+
+CSV file '2024.log.csv' has been generated successfully.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Error                                                                                                                                                       ┃ Count ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ PHP Warning:  date_create_from_format() expects parameter 2 to be string, array given in                                                                    │    77 │
+│ /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/xxxxxx-core/inc/classes/objects/class-event.php on line 97                                    │       │
+│ PHP Fatal error:  Uncaught Exception: Post not correct post type: post expected. in                                                                         │    23 │
+│ /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/xxxxxx-core/inc/classes/objects/class-post.php:28                                             │       │
+│ PHP Fatal error:  require(): Failed opening required '/xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/wordpress/wp-blog-header.php'                              │    19 │
+│ (include_path='.:/usr/local/php74/pear') in /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/index.php on line 17                                                 │       │
+│ PHP Warning:  strpos(): Empty needle in /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/xxxxxxxxx/inc/class-widget.php on line 106            │    12 │
+│ PHP Warning:  Creating default object from empty value in /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/wordpress/wp-includes/nav-menu-template.php on line    │     5 │
+│ 394                                                                                                                                                         │       │
+│ PHP Warning:  require_once(/xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/query-monitor/query-monitor.php): failed to open stream: No such   │     4 │
+│ file or directory in /xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/mu-loader.php on line 74                                                 │       │
+│ PHP Fatal error:  require_once(): Failed opening required '/xxxx/xxxxxxxx/xxx/xxxxxx-xxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/query-monitor/query-monitor.php'   │     4 │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────┘
+</code></pre>
+<p>The script takes in one argument:</p>
+<ul>
+<li><code>&lt;log_file&gt;</code>: Path to the log file which you want to analyze.</li>
+</ul>
+<h2>Functionality:</h2>
+<ul>
+<li>The script reads the log file and filters out entries that are PHP error messages.</li>
+<li>The occurrences of each unique error are counted using the Counter class from the Python's collections module.</li>
+<li>The errors are then sorted by their count in descending order.</li>
+<li>Only the top 10 most common errors are kept.</li>
+<li>The script outputs two items:
+<ul>
+<li>A CSV file records the most common errors and their count.</li>
+<li>Print statements that indicate the error messages and their counts respectively.</li>
+</ul>
+</li>
+</ul>
+<h2>Code Explanation:</h2>
+<p>The code mainly consists of a main function and two helper functions. The helper functions are:</p>
+<ul>
+<li><code>filter_entries(entry)</code>: This function is responsible for extracting the PHP error messages from the log entries.</li>
+</ul>
+<p>The main function, <code>main()</code>, does the bulk of work which includes reading the file, using helper functions, creating a counter for PHP error messages, sorting them and writing to a CSV.</p>
+<h2>Limitations and Considerations:</h2>
+<ul>
+<li>The script currently only processes PHP error log files.</li>
+<li>Please make sure proper permissions are given to access and read the log file.</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>Python 3.12.3 (earlier might work -- AI thinks it requires Python 3.6 or newer to run correctly.)</li>
+<li>Access to the log files to be analyzed.</li>
+</ul>
+<h2>Improvements &amp; Contribution:</h2>
+<p>This script is basic and serves a simple functionality. However, there's always room for improvement.
+A few possible features could be added, like handling different log formats and errors from sources other than PHP, or expanding the time window for log review. Any suggestions or contributions are welcome!</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

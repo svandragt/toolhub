@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>webview-flask</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>webview-flask</h1>
+
+  
+  <div class="project-header__desc">pywebview flask proof of concept</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/webview-flask">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <p>Proof of concept using web technologies for UI, and python to produce a desktop application.</p>
+<p>The stack is currently:</p>
+<ul>
+<li>pyenv: manage python versions.</li>
+<li>poetry: python dependency management</li>
+<li>pywebview: qt/gtk webview</li>
+<li>flask: local server and web framework</li>
+<li>pex: packaging</li>
+<li>makefile: build configuration</li>
+</ul>
+<p>This produces a 4mb executable, runnable by Python 3.8 and up. Tested on ubuntu 22.04.</p>
+<p><img src="https://github.com/svandragt/webview-flask/assets/594871/1a1c452a-8ee8-4954-a6ed-f9b019333008" alt="image" /></p>
+<h2>Installation</h2>
+<p>Multiple options:</p>
+<ol>
+<li>Build the executable (see below), OR</li>
+<li>Install using pipx: <code>pipx install webview-flask</code></li>
+</ol>
+<h1>Contributing</h1>
+<p>The project can also run from a venv:</p>
+<p>Setup:</p>
+<pre><code class="language-shell">poetry install
+poetry run webview-flask
+</code></pre>
+<p>Makefile:</p>
+<ul>
+<li><code>make build</code>: use <code>pex</code> to build a single executable (<code>dist/webview_flask</code>) with Python 3.8-3.11 as its only dependency.</li>
+<li><code>make run-build</code>: run it.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

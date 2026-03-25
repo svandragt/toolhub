@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pyshed</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>pyshed</h1>
+
+  
+  <div class="project-header__desc">dockerised python + poetry environments</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">docker</span>
+    
+    <span class="badge">poetry</span>
+    
+    <span class="badge">python</span>
+    
+    <span class="badge">zero-configuration</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://hub.docker.com/repository/docker/svandragt/pyshed">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/pyshed">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>pyshed</h1>
+<p>Simple Docker image for running zero configuration Python projects with Poetry dependency management.</p>
+<p>Getting python up and running can be difficult. This docker image provides a <a href="https://hub.docker.com/_/python">recent version of Python</a>, with <a href="https://python-poetry.org/">Poetry</a> for packaging and dependency management ready to use for your project, without any additional setup.</p>
+<p>(WIP: New container images are pushed to Docker Hub after Dependabot PRs are merged)</p>
+<h2>Users</h2>
+<p>In the directory of your python project, run this:</p>
+<pre><code>docker run --rm -ti -v &quot;$PWD:/var/app&quot; svandragt/pyshed 
+</code></pre>
+<p>Additional arguments are passed to poetry directly.</p>
+<h2>Examples</h2>
+<p>poetry init:</p>
+<pre><code>docker run --rm -ti -v &quot;$PWD:/var/app&quot; svandragt/pyshed init
+</code></pre>
+<p><img src="https://user-images.githubusercontent.com/594871/83328150-cf8b2780-a278-11ea-9045-a70cf77d54ba.png" alt="init" /></p>
+<p>poetry install:</p>
+<pre><code>docker run --rm -ti -v &quot;$PWD:/var/app&quot; svandragt/pyshed install
+</code></pre>
+<p><img src="https://user-images.githubusercontent.com/594871/83328154-d3b74500-a278-11ea-8bda-4aa07362248a.png" alt="install" /></p>
+<p>start django server (visit <a href="http://localhost:8000">http://localhost:8000</a>):</p>
+<pre><code>docker run -p 8000:8000 --rm -ti -v &quot;$PWD:/var/app&quot; svandragt/pyshed run ./manage.py runserver 0.0.0.0:8000
+</code></pre>
+<p><img src="https://user-images.githubusercontent.com/594871/83328155-d5810880-a278-11ea-8947-f277f9e21afd.png" alt="runserver" /></p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

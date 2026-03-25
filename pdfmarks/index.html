@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pdfmarks</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>pdfmarks</h1>
+
+  
+  <div class="project-header__desc">Download a list of urls into pdfs (bookmarking)</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/pdfmarks">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>pdfmarks</h1>
+<p>Download a list of urls into pdfs (bookmarking).</p>
+<pre><code class="language-shell">mkdir out
+touch urls.txt
+cp config.default.ini config.ini
+
+
+poetry install
+poetry run python pdfmarks.py
+</code></pre>
+<p>After waiting for a day capturing pdfs of 8k webpages I can say the following:</p>
+<ul>
+<li>finder doesn't like 8k files in a folder, so there is a configuration option take the first X letters of the domain name and create subfolders</li>
+<li>mac user interface has main thread issues all over, it doesn't like you moving a thousand files with the mouse</li>
+<li>the ux of searching for a phrase in loads of files is pretty dire, it gives me a list of slugified pdfs and i need to open each to see if that's the page im looking for.</li>
+<li>8k pdfs are 7GB</li>
+</ul>
+<p>But please go ahead if you want to play with this!
+If you want something more useful try my <a href="https://github.com/svandragt/fafi">fafi</a> project.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

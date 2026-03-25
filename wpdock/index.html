@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>wpdock</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>wpdock</h1>
+
+  
+  <div class="project-header__desc">WordPress SQLite over Docker POC</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">docker</span>
+    
+    <span class="badge">serverless</span>
+    
+    <span class="badge">sqlite</span>
+    
+    <span class="badge">wordpress</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/wpdock">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>WPDock - WordPress environments with reduced dependencies.</h1>
+<p>A proof of concept, the <code>main</code> branch is WordPress running on top of MariaDB served by PHP-FPM 8.1 behind Caddy, on Docker containers.</p>
+<p>Alternative ways:</p>
+<ol>
+<li>the <a href="https://github.com/svandragt/wpdock/tree/php-builtin-server"><code>sqlite</code></a> branch  removes MariaDB as dependencies.</li>
+<li>the <a href="https://github.com/svandragt/wpdock/tree/php-builtin-server"><code>php-builtin-server</code></a> branch also removes Docker and the webserver as dependencies, running wp on top of PHP only.</li>
+</ol>
+<p>Setup:</p>
+<ul>
+<li>Copy <code>wp-config-sample.php</code> to <code>wp-config.php</code> and <strong>make changes to the salts and database info</strong>.</li>
+<li>Copy <code>composer-sample.json</code> to <code>composer.json</code> and add your required plugins/themes.</li>
+<li>Copy <code>.env-sample</code> to <code>.env</code> and <strong>update all the values</strong>.</li>
+<li>run <code>docker-compose up --build</code> to create the containers</li>
+<li>open https://localhost and accept the security warning, follow the installation to get a working WP install.</li>
+</ul>
+<p>Known issues:</p>
+<ul>
+<li>no object cache plugin and container</li>
+<li>no full page caching (I recommend Surge)</li>
+<li>no webserver request caching</li>
+</ul>
+<p>Why:</p>
+<p>This is an intermediate step for WordPress as an app platform to be feasable.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

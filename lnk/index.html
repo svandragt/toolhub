@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lnk</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>lnk</h1>
+
+  
+  <div class="project-header__desc">Easily create symbolic + hard links</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/lnk">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>lnk</h1>
+<p><code>lnk</code> is an interactive wrapper around <code>ln</code> that helps you create symbolic and hard links safely.</p>
+<p>It asks a small set of plain-English questions, explains the decision it makes, shows the equivalent shell command, and only proceeds after confirmation.</p>
+<hr />
+<h2>Why this exists</h2>
+<p>Creating links in Linux is simple, but the mental model is not:</p>
+<ul>
+<li>Hard links vs symbolic links</li>
+<li>Relative vs absolute paths</li>
+<li>What happens when things move or are deleted</li>
+<li>How links behave across filesystems</li>
+</ul>
+<p><code>lnk</code> makes those decisions explicit and teachable.</p>
+<hr />
+<h2>Features</h2>
+<ul>
+<li>
+<p>Interactive wizard by default</p>
+</li>
+<li>
+<p>Explains <em>why</em> a link type was chosen</p>
+</li>
+<li>
+<p>Shows the exact <code>ln</code> command before execution</p>
+</li>
+<li>
+<p>Safe handling of existing destinations (replace / backup)</p>
+</li>
+<li>
+<p>Supports:</p>
+<ul>
+<li>Symbolic links (default)</li>
+<li>Hard links (explicit opt-in)</li>
+</ul>
+</li>
+<li>
+<p>Works with standard Python (no dependencies)</p>
+</li>
+</ul>
+<hr />
+<h2>Installation</h2>
+<p>Clone the repository and link the script into your <code>PATH</code>:</p>
+<pre><code class="language-bash">$ ./lnk  ./lnk ~/bin/lnk
+Detected source:
+  Input path:    lnk
+  Absolute path: /home/user/dev/python/lnk/lnk
+  Kind:          file
+
+How should the new path behave?
+Choose the behavior you want:
+  1. Like a reference or shortcut to the source [default]
+  2. Like a second name for the same file
+&gt; 1
+Should this link keep working if this folder structure moves together? [Y/n]
+
+Planned action
+
+Source input:      lnk
+Source absolute:   /home/user/dev/python/lnk/lnk
+Link path:         /home/user/bin/lnk
+Link type:         symlink
+Path style:        relative
+Resolved target:   /home/user/dev/python/lnk/lnk
+Stored target:     ../dev/python/lnk/lnk
+Conflict action:   none
+
+Why these options were chosen:
+  - You chose reference-style behavior, so a symbolic link is appropriate.
+  - You said the paths may move together, so a relative symlink is appropriate.
+
+Equivalent command:
+  ln -s ../dev/python/lnk/lnk /home/user/bin/lnk
+
+Proceed with this action? [Y/n]
+</code></pre>
+<p>Or non-interactively:</p>
+<pre><code class="language-bash">$ ./lnk --yes --replace ./lnk ~/bin/lnk
+Detected source:
+  Input path:    lnk
+  Absolute path: /home/user/dev/python/lnk/lnk
+  Kind:          file
+
+
+Planned action
+
+Source input:      lnk
+Source absolute:   /home/user/dev/python/lnk/lnk
+Link path:         /home/user/bin/lnk
+Link type:         symlink
+Path style:        absolute
+Resolved target:   /home/user/dev/python/lnk/lnk
+Stored target:     /home/user/dev/python/lnk/lnk
+Conflict action:   none
+
+Why these options were chosen:
+  - Non-interactive mode defaults regular files to symbolic links.
+  - Non-interactive mode defaults symbolic links to absolute paths.
+
+Equivalent command:
+  ln -s /home/user/dev/python/lnk/lnk /home/user/bin/lnk
+
+Done.
+</code></pre>
+<p>Make sure <code>~/bin</code> is in your <code>PATH</code>.</p>
+<hr />
+<h2>Usage</h2>
+<pre><code class="language-bash">lnk [--yes] [--dry-run] [--replace | --backup] from to
+</code></pre>
+<ul>
+<li><code>from</code> — source path</li>
+<li><code>to</code> — link path to create</li>
+</ul>
+<pre><code class="language-bash">lnk --help
+usage: lnk [-h] [--yes] [--dry-run] [--replace] [--backup] from_path to_path
+
+Create a symbolic link or hard link using an interactive wizard. By default, symlinks are preferred. Hard links are only created after explicit user choice in interactive mode.
+
+positional arguments:
+  from_path   Source path
+  to_path     Link path to create
+
+options:
+  -h, --help  show this help message and exit
+  --yes       Run non-interactively where possible. This auto-accepts defaults, but does not replace an existing destination unless --replace or --backup is also given.
+  --dry-run   Show the planned action without changing the filesystem.
+  --replace   Replace an existing destination without asking.
+  --backup    Backup an existing destination before replacing it.
+</code></pre>
+<hr />
+<h2>Examples</h2>
+<h3>Link a config directory</h3>
+<pre><code class="language-bash">lnk ~/dotfiles/nvim ~/.config/nvim
+</code></pre>
+<h3>Preview without changing anything</h3>
+<pre><code class="language-bash">lnk --dry-run ~/dotfiles/nvim ~/.config/nvim
+</code></pre>
+<h3>Non-interactive install</h3>
+<pre><code class="language-bash">lnk --yes --replace ./lnk ~/bin/lnk
+</code></pre>
+<hr />
+<h2>How it decides</h2>
+<h3>Link type</h3>
+<ul>
+<li>Directory → symbolic link</li>
+<li>File → symbolic link (default)</li>
+<li>Hard link only when explicitly chosen</li>
+</ul>
+<h3>Path style (symlinks)</h3>
+<ul>
+<li>Relative → when paths may move together</li>
+<li>Absolute → otherwise (default in <code>--yes</code> mode)</li>
+</ul>
+<hr />
+<h2>Safety rules</h2>
+<ul>
+<li>
+<p>Never overwrites existing paths without confirmation</p>
+</li>
+<li>
+<p><code>--yes</code> does <strong>not</strong> overwrite unless combined with:</p>
+<ul>
+<li><code>--replace</code></li>
+<li>or <code>--backup</code></li>
+</ul>
+</li>
+<li>
+<p>Detects and skips already-correct links</p>
+</li>
+</ul>
+<hr />
+<h2>Limitations (v1)</h2>
+<ul>
+<li>
+<p>No bind mounts</p>
+</li>
+<li>
+<p>No special file support (devices, sockets, etc.)</p>
+</li>
+<li>
+<p>Hard links:</p>
+<ul>
+<li>files only</li>
+<li>same filesystem only</li>
+<li>not supported for symlink sources</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>Mental model refresher</h2>
+<h3>Symbolic link</h3>
+<p>A file that points to another path.</p>
+<ul>
+<li>Works for files and directories</li>
+<li>Can cross filesystems</li>
+<li>Breaks if target moves</li>
+</ul>
+<h3>Hard link</h3>
+<p>Another name for the same file (same inode).</p>
+<ul>
+<li>Files only</li>
+<li>Same filesystem only</li>
+<li>No “original” vs “link”</li>
+</ul>
+<hr />
+<h2>Development</h2>
+<p>Requirements:</p>
+<ul>
+<li>Python 3.12+ (Ubuntu 24.04 default)</li>
+<li>No external dependencies</li>
+</ul>
+<p>Run directly:</p>
+<pre><code class="language-bash">./lnk from to
+</code></pre>
+<hr />
+<h2>License</h2>
+<p>MIT</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>silverstripe-fieldlistmovefield</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>silverstripe-fieldlistmovefield</h1>
+
+  
+  <div class="project-header__desc">Add helper functions  to reorder fields in a FieldList</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/silverstripe-fieldlistmovefield">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>silverstripe-fieldlistmovefield</h1>
+<p>Add helper functions  to reorder fields in a FieldList. You can easily move a field to appear before and after other fields.</p>
+<p>Example:</p>
+<pre><code class="language-php">public function getCMSFields() {
+	$fields = parent::getCMSFields();
+
+	// Move ModeOfAttendance relation before the Day field
+	$fields-&gt;moveBefore('ModeOfAttendanceID','Day');
+
+	// Move the Intake relation after the ModeOfAttendance relation
+	$fields-&gt;moveAfter('IntakeTypeID','ModeOfAttendanceID');
+
+
+	return $fields;
+}
+</code></pre>
+<p>For the source field parameter (first argument), you can pass in a field or a field name.</p>
+<h2>Installation</h2>
+<p><code>composer require &quot;svandragt/silverstripe-fieldlistmovefield:*&quot;</code></p>
+<p>The code is straightforward so should work on any 3.x installation.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

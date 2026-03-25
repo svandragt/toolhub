@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>htmxpress-serverside-block</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>htmxpress-serverside-block</h1>
+
+  
+  <div class="project-header__desc">Example of serverside block rendering with interactivity</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/htmxpress-serverside-block">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h3>Htmx Server Block</h3>
+<p>Contributors:      The WordPress Contributors<br>
+Tags:              block<br>
+Tested up to:      6.1<br>
+Stable tag:        0.1.0<br>
+License:           GPL-2.0-or-later<br>
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html<br></p>
+<p>Example block scaffolded with Create Block tool, adapted for serverside rendering, and interactivity using <a href="https://github.com/svandragt/htmxpress">HTMXpress</a>.</p>
+<h2>Description</h2>
+<p>The <code>render_callback</code> funcions simply includes a template:</p>
+<pre><code class="language-php">        'render_callback' =&gt; function () {
+            ob_start();
+            load_template( __DIR__ . '/templates/random_posts.php' );
+
+            return ob_get_clean();
+        },
+</code></pre>
+<p>The plugin's templates are registered with HTMXpress, this makes them available under the <code>/htmx/</code> endpoint:</p>
+<pre><code class="language-php"># register plugin's templates, which adds them to the /htmx endpoint.
+add_filter( 'htmx.template_paths', static function ( $paths ) {
+    $paths[] = __DIR__ . '/templates';
+
+    return $paths;
+} );
+</code></pre>
+<p>The templates/random_posts.php template contains a WP_Query to load 3 random posts and a button which refreshes only the posts:</p>
+<pre><code class="language-php">    echo '&lt;button hx-post=&quot;/htmx/random_posts&quot; hx-target=&quot;#random-posts&quot;&gt; More &lt;/button&gt;';
+</code></pre>
+<h2>Demo:</h2>
+<p>https://github.com/svandragt/htmxpress-serverside-block/assets/594871/99bdb328-2102-469c-944f-d53baff46594</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

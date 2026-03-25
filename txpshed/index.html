@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>txpshed</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>txpshed</h1>
+
+  
+  <div class="project-header__desc">TextPattern Docker setup.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">docker</span>
+    
+    <span class="badge">textpattern</span>
+    
+    <span class="badge">textpattern-development</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/txpshed">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>TXP Docker</h1>
+<p>A TextPattern Docker setup.</p>
+<h2>Setup</h2>
+<ul>
+<li>Install the latest version of TextPattern in the <code>src/</code> directory so that <code>src/css.php</code> exists.</li>
+<li>Add your own database credentials to a <code>.env</code> file:</li>
+</ul>
+<pre><code>MYSQL_USER=app
+MYSQL_PASSWORD=app-password
+MYSQL_DATABASE=app
+
+# Not required for install
+MYSQL_ROOT_PASSWORD=root-password
+
+</code></pre>
+<ul>
+<li>Run <code>docker-compose up</code> and load up http://localhost:8080/textpattern/setup/. Changet the database host to the docker container name, for example <code>txpshed_mysql_1</code>.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

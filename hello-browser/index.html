@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hello-browser</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>hello-browser</h1>
+
+  
+  <div class="project-header__desc">Webview window example for desktop web apps</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">localhost</span>
+    
+    <span class="badge">vala</span>
+    
+    <span class="badge">webview</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/hello-browser">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <p>This is a minimal example of how to build a GTK native app containing just a webview.</p>
+<p>The goal here is to bundle this with a web app served locally into something that behaves like a native app.</p>
+<p>I don't like locally served apps to be just another browser tab, so rules out just launching the URL, even though that's simpler.
+Also some browser like Gnome Web allow the user to install the website into the applications, however this requires user interaction so is not as convenient.</p>
+<pre><code class="language-shell"># Bootstrap
+meson build --prefix=/usr &amp;&amp; cd build
+ninja install
+
+# Build and run
+ninja &amp;&amp; src/com.github.svandragt.ordner --url https://github.com/svandragt/vala-webview
+</code></pre>
+<p><img src="https://github.com/svandragt/vala-webview/assets/594871/6c9ca0fe-c8fd-48f3-afab-c11d31dcbcbf" alt="image" /></p>
+<p>If you leave out the url parameter it will load example.com.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

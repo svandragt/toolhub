@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>oap</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>oap</h1>
+
+  
+  <div class="project-header__desc">Open Album Package (OAP) v1.0 Specification</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/oap">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Open Album Package (OAP)</h1>
+<p>Open Album Package (OAP) is an open, deterministic, hackable album container format.</p>
+<p>OAP v1.0 defines:</p>
+<ul>
+<li>ZIP container (STORE-only)</li>
+<li>Canonical <code>playlist.m3u8</code></li>
+<li>FLAC audio only</li>
+<li>WebVTT synced lyrics only</li>
+<li>JPEG / PNG artwork only</li>
+<li>Progressive enhancement via L0 / L1 / L2</li>
+<li>Strict SHA-256 integrity model (Level 2)</li>
+</ul>
+<p>No DRM.
+No signatures.
+No remote media.
+No compression beyond STORE.</p>
+<hr />
+<h2>Repository Structure</h2>
+<pre><code class="language-text">.
+├── spec.md                    # OAP v1.0 specification
+├── packaging.md               # Packager build algorithm
+└── tools/
+    └── oap-packager/          # Reference Python packager (uv-based)
+</code></pre>
+<hr />
+<h2>What OAP Is</h2>
+<p>OAP is designed for:</p>
+<ul>
+<li>Archival-grade album packaging</li>
+<li>Deterministic, verifiable distribution</li>
+<li>Progressive enhancement</li>
+<li>Cross-platform playback</li>
+<li>Long-term compatibility</li>
+</ul>
+<p>It separates:</p>
+<ul>
+<li><strong>Playback order</strong> → <code>playlist.m3u8</code></li>
+<li><strong>Metadata &amp; rich features</strong> → <code>manifest.json</code></li>
+<li><strong>Integrity</strong> → <code>checksums.json</code></li>
+</ul>
+<hr />
+<h2>Conformance Levels</h2>
+<h3>Level 0 — Extract + Play</h3>
+<ul>
+<li>Extract archive</li>
+<li>Open <code>playlist.m3u8</code></li>
+<li>Play FLAC files</li>
+</ul>
+<p>No manifest or checksum support required.</p>
+<hr />
+<h3>Level 1 — Archive-Aware Audio</h3>
+<ul>
+<li>Read <code>playlist.m3u8</code> inside ZIP</li>
+<li>Stream FLAC directly from archive (STORE)</li>
+<li>No extraction required</li>
+</ul>
+<hr />
+<h3>Level 2 — Full Experience</h3>
+<ul>
+<li>Parse <code>manifest.json</code></li>
+<li>Render artwork</li>
+<li>Display WebVTT lyrics</li>
+<li>Enforce strict checksum validation</li>
+</ul>
+<hr />
+<h2>Core Design Constraints (v1)</h2>
+<ul>
+<li>ZIP entries MUST use STORE (no compression)</li>
+<li><code>/playlist.m3u8</code> is required</li>
+<li>Playback order is defined exclusively by playlist</li>
+<li>Manifest MUST NOT redefine ordering</li>
+<li><code>/checksums.json</code> MUST satisfy strict set equality rule:</li>
+</ul>
+<pre><code>keys(checksums.files) == archive_files - { &quot;checksums.json&quot; }
+</code></pre>
+<ul>
+<li>SHA-256 only</li>
+<li>No digital signatures</li>
+</ul>
+<hr />
+<h2>Minimal Package Example</h2>
+<pre><code class="language-text">example.oap
+├── playlist.m3u8
+├── manifest.json
+├── checksums.json
+├── audio/
+│   ├── 01.flac
+│   └── 02.flac
+├── images/
+│   └── cover.jpg
+└── lyrics/
+    ├── 01.en.vtt
+    └── 02.en.vtt
+</code></pre>
+<p>Optional:</p>
+<pre><code class="language-text">segment01.m3u8
+segment02.m3u8
+</code></pre>
+<hr />
+<h2>Specification</h2>
+<p>The full specification is in:</p>
+<pre><code>spec.md
+</code></pre>
+<p>This document defines:</p>
+<ul>
+<li>Container rules</li>
+<li>File structure</li>
+<li>Playlist semantics</li>
+<li>Manifest schema</li>
+<li>Integrity requirements</li>
+<li>Conformance levels</li>
+</ul>
+<hr />
+<h2>Packaging</h2>
+<p>The packaging algorithm is defined in:</p>
+<pre><code>packaging.md
+</code></pre>
+<p>It specifies:</p>
+<ul>
+<li>Input validation rules</li>
+<li>Deterministic path generation</li>
+<li>Playlist generation</li>
+<li>Manifest generation</li>
+<li>Strict checksum generation</li>
+<li>STORE-only ZIP enforcement</li>
+<li>Final conformance checks</li>
+</ul>
+<hr />
+<h2>Reference Tool</h2>
+<p>A reference packager implementation is provided in:</p>
+<pre><code>tools/oap-packager/
+</code></pre>
+<p>It:</p>
+<ul>
+<li>Enforces all OAP v1 rules</li>
+<li>Generates manifest + checksums</li>
+<li>Validates strict coverage</li>
+<li>Uses Python + uv</li>
+<li>Has no third-party dependencies</li>
+</ul>
+<p>See the tool’s README for usage instructions.</p>
+<hr />
+<h2>Philosophy</h2>
+<p>OAP v1 prioritizes:</p>
+<ul>
+<li>Simplicity over feature creep</li>
+<li>Determinism over convenience</li>
+<li>Hackability over authority</li>
+<li>Open standards over proprietary formats</li>
+<li>Progressive enhancement over monolithic design</li>
+</ul>
+<p>Everything in v1 is intentionally constrained to avoid ambiguity and long-term fragmentation.</p>
+<hr />
+<h2>Future Directions (Not in v1)</h2>
+<p>Potential v2+ explorations:</p>
+<ul>
+<li>Additional image formats (AVIF/WebP)</li>
+<li>Additional audio codecs</li>
+<li>Optional compression reconsideration</li>
+<li>Video support</li>
+<li>Deterministic reproducible builds profile</li>
+<li>Optional signature layer</li>
+</ul>
+<hr />
+<h2>Status</h2>
+<p>OAP v1.0 is stable and internally consistent.</p>
+<p>Changes that would break v1 compatibility require a new <code>oap_version</code>.</p>
+<hr />
+<p>If you are implementing a player, start with:</p>
+<ul>
+<li>Level 0 for minimal support</li>
+<li>Level 1 for archive playback</li>
+<li>Level 2 for full experience + integrity enforcement</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>silverstripe-optimisticlocking</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>silverstripe-optimisticlocking</h1>
+
+  
+  <div class="project-header__desc">Prevent overwriting data by blocking the save process when the data changed since retrieval (using a timestamp)</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/silverstripe-optimisticlocking">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>silverstripe-optimisticlocking</h1>
+<p>This is a very simple module that prevents your site users from losing data.
+It works by blocking the save process if the data changes since it's loaded. (user1 starts editing, user 2 starts editing, user1 saves, now user2 can't overwrite user1's changes). By default, Silverstripe lets you lose data by overwriting whatever is in the database on save .</p>
+<h2>Usage:</h2>
+<ol>
+<li>
+<p>Install using composer <code>composer require &quot;svandragt/silverstripe-optimisticlocking:*&quot;</code></p>
+</li>
+<li>
+<p>Attach the OptimisticLocking class to your data objects / page types, eg. <code>Test</code> DataObject:</p>
+<p><code>Object::add_extension(&quot;Test&quot;,&quot;OptimisticLocking&quot;);</code></p>
+</li>
+</ol>
+<p>I keep a <a href="https://github.com/svandragt/silverstripe-optimisticlocking/issues?labels=bug&amp;page=1&amp;state=open">list of known bugs</a>.</p>
+<h2>What is Optimistic / Pessimistic locking?</h2>
+<p>These are methodologies used to handle multi-user issues. How does one handle the fact that 2 people want to update the same record at the same time?</p>
+<p><strong>1.Do Nothing</strong></p>
+<ul>
+<li>User 1 reads a record</li>
+<li>User 2 reads the same record</li>
+<li>User 1 updates that record</li>
+<li>User 2 updates the same record</li>
+</ul>
+<p>User 2 has now over-written the changes that User 1 made. They are completely gone, as if they never happened. This is called a 'lost update' and is how SilverStripe works by default.</p>
+<p><strong>2.Lock the record when it is read: Pessimistic locking</strong></p>
+<ul>
+<li>User 1 reads a record <em>and locks it</em> by putting an exclusive lock on the record (FOR UPDATE clause)</li>
+<li>User 2 attempts to read <em>and lock</em> the same record, but must now wait behind User 1</li>
+<li>User 1 updates the record (and, of course, commits)</li>
+<li>User 2 can now read the record <em>with the changes that User 1 made</em></li>
+<li>User 2 updates the record complete with the changes from User 1</li>
+</ul>
+<p>The lost update problem is solved. The problem with this approach is concurrency. User 1 is locking a record that they might not ever update. User 2 cannot even read the record because they want an exclusive lock when reading as well. This approach requires far too much exclusive locking, and the locks live far too long (often across user control - an <em>absolute</em> no-no). This approach is almost <em>never</em> implemented.</p>
+<p><strong>3. Use Optimistic Locking.</strong> <Br>
+Optimistic locking does not use exclusive locks when reading. Instead, a check is made during the update to make sure that the record has not been changed since it was read. This module implements this.</p>
+<p><em>Thanks to <a href="http://www.dbasupport.com/forums/showthread.php?7282-What-is-Optimistic-Locking-vs.-Pessimistic-Locking&amp;p=29149#post29149">chrisrlong</a> for the original explanation.</em></p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

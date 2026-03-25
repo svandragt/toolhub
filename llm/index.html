@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>llm</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>llm</h1>
+
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/llm">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>llm</h1>
+<p>A personal library of reusable <a href="https://claude.ai/claude-code">Claude Code</a> skill prompts.</p>
+<h2>Skills</h2>
+<p>| Skill | Description |
+|---|---|
+| <code>explain-code</code> | Explains code with visual diagrams and analogies |
+| <code>php-pre-commit-setup</code> | Install a pre-commit git hook that runs <code>composer lint</code> and <code>composer analyse</code> before every commit |
+| <code>php-quality</code> | Run the full PHP quality gate: auto-fix linting, static analysis, unit tests, and coverage check |
+| <code>php-tdd</code> | Enforce red-green TDD for PHP: write a failing test first, confirm failure, implement minimum code, confirm green |
+| <code>python-tdd</code> | Red-green TDD cycle for Python using pytest, then lint with ruff |
+| <code>review-docs</code> | After user-facing changes, review <code>docs/</code> for pages that need updating and missing cross-links |
+| <code>smoke-test</code> | Build a smoke-test document proving a new feature works end-to-end |</p>
+<h2>Structure</h2>
+<pre><code>skills/&lt;name&gt;/SKILL.md
+</code></pre>
+<p>Each skill is a self-contained directory. <code>SKILL.md</code> requires YAML frontmatter:</p>
+<pre><code class="language-yaml">---
+name: skill-name          # lowercase, hyphens only, max 64 chars
+description: &quot;...&quot;        # max 200 chars — quote if it contains colons
+---
+</code></pre>
+<h2>Installation</h2>
+<p>Make the skills available to Claude Code across all local projects by symlinking this repo's <code>skills/</code> directory to <code>~/.claude/skills</code>:</p>
+<pre><code class="language-sh"># If ~/.claude/skills already exists, move any existing skills into this repo first
+mv ~/.claude/skills/my-existing-skill /path/to/this/repo/skills/
+
+# Remove the directory and replace it with a symlink
+rmdir ~/.claude/skills
+ln -s /path/to/this/repo/skills ~/.claude/skills
+</code></pre>
+<p>Claude Code will now discover all skills in this repo automatically, regardless of which project you're working in.</p>
+<h2>Validation</h2>
+<p>Run <code>skills-ref validate</code> to check all skills for missing or malformed frontmatter before packaging.</p>
+<h2>Packaging</h2>
+<p>Create a zip per skill with the skill directory as the root inside the archive.</p>
+<pre><code class="language-sh">python3 -c &quot;
+import zipfile
+name = 'skill-name'
+with zipfile.ZipFile(f'{name}.zip', 'w') as z:
+    z.write(f'skills/{name}/SKILL.md', f'{name}/SKILL.md')
+&quot;
+</code></pre>
+<p>Zip files are excluded from git (see <code>.gitignore</code>), and can be uploaded to https://claude.ai/customize/skills to make them available to Claude AI.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

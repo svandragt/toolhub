@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>twelete</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>twelete</h1>
+
+  
+  <div class="project-header__desc">Automatic Tweet Deletion, self hosted.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">maintained</span>
+    
+    <span class="badge">privacy</span>
+    
+    <span class="badge">python</span>
+    
+    <span class="badge">twitter</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/twelete">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Twelete</h1>
+<p>Delete your tweets older than 4 weeks. Tweets are temporary messages, and thus should be deleted.</p>
+<p>Note: I no longer use Twitter but the code should still work.</p>
+<h2>Setup</h2>
+<ol>
+<li>Install using poetry: <code>poetry install</code>. (I created <a href="https://github.com/svandragt/pyshed">PyShed</a> if you don't have poetry and python setup).</li>
+<li>Create a <code>.env</code> file with the following contents. Fill in the values after <a href="https://developer.twitter.com/en/apps">creating a Twitter App</a>:</li>
+</ol>
+<pre><code>twelete_consumer_key=&quot;&quot;
+twelete_consumer_secret=&quot;&quot;
+twelete_access_key=&quot;&quot;
+twelete_access_secret=&quot;&quot;
+</code></pre>
+<ol start="3">
+<li>Run <code>poetry run python ./twelete.py</code>. It will dry-run, displaying deletable tweets over 28 days old.</li>
+</ol>
+<blockquote>
+<p>Dry run. To delete: add &quot;twelete_dry_run=0&quot; to .env<br>
+Authenticated as: svandragt<br>
+Deleting 1284072013640982529: [2020-07-17 10:26:39] Just gave a sprint demo where I had Michael Jordan and Scotty Pippen joined the site as senior editor and author re… https://t.co/SvrEK99eum</p>
+</blockquote>
+<ol start="4">
+<li>Add the following items to the <code>.env</code> file to tweak the cutoff date and to enable deletion:</li>
+</ol>
+<pre><code>twelete_days_to_keep=28
+twelete_dry_run=0
+</code></pre>
+<h1>Run periodically.</h1>
+<p>Run <code>crontab -e</code> and add the following line:</p>
+<pre><code># Run at 5:15am every day
+15 5 * * * cd $HOME/src/twelete &amp;&amp; $HOME/.poetry/bin/poetry run python ./twelete.py | tee -a /var/log/twelete.log
+</code></pre>
+<p>Make sure the log file exists and is writable:</p>
+<pre><code>sudo touch /var/log/twelete.log
+sudo chown $(whoami):adm /var/log/twelete.log
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

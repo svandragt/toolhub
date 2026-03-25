@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>php-activate</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>php-activate</h1>
+
+  
+  <div class="project-header__desc">PHP version switcher for linux system installed PHP versions</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">linux</span>
+    
+    <span class="badge">maintained</span>
+    
+    <span class="badge">php</span>
+    
+    <span class="badge">php-manager</span>
+    
+    <span class="badge">version-manager</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/php-activate">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>php-activate</h1>
+<p>Switch system installed PHP versions within a local shell session.</p>
+<p>Made for those working with multiple projects using a variety of PHP versions, this script will automatically switch to the correct PHP version after <code>cd</code>ing into the project folder. It does not require sudo, so even works in IDEs.</p>
+<ul>
+<li>No sudo is required to switch versions (in contrast to update-alternatives), so it works in IDE terminals.</li>
+<li>No need to compile PHP (in contrast to phpenv), just use your package manager.</li>
+<li>No need for manual PHP installs (in contrast to php-versions), system installed php versions are detected.</li>
+</ul>
+<h2>Requirements</h2>
+<p>A bunch of PHP versions installed named <code>/usr/bin/php*</code>.</p>
+<h2>Install</h2>
+<pre><code class="language-shell">$ mkdir -p $HOME/opt/php-activate # or your place of choice
+$ cd !$
+# Downloads a tarball from a GitHub repository, extracts its contents, and then strips the first directory level:
+$ curl -# -L https://github.com/svandragt/php-activate/tarball/main | tar -xz --strip 1
+</code></pre>
+<h2>Shell Setup</h2>
+<p>Add the following line to your shell rc script (replace 8.2 with your default php version):</p>
+<pre><code># BASH shell:
+source $HOME/opt/php-activate/php-activate.sh 8.2
+export -f php
+
+# ZSH Shell
+source $HOME/opt/php-activate/php-activate.sh 8.2
+typeset -f php &gt;/dev/null
+</code></pre>
+<h2>Run examples</h2>
+<pre><code class="language-shell"># Activate a non-existing version
+$ php-activate 9
+Error: No matching PHP version found. Use one of the following:
+/usr/bin/php8.0
+/usr/bin/php8.1
+/usr/bin/php8.2
+
+# System version
+$ php --version
+PHP 8.1.15 (cli) (built: Feb  7 2023 11:31:36) (NTS)
+Copyright (c) The PHP Group
+Zend Engine v4.1.15, Copyright (c) Zend Technologies
+    with Zend OPcache v8.1.15, Copyright (c), by Zend Technologies
+    
+# Activate existing version
+$ php-activate 8.2
+Activated /usr/bin/php8.2
+PHP 8.2.2 (cli) (built: Feb  7 2023 11:28:53) (NTS)
+...
+
+# Deactivate (or use a different shell)
+$ php-activate
+Deactivated /usr/bin/php8.2
+PHP 8.1.15 (cli) (built: Feb  7 2023 11:31:36) (NTS)
+...
+</code></pre>
+<p>Optionally provide a <code>--quiet</code> or <code>-q</code> argument to suppress successful output.</p>
+<h2>Integrations</h2>
+<h3>Direnv</h3>
+<p>Add the following to <code>~/.direnvrc</code>:</p>
+<pre><code># Usage: use php &lt;version&gt;
+#
+# Loads the specified php version into the environent
+#
+use_php() {
+  source $HOME/opt/php-activate/php-activate.sh $1
+  layout php
+}
+</code></pre>
+<p>then add the following to the project's <code>.envrc</code>:</p>
+<pre><code>use php 8.2
+</code></pre>
+<p>Now you can simply change into the project directory:</p>
+<pre><code class="language-shell">$ cd myproject
+direnv: loading ~/dev/myproject/.envrc
+direnv: using php 8.2
+Activated /usr/bin/php8.2
+PHP 8.2.2 (cli) (built: Feb  7 2023 11:28:53) (NTS)
+direnv: export [...] ~PHP_PICKED
+</code></pre>
+<h2>Alternatives</h2>
+<p>Please consider <a href="https://asdf-vm.com/">asdf</a> with the <a href="https://github.com/asdf-community/asdf-php">PHP plugin</a>.</p>
+<h2>Credits</h2>
+<p>Thanks to <a href="https://github.com/wilmoore/php-version">wilmoore for php-version</a> which inspired this idea.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

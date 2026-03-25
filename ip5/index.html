@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ip5</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>ip5</h1>
+
+  
+  <div class="project-header__desc">pick-from-5 Instapaper triage tool</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/ip5">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>ip5 — Instapaper “pick 5” triage CLI</h1>
+<p><code>ip5</code> is a small interactive CLI tool to quickly drain your Instapaper backlog.</p>
+<p>It shows <strong>5 random unread articles</strong>, lets you pick which ones are worth keeping, then:</p>
+<ul>
+<li><strong>archives</strong> the selected ones</li>
+<li><strong>opens</strong> them in your browser</li>
+<li><strong>deletes</strong> the rest</li>
+</ul>
+<p>Designed for fast, low-friction triage from a terminal.</p>
+<hr />
+<h2>Features</h2>
+<ul>
+<li>Fetches unread bookmarks from Instapaper</li>
+<li>Random sampling (fast + biased, configurable)</li>
+<li>Clean terminal output (title + domain + URL)</li>
+<li>Interactive numeric selection (<code>1 3 5</code>)</li>
+<li>Fail-fast execution for proof-of-concept verification</li>
+<li>Uses Instapaper <strong>Full API with xAuth</strong></li>
+</ul>
+<hr />
+<h2>Requirements</h2>
+<ul>
+<li>Linux (tested on elementaryOS / Ubuntu)</li>
+<li>Python 3.10+</li>
+<li>Instapaper Full API access (consumer key &amp; secret)</li>
+<li>Internet connection</li>
+</ul>
+<h3>Python dependencies</h3>
+<ul>
+<li><code>requests</code></li>
+<li><code>requests-oauthlib</code></li>
+</ul>
+<p>With <strong>uv</strong>:</p>
+<pre><code class="language-bash">uv run --with requests --with requests-oauthlib ip5.py
+</code></pre>
+<hr />
+<h2>Installation</h2>
+<p>Clone or copy <code>ip5.py</code> somewhere on your <code>$PATH</code>, or run it directly:</p>
+<pre><code class="language-bash">chmod +x ip5.py
+./ip5.py
+</code></pre>
+<hr />
+<h2>Configuration</h2>
+<h3>Config file (recommended)</h3>
+<p>Default location:</p>
+<pre><code>~/.config/ip5/config.ini
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-ini">[auth]
+consumer_key = YOUR_CONSUMER_KEY
+consumer_secret = YOUR_CONSUMER_SECRET
+</code></pre>
+<p>On first run, <code>ip5</code> will:</p>
+<ol>
+<li>Prompt for your Instapaper username/password</li>
+<li>Perform xAuth</li>
+<li>Store the OAuth token + secret in this file</li>
+</ol>
+<p>You only need to authenticate once.</p>
+<h3>Environment variables (optional)</h3>
+<p>Overrides config values if set:</p>
+<ul>
+<li><code>IP_CONSUMER_KEY</code></li>
+<li><code>IP_CONSUMER_SECRET</code></li>
+<li><code>IP_TOKEN</code></li>
+<li><code>IP_TOKEN_SECRET</code></li>
+<li><code>IP_USER</code></li>
+<li><code>IP_PASS</code></li>
+<li><code>BROWSER</code> (browser command)</li>
+</ul>
+<hr />
+<h2>Usage</h2>
+<p>Basic run:</p>
+<pre><code class="language-bash">ip5
+</code></pre>
+<p>Example output:</p>
+<pre><code>1) Some Interesting Article
+   nytimes.com
+   https://www.nytimes.com/...
+
+2) Another Link
+   github.com
+   https://github.com/...
+</code></pre>
+<p>Prompt:</p>
+<pre><code>Pick articles to keep (1-5, e.g. '1 3 5' or '2,4'), or 'q' to quit:
+&gt;
+</code></pre>
+<p>Then confirm:</p>
+<pre><code>Keep (archive + open): 1,3,5
+Delete: 2,4
+Proceed? [y/N]:
+</code></pre>
+<hr />
+<h2>Options</h2>
+<p>| Flag                   | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| <code>-n, --count N</code>        | Number of items to show (default: 5, max: 20)            |
+| <code>-k, --max-fetch K</code>    | Max unread items fetched before shuffling (default: 100) |
+| <code>--no-open</code>            | Do not open URLs in browser                              |
+| <code>--no-delete</code>          | Do not delete unselected bookmarks                       |
+| <code>--no-confirm</code>         | Skip confirmation prompt                                 |
+| <code>--dry-run</code>            | Show plan only; no changes                               |
+| <code>--browser CMD</code>        | Custom browser command                                   |
+| <code>--format plain\|json</code> | Output format (plain default; JSON reserved)             |</p>
+<hr />
+<h2>Execution semantics</h2>
+<ul>
+<li><strong>Order:</strong> archive → open → delete</li>
+<li><strong>Fail-fast:</strong> any error aborts immediately</li>
+<li><strong>Confirmation:</strong> required before deletion (unless <code>--no-confirm</code>)</li>
+<li><strong>Empty input:</strong> reprompt</li>
+<li><strong><code>q</code> / <code>quit</code>:</strong> exit with no changes</li>
+</ul>
+<hr />
+<h2>Exit codes</h2>
+<p>| Code | Meaning                           |
+| ---- | --------------------------------- |
+| <code>0</code>  | Success                           |
+| <code>1</code>  | User quit / declined confirmation |
+| <code>2</code>  | Invalid arguments                 |
+| <code>3</code>  | Auth or list error                |
+| <code>4</code>  | Mutation or browser error         |</p>
+<hr />
+<h2>Notes on excerpts</h2>
+<p>Instapaper bookmark <code>description</code> is often empty.
+For usability, <code>ip5</code> displays:</p>
+<ul>
+<li><strong>Title</strong></li>
+<li><strong>Full URL</strong></li>
+</ul>
+<p>This proved more useful than unreliable text excerpts.</p>
+<hr />
+<h2>Security notes</h2>
+<ul>
+<li>Your OAuth token is stored locally in plain text.</li>
+<li>Do <strong>not</strong> commit <code>config.ini</code>.</li>
+<li>Prefer <code>~/.config/ip5/config.ini</code> over storing secrets next to the script.</li>
+</ul>
+<hr />
+<h2>Status</h2>
+<p>This is a <strong>proof of concept</strong> with intentionally strict, fail-fast behavior.
+It is not intended to be a full Instapaper client.</p>
+<hr />
+<h2>License</h2>
+<p>MIT</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

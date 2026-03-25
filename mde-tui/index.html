@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mde-tui</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>mde-tui</h1>
+
+  
+  <div class="project-header__desc">Markdown Editor TUI</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">experiment</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/mde-tui">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>mde-tui</h1>
+<p>A small terminal markdown editor + preview built with Textual and Rich.</p>
+<p>Quick, minimal TUI for editing Markdown in the terminal and seeing a live preview.</p>
+<img width="1058" height="885" alt="image" src="https://github.com/user-attachments/assets/7f09bf2d-6f98-4355-ae67-7cf1530ea2ac" />
+<hr />
+<h2>Requirements</h2>
+<ul>
+<li>Python 3.13.0</li>
+<li>uv package manager (project uses <code>uv</code> for dependency management)</li>
+</ul>
+<hr />
+<h2>Installation</h2>
+<ol>
+<li>Install dependencies using uv. If the project already has a lockfile (<code>uv.lock</code>) / <code>pyproject.toml</code>, you can install the pinned dependencies. If you need to add packages locally:</li>
+</ol>
+<pre><code class="language-shell"># If dependencies are already listed and you want to install from pyproject/lock:
+   uv install
+</code></pre>
+<hr />
+<h2>Usage</h2>
+<p>Run the application from the project root:</p>
+<pre><code class="language-shell">uv run markdown-tui.py
+</code></pre>
+<p>Controls:</p>
+<ul>
+<li>F5 —  Toggle / refresh the preview (bound to the &quot;Preview&quot; action).</li>
+</ul>
+<p>The app shows a split layout with:</p>
+<ul>
+<li>left: a text editor area for writing Markdown</li>
+<li>right: a Markdown preview pane</li>
+</ul>
+<p>The preview updates automatically after brief debounce when typing.</p>
+<hr />
+<h2>Development notes</h2>
+<ul>
+<li>File: <code>markdown-tui.py</code> is the main entrypoint.</li>
+<li>The app uses Textual's <code>TextArea</code> and <code>MarkdownViewer</code>.</li>
+<li>Debounced updates are used to avoid too-frequent re-renders.</li>
+</ul>
+<p>Known / TODO:</p>
+<ul>
+<li>Task list items (e.g., <code>- [ ] item</code>) are currently not rendered by the preview — TODO in the code to address this.</li>
+<li>The project is minimal and intended as a starting point; feel free to improve rendering, keyboard bindings, layout, and save/load behavior.</li>
+</ul>
+<hr />
+<h2>Contributing</h2>
+<ul>
+<li>Open an issue describing the change or bug.</li>
+<li>For code changes, create a branch, make changes, and open a pull request.</li>
+<li>Keep changes small and focused; add tests or brief manual test instructions when applicable.</li>
+</ul>
+<hr />
+<h2>Troubleshooting</h2>
+<ul>
+<li>If the preview does not update, try pressing F5 to force a refresh.</li>
+<li>If package installation fails, ensure you have Python 3.13 and <code>uv</code> available on PATH.</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>silverstripe-description</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>silverstripe-description</h1>
+
+  
+  <div class="project-header__desc">Autopopulate field descriptions to form fields</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/silverstripe-description">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>silverstripe-description</h1>
+<p>Takes form field descriptions through $db_descriptions and shows them in the edit form.</p>
+<h2>Usage</h2>
+<ol>
+<li>Install using composer <code>composer require &quot;svandragt/silverstripe-description:*&quot;</code></li>
+<li>Attach it to your data objects / page types through the configuration system as follows:</li>
+</ol>
+<pre><code>Object::add_extension(&quot;DataObject&quot;,&quot;DescriptionDataExtension&quot;);
+</code></pre>
+<h2>DIY Demo:</h2>
+<p>Course.php:</p>
+<pre><code>&lt;?php
+class Course extends DataObject {
+	public static $db = array(
+		'Title'             =&gt; 'Varchar(500)',
+		'IPPCode'           =&gt; 'Varchar(20)',
+	);
+
+	public static $db_descriptions = array(
+		'IPPCode'           =&gt; 'Lookup to existing IPP Code if available',
+	);    
+}
+</code></pre>
+<p>CourseModelAdmin.php:</p>
+<pre><code>&lt;?php
+
+class CourseModelAdmin extends ModelAdmin {
+	public static $managed_models = array(
+		'Course',
+	); 
+  	static $url_segment = 'courses'; // Linked as /admin/products/
+  	static $menu_title = 'Course Admin';
+	
+}
+</code></pre>
+<p>Do a /dev/build and create a new course in the CMS. You will see the IPPCode field has a description below it.</p>
+<h2>Screenshot</h2>
+<p><img src="http://content.screencast.com/users/SanderVD/folders/Jing/media/c66ae9b9-d681-4940-adbd-71773d110d54/2012-11-20_1340.png" alt="Example screenshot" /></p>
+<ol>
+<li>Unsaved message provided through <a href="https://github.com/svandragt/silverstripe-manymessage">ManyMessageDataExtension</a></li>
+<li>Styling for required formfields provided through <a href="https://github.com/svandragt/silverstripe-requiredfieldscms">RequiredFieldsCmsDataExtension</a></li>
+<li>Field descriptions automatically linked through <a href="https://github.com/svandragt/silverstripe-description">DescriptionDataExtension</a></li>
+</ol>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

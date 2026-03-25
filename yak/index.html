@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yak</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>yak</h1>
+
+  
+  <div class="project-header__desc">Yet Another best-practice WordPress local environment Kandidate</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/yak">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Yak</h1>
+<p>Yet Another best-practice WordPress local environment Kandidate.</p>
+<p>What's done beyond the default:</p>
+<ul>
+<li>Uses PHP 8.2.</li>
+<li>Composer based project dependencies, with dependency patching.</li>
+<li>WP installed under <code>wordpress/</code>.</li>
+<li><code>wp-content</code> available under <code>content/</code>.</li>
+<li><a href="https://www.elasticpress.io/">ElasticPress</a> ready to rock.</li>
+<li>All tooling provided.</li>
+</ul>
+<p>The following tools are installed:</p>
+<ul>
+<li>Plugins: <a href="https://wordpress.org/plugins/user-switching/">User Switching</a>, <a href="https://wordpress.org/plugins/query-monitor/">Query Monitor</a>, <a href="https://wordpress.org/plugins/debug-bar-elasticpress/">ElasticPress Debug Bar</a>, <a href="https://wordpress.org/plugins/redis-cache/">Redis Object Cache</a>.</li>
+<li>Page caching.</li>
+<li>Object caching via Redis.</li>
+<li>Coding standards (todo)</li>
+<li>Linting (todo)</li>
+<li>Testing framework (todo)</li>
+</ul>
+<p><a href="https://ddev.readthedocs.io/en/stable/">DDEV</a> provides, among the following:</p>
+<ul>
+<li>Email trapping on port 8026</li>
+<li>Simple xdebug</li>
+<li>Works well with Ngrok via <code>ddev share</code></li>
+</ul>
+<h1>First start</h1>
+<p>Under <code>Use this template</code> &gt; <code>Create a new repository</code> to create a copy of this template repository.</p>
+<p>Then install the dependencies and launch the environment:</p>
+<pre><code>ddev composer install
+ddev launch
+</code></pre>
+<p><img src="https://github.com/user-attachments/assets/d1f7a37e-8407-4fb8-bdc0-6c9f60d13fff" alt="Screenshot 2024-12-04 at 16-20-07 Yak" /></p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>

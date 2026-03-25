@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>silverstripe-hiddenfields</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>silverstripe-hiddenfields</h1>
+
+  
+  <div class="project-header__desc">Takes form fields specified through $hidden_fields and hides them from edit form.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/silverstripe-hiddenfields">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>silverstripe-hiddenfields</h1>
+<p>Takes form fields you specified through $hidden_fields and hides them from the edit form. I found if you completely
+remove the field then the value doesn't get saved to the database and you end up with child without a parent relationship.</p>
+<p>Instead this extension replaces the field with a hiddenfield.</p>
+<h2>Usage</h2>
+<ol>
+<li>Install using composer <code>composer require &quot;svandragt/silverstripe-hiddenfields:*&quot;</code></li>
+<li>Attach the DataExtension to your DataObjects / Page types through the configuration system:</li>
+</ol>
+<pre><code>Object::add_extension(&quot;DataObject&quot;,&quot;HiddenFieldsDataExtension&quot;);
+</code></pre>
+<h2>DIY Demo:</h2>
+<p>Course.php:</p>
+<pre><code>&lt;?php
+class Course extends DataObject {
+	public static $db = array(
+		'Title'             =&gt; 'Varchar(500)',
+	);
+
+	public static $has_many = array(
+		'CourseDates'        =&gt; 'CourseDate',
+	);	
+
+}
+</code></pre>
+<p>CourseDate.php:</p>
+<pre><code>&lt;?php
+class CourseDate extends DataObject {
+	public static $db = array(
+		'StartDate' =&gt; 'Date',
+		'EndDate'   =&gt; 'Date',
+	);
+
+	public static $has_one = array(
+		'Course' =&gt; 'Course'
+	);
+
+	public static $hidden_fields = array(
+		'CourseID'
+	);
+
+}
+</code></pre>
+<p>CourseModelAdmin.php:</p>
+<pre><code>&lt;?php
+
+class CourseModelAdmin extends ModelAdmin {
+	public static $managed_models = array(
+		'Course', 
+		'CourseDates',
+	); 
+  	static $url_segment = 'courses'; // Linked as /admin/products/
+  	static $menu_title = 'Course Admin';
+	
+}
+</code></pre>
+<p>Do a /dev/build and create a new course in the CMS. After saving, when accessing the CourseDates tab, you will not see the option to select the Course related to the dates (it is automatically saved from the parent - child relationship in this case).</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with GitHub + uv
+  </footer>
+</body>
+</html>
