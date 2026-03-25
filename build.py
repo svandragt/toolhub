@@ -76,7 +76,7 @@ SITE_FILE = Path("site.toml")
 _SITE_DEFAULTS: dict = {
     "title": "~/tools",
     "description": "Tools & Projects",
-    "footer": "Built with GitHub + uv",
+    "footer": 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>',
     "sections": {
         "active": "Active projects",
         "archived": "Archived",
