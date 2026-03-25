@@ -16,11 +16,15 @@ Two scripts, both run with `uv run` (PEP 723 inline deps — no venv setup neede
 | `exclude.txt` | Gitignored — optional, one repo name or gist ID per line to skip |
 | `.cache/` | Gitignored — cached READMEs (`.md`) and portfolio data (`.portfolio.json`) |
 | `output/` | Gitignored — generated site, deployed to gh-pages |
+| `pyproject.toml` | Pytest config and test dependency group |
+| `uv.lock` | Locked test dependencies |
+| `tests/` | Pytest tests (run with `uv run --group test pytest`) |
 
 ## Instance configuration (site.toml)
 Optional `site.toml` in repo root (gitignored). Loaded by `build.py` via `tomllib`,
 deep-merged with `_SITE_DEFAULTS`. Controls:
 - `title`, `description`, `footer` — passed to Jinja2 as `{{ site.* }}`
+- `base_url` — absolute base URL of the deployed site (no trailing slash). **Required to enable the Atom feed.** When absent, no `atom.xml` is written and no autodiscovery `<link>` is emitted.
 - `sections.active`, `sections.archived`, `sections.back_link` — section labels, as `{{ sections.* }}`
 - `theme.templates_dir`, `theme.static_dir` — override which dirs are used for templates/CSS
 
@@ -51,9 +55,11 @@ Gists: `name`, `type=gist`, `gist_id`, `gist_url`, `md_file`, `description`, `ta
 Sort order: pinned (0) → active (1) → archived (2), then `updated_at` desc within each group.
 
 ## Templates
-Jinja2 templates in `templates/`. Base path for CSS differs between index (`static/`) and project pages (`../static/`), handled via `{% block stylesheets %}` override in `project.html`.
+Jinja2 templates in `templates/`. Base path for CSS differs between index (`static/`) and project pages (`../static/`), handled via `{% block stylesheets %}` override in `project.html`. Similarly, `{% block feed_link %}` emits the Atom autodiscovery `<link>` (conditionally on `site.base_url`), with `project.html` overriding the path to `../atom.xml`.
 
 Index sections: Pinned / Active projects / Archived. Filter bar (JS) and TOC (shown when 2+ sections and >15 projects) are inline in `index.html`.
+
+`templates/atom.xml` — Atom 1.0 feed. Receives the pre-filtered project list (archived already excluded by `build.py`). Uses `site.base_url` for all absolute URLs.
 
 ## CI
 `.github/workflows/build.yml` — triggers on push to main and `workflow_dispatch`.
