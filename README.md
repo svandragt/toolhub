@@ -1,10 +1,17 @@
-# dev-portfolio-hub
+# ToolHub
 
 A static site generator that turns a curated list of GitHub repos and gists into a personal tools portfolio — no CMS, no framework, no manual copy-pasting.
 
 Each project page is built from its README, rendered to HTML at build time. Live URLs and docs links are extracted automatically from a `portfolio.toml` convention file you add to each project. Tags come from GitHub Topics (repos) or `portfolio.toml` (gists).
 
 The site deploys automatically to GitHub Pages on every push to `main`.
+
+---
+## Screenshots
+
+<img width="1478" height="1014" alt="index" src="https://github.com/user-attachments/assets/2cb81233-96a9-4a6a-a69b-e98d71f84758" />
+<img width="1478" height="1014" alt="detail" src="https://github.com/user-attachments/assets/a3492bca-6c9c-4ca7-94f1-d9e16e221e35" />
+
 
 ---
 
