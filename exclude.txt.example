@@ -1,0 +1,8 @@
+# exclude.txt — repos and gists to skip when running bootstrap.py
+#
+# One entry per line. Lines starting with # are comments.
+# Repo entries: use the repo name (e.g. my-old-project)
+# Gist entries: use the gist ID (e.g. a1b2c3d4e5f6)
+
+# my-old-project
+# a1b2c3d4e5f6

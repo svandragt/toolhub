@@ -34,15 +34,21 @@ def make_client(token: str) -> httpx.Client:
 # Pagination
 # --------------------------------------------------------------------------- #
 
-def paginate(client: httpx.Client, url: str, params: dict) -> list[dict]:
+def paginate(client: httpx.Client, url: str, params: dict, desc: str = "") -> list[dict]:
     """Fetch all pages from a paginated GitHub API endpoint."""
     results = []
+    page = 0
     while url:
         response = client.get(url, params=params)
         response.raise_for_status()
         results.extend(response.json())
         url = response.links.get("next", {}).get("url")
         params = {}  # already encoded in the next URL
+        page += 1
+        if desc:
+            print(f"  {desc}: {len(results)} fetched...", end="\r", flush=True)
+    if desc:
+        print()  # newline after \r progress
     return results
 
 

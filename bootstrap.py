@@ -58,6 +58,23 @@ if not TOKEN or not USERNAME:
 
 BASE_URL = "https://api.github.com"
 OUTPUT_FILE = Path("projects.yaml")
+EXCLUDE_FILE = Path("exclude.txt")
+
+
+# --------------------------------------------------------------------------- #
+# Exclusions
+# --------------------------------------------------------------------------- #
+
+def load_exclusions() -> set[str]:
+    """
+    Load exclusion list from exclude.txt if it exists.
+    Each line is a repo name or gist ID to skip.
+    Lines starting with # are comments.
+    """
+    if not EXCLUDE_FILE.exists():
+        return set()
+    lines = EXCLUDE_FILE.read_text(encoding="utf-8").splitlines()
+    return {line.strip() for line in lines if line.strip() and not line.startswith("#")}
 
 
 # --------------------------------------------------------------------------- #
@@ -70,12 +87,13 @@ def fetch_repos(client: httpx.Client) -> list[dict]:
         client,
         f"{BASE_URL}/user/repos",
         {"type": "public", "per_page": 100, "sort": "updated"},
+        desc="repos",
     )
 
 
 def fetch_gists(client: httpx.Client) -> list[dict]:
     """Return gists that contain at least one .md file."""
-    all_gists = paginate(client, f"{BASE_URL}/gists", {"per_page": 100})
+    all_gists = paginate(client, f"{BASE_URL}/gists", {"per_page": 100}, desc="gists")
     return [g for g in all_gists if any(f.endswith(".md") for f in g["files"])]
 
 
@@ -143,7 +161,7 @@ def write_yaml(entries: list[dict]) -> None:
         f.write("#\n")
         f.write("# Tags for repos come from GitHub Topics.\n")
         f.write("# Tags for gists come from portfolio.toml.\n")
-        f.write("# Delete any entries you don't want to appear on the site.\n\n")
+        f.write("# To exclude entries permanently, add repo names or gist IDs to exclude.txt.\n\n")
         yaml.dump(data, f)
 
     print(f"\nWritten {len(entries)} entries to {OUTPUT_FILE}")
@@ -154,13 +172,19 @@ def write_yaml(entries: list[dict]) -> None:
 # --------------------------------------------------------------------------- #
 
 def main() -> None:
+    exclusions = load_exclusions()
+    if exclusions:
+        print(f"Exclusions loaded from {EXCLUDE_FILE}: {len(exclusions)} entries\n")
+
     with make_client(TOKEN) as client:
         print("Fetching public repos...")
         repos = fetch_repos(client)
+        repos = [r for r in repos if r["name"] not in exclusions]
         print(f"  Found {len(repos)} repos\n")
 
         print("Fetching gists (filtering to .md only)...")
         gists = fetch_gists(client)
+        gists = [g for g in gists if g["id"] not in exclusions]
         print(f"  Found {len(gists)} gists with .md files\n")
 
         print("Building entries (fetching portfolio.toml where present)...")
@@ -170,9 +194,8 @@ def main() -> None:
     write_yaml(repo_entries + gist_entries)
 
     print("\nNext steps:")
-    print("  1. Review projects.yaml — remove anything you don't want")
-    print("  2. Add portfolio.toml to each repo/gist (see portfolio.toml.example)")
-    print("  3. Run: uv run build.py")
+    print("  1. Add portfolio.toml to each repo/gist (see portfolio.toml.example)")
+    print("  2. Run: uv run build.py")
 
 
 if __name__ == "__main__":
