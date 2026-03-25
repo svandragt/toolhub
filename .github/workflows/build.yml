@@ -16,6 +16,12 @@ jobs:
 
       - uses: astral-sh/setup-uv@v5
 
+      - name: Bootstrap projects
+        run: uv run bootstrap.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USERNAME: ${{ vars.GH_USERNAME }}
+
       - name: Build site
         run: uv run build.py
         env:
