@@ -446,6 +446,6 @@ main {
 .readme tr:nth-child(even) td { background: #fafaf8; }
 
 .readme a { color: var(--accent); }
-.readme img { max-width: 100%; border-radius: var(--radius); }
+.readme img { max-width: 100%; height: auto; border-radius: var(--radius); }
 
 .readme hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
