@@ -92,9 +92,17 @@ def fetch_repos(client: httpx.Client) -> list[dict]:
 
 
 def fetch_gists(client: httpx.Client) -> list[dict]:
-    """Return gists that contain at least one .md file."""
-    all_gists = paginate(client, f"{BASE_URL}/users/{USERNAME}/gists", {"per_page": 100}, desc="gists")
-    return [g for g in all_gists if any(f.endswith(".md") for f in g["files"])]
+    """Return public gists that contain at least one .md file."""
+    all_gists = paginate(
+        client,
+        f"{BASE_URL}/users/{USERNAME}/gists",
+        {"per_page": 100},
+        desc="gists",
+        item_label=lambda g: g.get("description") or g["id"],
+    )
+    # Extra guard: skip any secret gists the API may return for authenticated users
+    public_gists = [g for g in all_gists if g.get("public", True)]
+    return [g for g in public_gists if any(f.endswith(".md") for f in g["files"])]
 
 
 # --------------------------------------------------------------------------- #
