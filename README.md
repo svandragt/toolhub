@@ -156,7 +156,7 @@ Open `output/index.html` in your browser to preview.
    - `GH_TOKEN` = a personal access token with `public_repo` and `read:user` scopes
 3. Go to **Settings → Secrets and variables → Actions → Variables** and add:
    - `GH_USERNAME` = your GitHub username
-   - `CUSTOM_DOMAIN` = your custom domain e.g. `tools.example.com` (optional — leave unset to use the default `username.github.io` URL)
+   - `CUSTOM_DOMAIN` = your custom domain e.g. `tools.example.com` (optional — omit to use the default `username.github.io` URL)
 4. Go to **Settings → Pages** and set the source to the `gh-pages` branch.
 5. If using a custom domain, add a DNS CNAME record pointing your subdomain at `your-username.github.io.`
 
@@ -212,7 +212,7 @@ the remote in sync with your build.
 |---|---|
 | `GH_TOKEN` *(secret)* | Personal access token — same scopes as above |
 | `GH_USERNAME` *(variable)* | Your GitHub username |
-| `CUSTOM_DOMAIN` *(variable, optional)* | Custom domain for GitHub Pages e.g. `tools.example.com` |
+| `CUSTOM_DOMAIN` *(variable, optional)* | Custom domain e.g. `tools.example.com` — omit for default `username.github.io` |
 
 ---
 
