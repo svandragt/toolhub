@@ -17,6 +17,15 @@ Two scripts, both run with `uv run` (PEP 723 inline deps — no venv setup neede
 | `.cache/` | Gitignored — cached READMEs (`.md`) and portfolio data (`.portfolio.json`) |
 | `output/` | Gitignored — generated site, deployed to gh-pages |
 
+## Instance configuration (site.toml)
+Optional `site.toml` in repo root (gitignored). Loaded by `build.py` via `tomllib`,
+deep-merged with `_SITE_DEFAULTS`. Controls:
+- `title`, `description`, `footer` — passed to Jinja2 as `{{ site.* }}`
+- `sections.active`, `sections.archived`, `sections.back_link` — section labels, as `{{ sections.* }}`
+- `theme.templates_dir`, `theme.static_dir` — override which dirs are used for templates/CSS
+
+See `site.toml.example` for all options. `site.toml` is gitignored; `site.toml.example` is committed.
+
 ## Cache versioning
 `BOOTSTRAP_VERSION` in `lib/github.py` gates `projects.yaml` compatibility.
 Bump it whenever bootstrap produces new required fields. `build.py` will exit with

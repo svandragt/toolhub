@@ -29,6 +29,7 @@ import os
 import shutil
 import sys
 import time
+import tomllib
 from pathlib import Path
 
 import httpx
@@ -69,9 +70,41 @@ if not TOKEN or not USERNAME:
 
 CACHE_DIR = Path(".cache")
 OUTPUT_DIR = Path("output")
-STATIC_DIR = Path("static")
-TEMPLATES_DIR = Path("templates")
 PROJECTS_FILE = Path("projects.yaml")
+SITE_FILE = Path("site.toml")
+
+_SITE_DEFAULTS: dict = {
+    "title": "~/tools",
+    "description": "Tools & Projects",
+    "footer": "Built with GitHub + uv",
+    "sections": {
+        "active": "Active projects",
+        "archived": "Archived",
+        "back_link": "all projects",
+    },
+    "theme": {
+        "templates_dir": "templates",
+        "static_dir": "static",
+    },
+}
+
+
+def _deep_merge(base: dict, override: dict) -> dict:
+    result = {**base}
+    for key, value in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def load_site_config() -> dict:
+    """Load site.toml if present, merging with defaults."""
+    if not SITE_FILE.exists():
+        return _deep_merge({}, _SITE_DEFAULTS)
+    with SITE_FILE.open("rb") as f:
+        return _deep_merge(_deep_merge({}, _SITE_DEFAULTS), tomllib.load(f))
 
 
 # --------------------------------------------------------------------------- #
@@ -179,21 +212,33 @@ def load_projects() -> list[dict]:
 # Build site
 # --------------------------------------------------------------------------- #
 
-def build(projects: list[dict], client: httpx.Client, pinned: set[str] | None = None) -> None:
+def build(
+    projects: list[dict],
+    client: httpx.Client,
+    pinned: set[str] | None = None,
+    site_config: dict | None = None,
+) -> None:
     """Render the full static site into output/."""
+    site_config = site_config or _deep_merge({}, _SITE_DEFAULTS)
+    static_dir = Path(site_config["theme"]["static_dir"])
+    templates_dir = Path(site_config["theme"]["templates_dir"])
+
     if OUTPUT_DIR.exists():
         shutil.rmtree(OUTPUT_DIR)
     OUTPUT_DIR.mkdir()
 
-    if STATIC_DIR.exists():
-        shutil.copytree(STATIC_DIR, OUTPUT_DIR / "static")
+    if static_dir.exists():
+        shutil.copytree(static_dir, OUTPUT_DIR / "static")
 
     env = Environment(
-        loader=FileSystemLoader(TEMPLATES_DIR),
+        loader=FileSystemLoader(templates_dir),
         autoescape=select_autoescape(["html"]),
     )
+    env.globals["site"] = site_config
+    env.globals["sections"] = site_config["sections"]
 
     pinned = pinned or set()
+    used_slugs: set[str] = set()
     enriched_projects = []
 
     project_template = env.get_template("project.html")
@@ -202,13 +247,18 @@ def build(projects: list[dict], client: httpx.Client, pinned: set[str] | None = 
         portfolio = get_portfolio(client, project)
         # A project is pinned by repo name or gist ID
         pin_key = project["name"] if project["type"] == "repo" else project.get("gist_id", "")
-        enriched = {**project, **portfolio, "pinned": pin_key in pinned}
+        # Deduplicate output slugs (repo and gist can share the same name)
+        slug = project["name"]
+        if slug in used_slugs:
+            slug = f"{slug}-{project.get('gist_id', project['name'])[:7]}"
+        used_slugs.add(slug)
+        enriched = {**project, **portfolio, "pinned": pin_key in pinned, "slug": slug}
         enriched_projects.append(enriched)
 
         readme_md = get_readme(client, project)
         readme_html = render_markdown(readme_md)
 
-        page_dir = OUTPUT_DIR / project["name"]
+        page_dir = OUTPUT_DIR / slug
         page_dir.mkdir(parents=True, exist_ok=True)
 
         rendered = project_template.render(
@@ -246,6 +296,9 @@ def main() -> None:
             "Run bootstrap.py first to generate it."
         )
 
+    site_config = load_site_config()
+    print(f"Site: {site_config['title']}")
+
     print(f"Loading projects from {PROJECTS_FILE}...")
     projects = load_projects()
     print(f"  Found {len(projects)} projects")
@@ -257,7 +310,7 @@ def main() -> None:
         print(f"  Pinned: {', '.join(sorted(pinned)) or 'none'}")
 
         print("\nFetching READMEs and portfolio metadata...")
-        build(projects, client, pinned)
+        build(projects, client, pinned, site_config)
 
 
 if __name__ == "__main__":

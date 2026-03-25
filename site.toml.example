@@ -1,0 +1,17 @@
+# site.toml — instance configuration for your portfolio
+# Copy to site.toml and edit. site.toml is gitignored (it's yours, not the tool's).
+
+title       = "~/tools"
+description = "Tools & Projects"
+footer      = "Built with GitHub + uv"
+
+[sections]
+active    = "Active projects"
+archived  = "Archived"
+back_link = "all projects"
+
+[theme]
+# Point at your own templates/ and static/ to use a custom theme.
+# Paths are relative to the repo root.
+templates_dir = "templates"
+static_dir    = "static"

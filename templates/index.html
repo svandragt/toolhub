@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Tools &amp; Projects{% endblock %}
+{% block title %}{{ site.description }}{% endblock %}
 
 {% block content %}
-{% set pinned_projects  = projects | selectattr("pinned")   | list %}
-{% set active_projects  = projects | rejectattr("pinned") | rejectattr("archived") | list %}
+{% set pinned_projects   = projects | selectattr("pinned")   | list %}
+{% set active_projects   = projects | rejectattr("pinned") | rejectattr("archived") | list %}
 {% set archived_projects = projects | rejectattr("pinned") | selectattr("archived") | list %}
 {% set section_count = (1 if pinned_projects else 0) + (1 if active_projects else 0) + (1 if archived_projects else 0) %}
 
 <div class="page-heading">
-  <h1>Tools &amp; Projects</h1>
+  <h1>{{ site.description }}</h1>
   <p>{{ projects | length }} projects</p>
 </div>
 
@@ -21,17 +21,17 @@
   </div>
   <div class="filter-sep"></div>
   <div class="filter-group">
-    {% if pinned_projects  %}<label class="filter-chip"><input type="checkbox" name="section" value="pinned"   checked> Pinned</label>{% endif %}
-    {% if active_projects  %}<label class="filter-chip"><input type="checkbox" name="section" value="active"   checked> Active</label>{% endif %}
+    {% if pinned_projects   %}<label class="filter-chip"><input type="checkbox" name="section" value="pinned"   checked> Pinned</label>{% endif %}
+    {% if active_projects   %}<label class="filter-chip"><input type="checkbox" name="section" value="active"   checked> Active</label>{% endif %}
     {% if archived_projects %}<label class="filter-chip"><input type="checkbox" name="section" value="archived" checked> Archived</label>{% endif %}
   </div>
 </div>
 
 {% if section_count >= 2 and projects | length > 15 %}
 <nav class="toc">
-  {% if pinned_projects  %}<a class="toc__link" href="#sec-pinned">Pinned</a>{% endif %}
-  {% if active_projects  %}<a class="toc__link" href="#sec-active">Active projects</a>{% endif %}
-  {% if archived_projects %}<a class="toc__link" href="#sec-archived">Archived</a>{% endif %}
+  {% if pinned_projects   %}<a class="toc__link" href="#sec-pinned">Pinned</a>{% endif %}
+  {% if active_projects   %}<a class="toc__link" href="#sec-active">{{ sections.active }}</a>{% endif %}
+  {% if archived_projects %}<a class="toc__link" href="#sec-archived">{{ sections.archived }}</a>{% endif %}
 </nav>
 {% endif %}
 
@@ -40,7 +40,7 @@
      data-type="{{ project.type }}" data-section="{{ section }}">
   <div class="project-card__name">
     {% if project.pinned %}<span class="pin-icon" title="Pinned">&#9679;</span>{% endif %}
-    <a href="{{ project.name }}/index.html">{{ project.name }}</a>
+    <a href="{{ project.slug }}/index.html">{{ project.name }}</a>
   </div>
   {% if project.description %}
   <div class="project-card__desc">{{ project.description }}</div>
@@ -72,7 +72,7 @@
 
 {% if active_projects %}
 <section class="project-section" id="sec-active" data-section="active">
-  <h2 class="section-heading">Active projects</h2>
+  <h2 class="section-heading">{{ sections.active }}</h2>
   <div class="project-grid">
     {% for p in active_projects %}{{ project_card(p, "active") }}{% endfor %}
   </div>
@@ -81,7 +81,7 @@
 
 {% if archived_projects %}
 <section class="project-section" id="sec-archived" data-section="archived">
-  <h2 class="section-heading">Archived</h2>
+  <h2 class="section-heading">{{ sections.archived }}</h2>
   <div class="project-grid">
     {% for p in archived_projects %}{{ project_card(p, "archived") }}{% endfor %}
   </div>

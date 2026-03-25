@@ -160,6 +160,17 @@ From then on, every push to `main` triggers a rebuild and deploy automatically. 
 
 ---
 
+## Constraints & known limitations
+
+| Constraint | Detail |
+|---|---|
+| Personal GitHub accounts only | The pinned items query uses the GraphQL `user` type, which doesn't apply to organisations |
+| Public repos and gists only | Private content is intentionally excluded — this is a public portfolio tool |
+| Gists must contain a `.md` file | Gists without markdown are skipped by bootstrap |
+| Maximum 6 pinned items | GitHub's own limit on pinned profile items |
+
+---
+
 ## Requirements
 
 - Python 3.11+

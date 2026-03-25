@@ -9,7 +9,7 @@
 <body>
   <header class="site-header">
     <div class="site-header__inner">
-      <span class="site-header__name"><a href="{% block home_href %}index.html{% endblock %}">~/tools</a></span>
+      <span class="site-header__name"><a href="{% block home_href %}index.html{% endblock %}">{{ site.title }}</a></span>
     </div>
   </header>
 
@@ -18,7 +18,7 @@
   </main>
 
   <footer class="site-footer">
-    Built with <a href="https://github.com">GitHub</a> + uv
+    {{ site.footer }}
   </footer>
 </body>
 </html>

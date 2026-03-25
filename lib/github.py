@@ -153,6 +153,7 @@ def fetch_gist_portfolio(client: httpx.Client, gist: dict) -> dict[str, Any]:
 # Pinned items
 # --------------------------------------------------------------------------- #
 
+# GitHub enforces a maximum of 6 pinned items per user profile.
 _PINNED_QUERY = """
 query($login: String!) {
   user(login: $login) {
