@@ -1,3 +1,5 @@
+.cache
 .env
 projects.yaml
 exclude.txt
+output/
