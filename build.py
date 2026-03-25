@@ -106,13 +106,32 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 
 def _derive_parent_url(site_url: str) -> str:
-    """If site_url is on a subdomain, return the parent domain URL."""
+    """Derive a parent/home URL from site_url for the backlink.
+
+    Rules (applied in order):
+    - Subdomain (e.g. tools.example.com or tools.example.com/path):
+      strip the leading subdomain label → https://example.com
+    - Subdirectory on root domain (e.g. example.com/toolhub):
+      strip the path → https://example.com
+    - Root domain with no path (e.g. example.com): no backlink → ""
+
+    Note: hostnames like username.github.io are treated as subdomains by
+    this heuristic (result: github.io). For such deployments set
+    back_link_url explicitly in site.toml.
+    """
     from urllib.parse import urlparse
     parsed = urlparse(site_url)
     host = parsed.hostname or ""
     parts = host.split(".")
+
+    # Subdomain present — strip it (works for subdomain-only and subdomain+path)
     if len(parts) > 2:
         return f"{parsed.scheme}://{'.'.join(parts[1:])}"
+
+    # No subdomain but deployed in a subdirectory — link to the origin
+    if parsed.path.strip("/"):
+        return f"{parsed.scheme}://{host}"
+
     return ""
 
 
