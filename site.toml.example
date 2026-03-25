@@ -4,6 +4,9 @@
 title       = "~/tools"
 description = "Tools & Projects"
 footer      = 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>'
+# base_url is used for absolute URLs in the Atom feed (no trailing slash).
+# Required for feed entries to link correctly when consumed by feed readers.
+base_url    = "https://example.github.io/toolhub"
 
 [sections]
 active    = "Active projects"

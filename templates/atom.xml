@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title | e }}</title>
+  <subtitle>{{ site.description | e }}</subtitle>
+  <id>{{ site.base_url }}/</id>
+  <link rel="alternate" type="text/html" href="{{ site.base_url }}/"/>
+  <link rel="self" type="application/atom+xml" href="{{ site.base_url }}/atom.xml"/>
+  {% if projects %}<updated>{{ projects[0].updated_at }}</updated>{% endif %}
+  {% for project in projects %}
+  <entry>
+    <title>{{ project.name | e }}</title>
+    <id>{{ site.base_url }}/{{ project.slug }}/</id>
+    <link rel="alternate" type="text/html" href="{{ site.base_url }}/{{ project.slug }}/"/>
+    <updated>{{ project.updated_at }}</updated>
+    {% if project.description %}<summary>{{ project.description | e }}</summary>{% endif %}
+    {% for tag in project.get('tags', []) %}<category term="{{ tag | e }}"/>
+    {% endfor %}
+  </entry>
+  {% endfor %}
+</feed>

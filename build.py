@@ -77,6 +77,7 @@ _SITE_DEFAULTS: dict = {
     "title": "~/tools",
     "description": "Tools & Projects",
     "footer": 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>',
+    "base_url": "",
     "sections": {
         "active": "Active projects",
         "archived": "Archived",
@@ -281,6 +282,16 @@ def build(
     index_template = env.get_template("index.html")
     rendered_index = index_template.render(projects=enriched_projects)
     (OUTPUT_DIR / "index.html").write_text(rendered_index, encoding="utf-8")
+
+    # Generate Atom feed (active + pinned projects only, not archived)
+    feed_projects = [p for p in enriched_projects if not p.get("archived")]
+    try:
+        feed_template = env.get_template("atom.xml")
+        rendered_feed = feed_template.render(projects=feed_projects)
+        (OUTPUT_DIR / "atom.xml").write_text(rendered_feed, encoding="utf-8")
+        print(f"  Feed: {len(feed_projects)} entries → {OUTPUT_DIR}/atom.xml")
+    except Exception as exc:
+        print(f"  [warn] Could not render atom.xml: {exc}")
 
     print(f"\nBuilt {len(projects)} project pages → {OUTPUT_DIR}/")
 
