@@ -24,6 +24,7 @@ Output:
     output/           — ready to deploy to GitHub Pages
 """
 
+import json
 import os
 import shutil
 import sys
@@ -124,15 +125,24 @@ def _gist_raw_url(client: httpx.Client, project: dict) -> str:
 
 
 def get_portfolio(client: httpx.Client, project: dict) -> dict:
-    """Fetch portfolio.toml for a project, returning {} if not present."""
+    """Fetch portfolio.toml for a project, using cache if fresh enough."""
+    import json
+    CACHE_DIR.mkdir(exist_ok=True)
+    cache_file = CACHE_DIR / f"{project['name']}.portfolio.json"
+
+    if not is_stale(cache_file, CACHE_TTL_HOURS):
+        return json.loads(cache_file.read_text(encoding="utf-8"))
+
     if project["type"] == "repo":
-        return fetch_repo_portfolio(client, USERNAME, project["name"])
+        data = fetch_repo_portfolio(client, USERNAME, project["name"])
     else:
-        # Fetch the full gist object to pass to fetch_gist_portfolio
         from lib.github import BASE_URL
         response = client.get(f"{BASE_URL}/gists/{project['gist_id']}")
         response.raise_for_status()
-        return fetch_gist_portfolio(client, response.json())
+        data = fetch_gist_portfolio(client, response.json())
+
+    cache_file.write_text(json.dumps(data), encoding="utf-8")
+    return data
 
 
 # --------------------------------------------------------------------------- #
