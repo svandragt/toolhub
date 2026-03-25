@@ -117,7 +117,29 @@ tags = ["python", "cli"]
 
 See `portfolio.toml.example` for a full reference.
 
-### 6. Build the site locally
+### 6. Customise branding (optional)
+
+By default the site uses the built-in branding (`~/tools`, `Tools & Projects`, etc.).
+To change it, copy `site.toml.example` to `site.toml` and edit:
+
+```bash
+cp site.toml.example site.toml
+```
+
+`site.toml` is gitignored — it's your instance config. CI builds without it and
+falls back to the defaults, so **you only need this file if you want to change the
+branding or use a custom theme**.
+
+To use a custom theme, point `theme.templates_dir` and `theme.static_dir` at your
+own directories:
+
+```toml
+[theme]
+templates_dir = "my-theme/templates"
+static_dir    = "my-theme/static"
+```
+
+### 7. Build the site locally
 
 ```bash
 uv run build.py
@@ -125,7 +147,7 @@ uv run build.py
 
 Open `output/index.html` in your browser to preview.
 
-### 7. Deploy to GitHub Pages
+### 8. Deploy to GitHub Pages
 
 **First-time setup:**
 
@@ -135,6 +157,9 @@ Open `output/index.html` in your browser to preview.
 3. Go to **Settings → Pages** and set the source to the `gh-pages` branch.
 
 From then on, every push to `main` triggers a rebuild and deploy automatically. You can also trigger it manually from the **Actions** tab.
+
+> **Note:** CI builds without `site.toml` and uses the default branding. If you want
+> your customised branding on the deployed site, commit your `site.toml` to the repo.
 
 ---
 
