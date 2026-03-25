@@ -8,6 +8,14 @@ footer      = 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub<
 # Required for feed entries to link correctly when consumed by feed readers.
 base_url    = "https://example.github.io/toolhub"
 
+# URL of this toolhub site — used to auto-detect a backlink to the parent domain.
+# e.g. if site_url = "https://tools.example.com", back_link_url defaults to "https://example.com"
+site_url = ""
+
+[navigation]
+back_link_url   = ""      # leave empty to auto-derive from site_url, or set explicitly
+back_link_label = "Home"
+
 [sections]
 active    = "Active projects"
 archived  = "Archived"

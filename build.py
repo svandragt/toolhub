@@ -78,6 +78,11 @@ _SITE_DEFAULTS: dict = {
     "description": "Tools & Projects",
     "footer": 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>',
     "base_url": "",
+    "site_url": "",
+    "navigation": {
+        "back_link_url": "",
+        "back_link_label": "Home",
+    },
     "sections": {
         "active": "Active projects",
         "archived": "Archived",
@@ -100,12 +105,27 @@ def _deep_merge(base: dict, override: dict) -> dict:
     return result
 
 
+def _derive_parent_url(site_url: str) -> str:
+    """If site_url is on a subdomain, return the parent domain URL."""
+    from urllib.parse import urlparse
+    parsed = urlparse(site_url)
+    host = parsed.hostname or ""
+    parts = host.split(".")
+    if len(parts) > 2:
+        return f"{parsed.scheme}://{'.'.join(parts[1:])}"
+    return ""
+
+
 def load_site_config() -> dict:
     """Load site.toml if present, merging with defaults."""
     if not SITE_FILE.exists():
-        return _deep_merge({}, _SITE_DEFAULTS)
-    with SITE_FILE.open("rb") as f:
-        return _deep_merge(_deep_merge({}, _SITE_DEFAULTS), tomllib.load(f))
+        config = _deep_merge({}, _SITE_DEFAULTS)
+    else:
+        with SITE_FILE.open("rb") as f:
+            config = _deep_merge(_deep_merge({}, _SITE_DEFAULTS), tomllib.load(f))
+    if not config["navigation"]["back_link_url"] and config.get("site_url"):
+        config["navigation"]["back_link_url"] = _derive_parent_url(config["site_url"])
+    return config
 
 
 # --------------------------------------------------------------------------- #
