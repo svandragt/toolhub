@@ -140,12 +140,19 @@ static_dir    = &quot;my-theme/static&quot;
 <p><strong>First-time setup:</strong></p>
 <ol>
 <li>Push this repo to GitHub.</li>
-<li>Go to your repo <strong>Settings → Secrets and variables → Actions → Variables</strong> and add:
+<li>Go to your repo <strong>Settings → Secrets and variables → Actions → Secrets</strong> and add:
+<ul>
+<li><code>GH_TOKEN</code> = a personal access token with <code>public_repo</code> and <code>read:user</code> scopes</li>
+</ul>
+</li>
+<li>Go to <strong>Settings → Secrets and variables → Actions → Variables</strong> and add:
 <ul>
 <li><code>GH_USERNAME</code> = your GitHub username</li>
+<li><code>CUSTOM_DOMAIN</code> = your custom domain e.g. <code>tools.example.com</code> (optional — leave unset to use the default <code>username.github.io</code> URL)</li>
 </ul>
 </li>
 <li>Go to <strong>Settings → Pages</strong> and set the source to the <code>gh-pages</code> branch.</li>
+<li>If using a custom domain, add a DNS CNAME record pointing your subdomain at <code>your-username.github.io.</code></li>
 </ol>
 <p>From then on, every push to <code>main</code> triggers a rebuild and deploy automatically. You can also trigger it manually from the <strong>Actions</strong> tab.</p>
 <blockquote>
@@ -172,11 +179,18 @@ the remote in sync with your build.</p>
 | Refresh README content | Cache expires per <code>CACHE_TTL_HOURS</code>, or push to trigger CI |</p>
 <hr />
 <h2>Configuration reference</h2>
+<h3><code>.env</code> (local)</h3>
 <p>| Variable | Default | Description |
 |---|---|---|
-| <code>GITHUB_TOKEN</code> | — | GitHub personal access token |
+| <code>GITHUB_TOKEN</code> | — | Personal access token (<code>public_repo</code>, <code>read:user</code> scopes) |
 | <code>GH_USERNAME</code> | — | Your GitHub username |
-| <code>CACHE_TTL_HOURS</code> | <code>1.0</code> | Hours before a cached README is re-fetched. Set to <code>0</code> to always re-fetch. |</p>
+| <code>CACHE_TTL_HOURS</code> | <code>1.0</code> | Hours before cached content is re-fetched. Set to <code>0</code> to always re-fetch. |</p>
+<h3>GitHub Actions (repo settings)</h3>
+<p>| Secret / Variable | Description |
+|---|---|
+| <code>GH_TOKEN</code> <em>(secret)</em> | Personal access token — same scopes as above |
+| <code>GH_USERNAME</code> <em>(variable)</em> | Your GitHub username |
+| <code>CUSTOM_DOMAIN</code> <em>(variable, optional)</em> | Custom domain for GitHub Pages e.g. <code>tools.example.com</code> |</p>
 <hr />
 <h2>Constraints &amp; known limitations</h2>
 <p>| Constraint | Detail |
