@@ -164,7 +164,7 @@ static_dir    = &quot;my-theme/static&quot;
 <li>Go to <strong>Settings → Secrets and variables → Actions → Variables</strong> and add:
 <ul>
 <li><code>GH_USERNAME</code> = your GitHub username</li>
-<li><code>CUSTOM_DOMAIN</code> = your custom domain e.g. <code>tools.example.com</code> (optional — leave unset to use the default <code>username.github.io</code> URL)</li>
+<li><code>CUSTOM_DOMAIN</code> = your custom domain e.g. <code>tools.example.com</code> (optional — omit to use the default <code>username.github.io</code> URL)</li>
 </ul>
 </li>
 <li>Go to <strong>Settings → Pages</strong> and set the source to the <code>gh-pages</code> branch.</li>
@@ -206,7 +206,7 @@ the remote in sync with your build.</p>
 |---|---|
 | <code>GH_TOKEN</code> <em>(secret)</em> | Personal access token — same scopes as above |
 | <code>GH_USERNAME</code> <em>(variable)</em> | Your GitHub username |
-| <code>CUSTOM_DOMAIN</code> <em>(variable, optional)</em> | Custom domain for GitHub Pages e.g. <code>tools.example.com</code> |</p>
+| <code>CUSTOM_DOMAIN</code> <em>(variable, optional)</em> | Custom domain e.g. <code>tools.example.com</code> — omit for default <code>username.github.io</code> |</p>
 <hr />
 <h2>Constraints &amp; known limitations</h2>
 <p>| Constraint | Detail |
