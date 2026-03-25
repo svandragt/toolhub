@@ -89,7 +89,9 @@ CACHE_TTL_HOURS=1.0
 uv run bootstrap.py
 ```
 
-This generates `projects.yaml` from your public repos and gists. Open it and remove any entries you don't want in the portfolio.
+This generates `projects.yaml` from your public repos and gists.
+
+To permanently exclude repos or gists, create an `exclude.txt` (one repo name or gist ID per line, `#` for comments) before running bootstrap. See `exclude.txt.example`.
 
 ### 5. Add `portfolio.toml` to your projects
 
