@@ -13,6 +13,10 @@ import httpx
 
 BASE_URL = "https://api.github.com"
 
+# Bump this when bootstrap produces new required fields.
+# build.py will exit with a helpful message if projects.yaml is behind.
+BOOTSTRAP_VERSION = 1
+
 
 # --------------------------------------------------------------------------- #
 # Client

@@ -42,6 +42,7 @@ if not Path("lib/github.py").exists():
     sys.exit("ERROR: Run this script from the repo root directory.")
 
 from lib.github import (
+    BOOTSTRAP_VERSION,
     fetch_gist_portfolio,
     fetch_gist_readme,
     fetch_pinned_names,
@@ -164,6 +165,13 @@ def load_projects() -> list[dict]:
     """Read and return the list of projects from projects.yaml."""
     yaml = YAML()
     data = yaml.load(PROJECTS_FILE)
+    file_version = data.get("version", 0)
+    if file_version < BOOTSTRAP_VERSION:
+        sys.exit(
+            f"ERROR: projects.yaml is at version {file_version}, "
+            f"but version {BOOTSTRAP_VERSION} is required.\n"
+            "Re-run: uv run bootstrap.py"
+        )
     return data["projects"]
 
 

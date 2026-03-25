@@ -34,6 +34,7 @@ from dotenv import load_dotenv
 from ruamel.yaml import YAML
 
 from lib.github import (
+    BOOTSTRAP_VERSION,
     extract_topics,
     fetch_gist_portfolio,
     fetch_repo_portfolio,
@@ -165,7 +166,7 @@ def write_yaml(entries: list[dict]) -> None:
     yaml.default_flow_style = False
     yaml.indent(mapping=2, sequence=4, offset=2)
 
-    data = {"projects": entries}
+    data = {"version": BOOTSTRAP_VERSION, "projects": entries}
 
     with OUTPUT_FILE.open("w") as f:
         f.write("# projects.yaml — curated list of tools and projects\n")

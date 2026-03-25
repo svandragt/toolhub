@@ -17,6 +17,12 @@ Two scripts, both run with `uv run` (PEP 723 inline deps — no venv setup neede
 | `.cache/` | Gitignored — cached READMEs (`.md`) and portfolio data (`.portfolio.json`) |
 | `output/` | Gitignored — generated site, deployed to gh-pages |
 
+## Cache versioning
+`BOOTSTRAP_VERSION` in `lib/github.py` gates `projects.yaml` compatibility.
+Bump it whenever bootstrap produces new required fields. `build.py` will exit with
+a "re-run bootstrap" message if the file's version is behind.
+Current version: **1** (added `archived`, `updated_at`, `homepage`).
+
 ## GitHub API notes
 - REST: `/user/repos` for repos, `/users/{username}/gists` for public gists only
 - GraphQL: `POST /graphql` used to fetch pinned items (up to 6)
