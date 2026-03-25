@@ -146,6 +146,39 @@ def fetch_gist_portfolio(client: httpx.Client, gist: dict) -> dict[str, Any]:
 
 
 # --------------------------------------------------------------------------- #
+# Pinned items
+# --------------------------------------------------------------------------- #
+
+_PINNED_QUERY = """
+query($login: String!) {
+  user(login: $login) {
+    pinnedItems(first: 6, types: [REPOSITORY, GIST]) {
+      nodes {
+        ... on Repository { name }
+        ... on Gist { name }
+      }
+    }
+  }
+}
+"""
+
+def fetch_pinned_names(client: httpx.Client, username: str) -> set[str]:
+    """
+    Return the names of a user's pinned repos and gists via the GraphQL API.
+    For repos the name is the repo name; for gists it's the gist ID.
+    Returns an empty set if the query fails.
+    """
+    response = client.post(
+        f"{BASE_URL}/graphql",
+        json={"query": _PINNED_QUERY, "variables": {"login": username}},
+    )
+    response.raise_for_status()
+    data = response.json()
+    nodes = data.get("data", {}).get("user", {}).get("pinnedItems", {}).get("nodes", [])
+    return {node["name"] for node in nodes if node.get("name")}
+
+
+# --------------------------------------------------------------------------- #
 # Topics (tags)
 # --------------------------------------------------------------------------- #
 

@@ -44,6 +44,7 @@ if not Path("lib/github.py").exists():
 from lib.github import (
     fetch_gist_portfolio,
     fetch_gist_readme,
+    fetch_pinned_names,
     fetch_repo_portfolio,
     fetch_repo_readme,
     make_client,
@@ -170,7 +171,7 @@ def load_projects() -> list[dict]:
 # Build site
 # --------------------------------------------------------------------------- #
 
-def build(projects: list[dict], client: httpx.Client) -> None:
+def build(projects: list[dict], client: httpx.Client, pinned: set[str] | None = None) -> None:
     """Render the full static site into output/."""
     if OUTPUT_DIR.exists():
         shutil.rmtree(OUTPUT_DIR)
@@ -184,13 +185,16 @@ def build(projects: list[dict], client: httpx.Client) -> None:
         autoescape=select_autoescape(["html"]),
     )
 
+    pinned = pinned or set()
     enriched_projects = []
 
     project_template = env.get_template("project.html")
     for project in projects:
         # Merge portfolio.toml fields into the project dict
         portfolio = get_portfolio(client, project)
-        enriched = {**project, **portfolio}
+        # A project is pinned by repo name or gist ID
+        pin_key = project["name"] if project["type"] == "repo" else project.get("gist_id", "")
+        enriched = {**project, **portfolio, "pinned": pin_key in pinned}
         enriched_projects.append(enriched)
 
         readme_md = get_readme(client, project)
@@ -204,6 +208,8 @@ def build(projects: list[dict], client: httpx.Client) -> None:
             readme_html=readme_html,
         )
         (page_dir / "index.html").write_text(rendered, encoding="utf-8")
+
+    enriched_projects.sort(key=lambda p: not p["pinned"])
 
     index_template = env.get_template("index.html")
     rendered_index = index_template.render(projects=enriched_projects)
@@ -228,9 +234,13 @@ def main() -> None:
     print(f"  Found {len(projects)} projects")
     print(f"  Cache TTL: {CACHE_TTL_HOURS}h")
 
-    print("\nFetching READMEs and portfolio metadata...")
+    print("\nFetching pinned items...")
     with make_client(TOKEN) as client:
-        build(projects, client)
+        pinned = fetch_pinned_names(client, USERNAME)
+        print(f"  Pinned: {', '.join(sorted(pinned)) or 'none'}")
+
+        print("\nFetching READMEs and portfolio metadata...")
+        build(projects, client, pinned)
 
 
 if __name__ == "__main__":

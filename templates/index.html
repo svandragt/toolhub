@@ -8,8 +8,43 @@
   <p>{{ projects | length }} projects</p>
 </div>
 
+{% set pinned_projects = projects | selectattr("pinned") | list %}
+{% set other_projects = projects | rejectattr("pinned") | list %}
+
+{% if pinned_projects %}
+<h2 class="section-heading">Pinned</h2>
+<div class="project-grid project-grid--pinned">
+  {% for project in pinned_projects %}
+  <div class="project-card project-card--pinned">
+    <div class="project-card__name">
+      <span class="pin-icon" title="Pinned">&#9679;</span>
+      <a href="{{ project.name }}/index.html">{{ project.name }}</a>
+    </div>
+    {% if project.description %}
+    <div class="project-card__desc">{{ project.description }}</div>
+    {% endif %}
+    <div class="project-card__meta">
+      <span class="badge badge--type">{{ project.type }}</span>
+      {% for tag in project.tags %}
+      <span class="badge">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% if project.live_url or project.docs_url or project.repo_url or project.gist_url %}
+    <div class="project-card__links">
+      {% if project.live_url %}<a href="{{ project.live_url }}">&#8599; live</a>{% endif %}
+      {% if project.docs_url %}<a href="{{ project.docs_url }}">&#8599; docs</a>{% endif %}
+      {% if project.repo_url %}<a href="{{ project.repo_url }}">&#8599; repo</a>
+      {% elif project.gist_url %}<a href="{{ project.gist_url }}">&#8599; gist</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+<h2 class="section-heading">All projects</h2>
+{% endif %}
+
 <div class="project-grid">
-  {% for project in projects %}
+  {% for project in (other_projects if pinned_projects else projects) %}
   <div class="project-card">
     <div class="project-card__name">
       <a href="{{ project.name }}/index.html">{{ project.name }}</a>

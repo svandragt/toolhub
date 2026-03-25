@@ -117,6 +117,29 @@ main {
   transition: box-shadow .15s, border-color .15s;
 }
 
+.section-heading {
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin: 1.75rem 0 .75rem;
+}
+
+.section-heading:first-child { margin-top: 0; }
+
+.project-card--pinned {
+  border-color: #c7d7f9;
+  background: #fafbff;
+}
+
+.pin-icon {
+  color: var(--accent);
+  font-size: .5rem;
+  vertical-align: middle;
+  margin-right: .3em;
+}
+
 .project-card:hover {
   box-shadow: 0 2px 12px rgba(0,0,0,.07);
   border-color: #ccc;
