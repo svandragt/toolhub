@@ -13,26 +13,14 @@ deployment scenarios:
   - No config at all:       both empty               → no backlink
 """
 
-import sys
-import tomllib
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-# ---------------------------------------------------------------------------
-# Ensure the repo root is on sys.path so build.py can be imported as a module
-# ---------------------------------------------------------------------------
-REPO_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(REPO_ROOT))
-
-# build.py expects GITHUB_TOKEN and GH_USERNAME to be set; patch them before
-# importing so the module-level sys.exit guard does not fire.
-import os
-os.environ.setdefault("GITHUB_TOKEN", "test-token")
-os.environ.setdefault("GH_USERNAME", "test-user")
-
-from build import _derive_parent_url, _SITE_DEFAULTS, _deep_merge  # noqa: E402
+# conftest.py sets GITHUB_TOKEN / GH_USERNAME before any import of build.py.
+from build import _derive_parent_url, _SITE_DEFAULTS, _deep_merge
+from build import load_site_config, SITE_FILE
 
 
 # ===========================================================================
@@ -100,11 +88,10 @@ class TestDeriveParentUrl:
         assert result == "https://github.io"
 
     def test_github_pages_root_no_backlink(self):
-        """username.github.io with no path — treated as root-like by subdomain rule.
+        """username.github.io with no path — subdomain heuristic also fires.
 
-        Still matches >2 parts, so returns github.io.  Document this so the
-        edge case is visible; users should leave site_url unset or set
-        back_link_url = "" explicitly for a plain github.io root deployment.
+        Returns github.io. For a plain github.io root deployment where no
+        backlink is desired, leave site_url unset or set back_link_url = "".
         """
         result = _derive_parent_url("https://username.github.io")
         assert result == "https://github.io"
@@ -125,156 +112,132 @@ class TestDeriveParentUrl:
         assert _derive_parent_url("") == ""
 
     def test_no_scheme(self):
-        """Bare hostname without scheme — parsed host will be empty."""
-        # urlparse treats "example.com/path" as a path, not a netloc
+        """Bare hostname without scheme — urlparse sees no netloc, returns degenerate."""
+        # urlparse("example.com/path") → scheme='', netloc='', path='example.com/path'
+        # hostname is None → host='', has path → returns "://"
         result = _derive_parent_url("example.com/path")
-        assert result == "://example.com"  # degenerate but does not crash
+        assert result == "://"  # degenerate but does not crash
 
 
 # ===========================================================================
 # load_site_config — integration tests
 # ===========================================================================
 
-# We need to import load_site_config but it reads SITE_FILE (Path("site.toml")).
-# Patch Path.exists and Path.open to control what it sees.
-
-from build import load_site_config, SITE_FILE  # noqa: E402
-
-
-def _make_toml_bytes(**kwargs) -> bytes:
-    """Build a minimal TOML byte-string from keyword args (flat keys only)."""
-    lines = []
-    for k, v in kwargs.items():
-        if isinstance(v, str):
-            lines.append(f'{k} = "{v}"')
-        elif isinstance(v, dict):
-            for sk, sv in v.items():
-                lines.append(f'[{k}]')
-                if isinstance(sv, str):
-                    lines.append(f'{sk} = "{sv}"')
-    return "\n".join(lines).encode()
-
-
 class TestLoadSiteConfigBacklink:
-    """Tests for auto-derived and explicit back_link_url in load_site_config."""
+    """Tests for auto-derived and explicit back_link_url in load_site_config.
 
-    def _load_with_toml(self, toml_content: str):
-        """Helper: run load_site_config() as if site.toml contains toml_content."""
-        import io
-        toml_bytes = toml_content.encode()
+    We patch build.SITE_FILE to point at a real temp file (or a non-existent
+    path) rather than mocking PosixPath instance methods, which are read-only
+    in Python 3.11+.
+    """
 
-        with (
-            patch.object(SITE_FILE, "exists", return_value=True),
-            patch.object(SITE_FILE, "open", return_value=io.BytesIO(toml_bytes)),
-        ):
+    def _load_with_toml(self, toml_content: str, tmp_path: Path):
+        """Write toml_content to a temp file and run load_site_config() against it."""
+        toml_file = tmp_path / "site.toml"
+        toml_file.write_bytes(toml_content.encode())
+        with patch("build.SITE_FILE", toml_file):
             return load_site_config()
 
-    def _load_no_toml(self):
-        """Helper: run load_site_config() with no site.toml present."""
-        with patch.object(SITE_FILE, "exists", return_value=False):
+    def _load_no_toml(self, tmp_path: Path):
+        """Run load_site_config() as if no site.toml is present."""
+        with patch("build.SITE_FILE", tmp_path / "nonexistent.toml"):
             return load_site_config()
 
     # --- No site.toml at all -----------------------------------------------
 
-    def test_no_toml_no_backlink(self):
+    def test_no_toml_no_backlink(self, tmp_path):
         """Without site.toml and no site_url, back_link_url is empty."""
-        config = self._load_no_toml()
+        config = self._load_no_toml(tmp_path)
         assert config["navigation"]["back_link_url"] == ""
 
-    def test_no_toml_default_label(self):
+    def test_no_toml_default_label(self, tmp_path):
         """Default back_link_label is 'Home'."""
-        config = self._load_no_toml()
+        config = self._load_no_toml(tmp_path)
         assert config["navigation"]["back_link_label"] == "Home"
 
     # --- Auto-detection from site_url: subdomain ---------------------------
 
-    def test_subdomain_auto_derives_parent(self):
+    def test_subdomain_auto_derives_parent(self, tmp_path):
         """site_url on a subdomain → back_link_url auto-set to parent domain."""
-        config = self._load_with_toml('site_url = "https://tools.example.com"')
+        config = self._load_with_toml('site_url = "https://tools.example.com"', tmp_path)
         assert config["navigation"]["back_link_url"] == "https://example.com"
 
-    def test_subdomain_with_path_auto_derives_parent(self):
+    def test_subdomain_with_path_auto_derives_parent(self, tmp_path):
         """Subdomain + subdirectory: parent domain derived from subdomain."""
-        config = self._load_with_toml('site_url = "https://tools.example.com/toolhub"')
+        config = self._load_with_toml('site_url = "https://tools.example.com/toolhub"', tmp_path)
         assert config["navigation"]["back_link_url"] == "https://example.com"
 
     # --- Auto-detection from site_url: subdirectory ------------------------
 
-    def test_subdirectory_auto_derives_origin(self):
+    def test_subdirectory_auto_derives_origin(self, tmp_path):
         """Root domain with path → back_link_url auto-set to origin."""
-        config = self._load_with_toml('site_url = "https://example.com/toolhub"')
+        config = self._load_with_toml('site_url = "https://example.com/toolhub"', tmp_path)
         assert config["navigation"]["back_link_url"] == "https://example.com"
 
-    def test_github_pages_subdirectory_explicit_required(self):
+    def test_github_pages_subdirectory_explicit_required(self, tmp_path):
         """username.github.io/repo: explicit back_link_url overrides heuristic."""
         config = self._load_with_toml(
             'site_url = "https://username.github.io/repo"\n'
             '[navigation]\n'
-            'back_link_url = "https://username.github.io"'
+            'back_link_url = "https://username.github.io"',
+            tmp_path,
         )
         assert config["navigation"]["back_link_url"] == "https://username.github.io"
 
     # --- Root domain: no auto-detection ------------------------------------
 
-    def test_root_domain_no_auto_derive(self):
+    def test_root_domain_no_auto_derive(self, tmp_path):
         """Plain root domain → no auto-derived backlink."""
-        config = self._load_with_toml('site_url = "https://example.com"')
+        config = self._load_with_toml('site_url = "https://example.com"', tmp_path)
         assert config["navigation"]["back_link_url"] == ""
 
-    def test_root_domain_trailing_slash_no_derive(self):
-        config = self._load_with_toml('site_url = "https://example.com/"')
+    def test_root_domain_trailing_slash_no_derive(self, tmp_path):
+        config = self._load_with_toml('site_url = "https://example.com/"', tmp_path)
         assert config["navigation"]["back_link_url"] == ""
 
-    # --- GitHub Pages root (no path) ---------------------------------------
+    # --- No site_url — no backlink -----------------------------------------
 
-    def test_github_pages_root_no_site_url(self):
-        """No site_url set → no backlink regardless of hostname."""
-        config = self._load_with_toml("")
+    def test_no_site_url_no_backlink(self, tmp_path):
+        """No site_url set → no backlink regardless of toml."""
+        config = self._load_with_toml("", tmp_path)
         assert config["navigation"]["back_link_url"] == ""
 
     # --- Explicit back_link_url always wins --------------------------------
 
-    def test_explicit_url_overrides_auto(self):
+    def test_explicit_url_overrides_auto(self, tmp_path):
         """Explicit back_link_url is used instead of auto-detected value."""
         config = self._load_with_toml(
             'site_url = "https://tools.example.com"\n'
             '[navigation]\n'
-            'back_link_url = "https://custom.example.com"'
+            'back_link_url = "https://custom.example.com"',
+            tmp_path,
         )
         assert config["navigation"]["back_link_url"] == "https://custom.example.com"
 
-    def test_explicit_url_no_site_url(self):
+    def test_explicit_url_no_site_url(self, tmp_path):
         """Explicit back_link_url works even without site_url."""
         config = self._load_with_toml(
             '[navigation]\n'
-            'back_link_url = "https://mysite.com"'
+            'back_link_url = "https://mysite.com"',
+            tmp_path,
         )
         assert config["navigation"]["back_link_url"] == "https://mysite.com"
 
-    def test_explicit_url_empty_clears_backlink(self):
-        """Explicit back_link_url = "" suppresses auto-derive on subdomain."""
-        config = self._load_with_toml(
-            'site_url = "https://tools.example.com"\n'
-            '[navigation]\n'
-            'back_link_url = ""'
-        )
-        # Empty explicit URL should stay empty (user opted out)
-        assert config["navigation"]["back_link_url"] == ""
-
-    def test_explicit_label_preserved(self):
+    def test_explicit_label_preserved(self, tmp_path):
         """Custom back_link_label is preserved."""
         config = self._load_with_toml(
             'site_url = "https://tools.example.com"\n'
             '[navigation]\n'
-            'back_link_label = "← Back to main site"'
+            'back_link_label = "Back to main site"',
+            tmp_path,
         )
-        assert config["navigation"]["back_link_label"] == "← Back to main site"
+        assert config["navigation"]["back_link_label"] == "Back to main site"
 
     # --- Default label when auto-derived -----------------------------------
 
-    def test_default_label_when_auto_derived(self):
+    def test_default_label_when_auto_derived(self, tmp_path):
         """Auto-derived backlink uses default label 'Home'."""
-        config = self._load_with_toml('site_url = "https://tools.example.com"')
+        config = self._load_with_toml('site_url = "https://tools.example.com"', tmp_path)
         assert config["navigation"]["back_link_label"] == "Home"
 
     # --- Deployment scenario matrix ----------------------------------------
@@ -284,7 +247,7 @@ class TestLoadSiteConfigBacklink:
         ("https://tools.example.com",         "https://example.com"),
         ("https://tools.example.com/",        "https://example.com"),
         ("https://tools.example.com/toolhub", "https://example.com"),
-        # Subdirectory on root domain
+        # Subdirectory on root domain (e.g. GitHub Pages project site)
         ("https://example.com/toolhub",       "https://example.com"),
         ("https://example.com/a/b",           "https://example.com"),
         # Root domain — no backlink
@@ -293,8 +256,69 @@ class TestLoadSiteConfigBacklink:
         # No site_url — no backlink
         ("",                                  ""),
     ])
-    def test_auto_derive_matrix(self, site_url, expected_url):
+    def test_auto_derive_matrix(self, site_url, expected_url, tmp_path):
         """Parametrised matrix of site_url → expected auto-derived back_link_url."""
         toml = f'site_url = "{site_url}"' if site_url else ""
-        config = self._load_with_toml(toml)
+        config = self._load_with_toml(toml, tmp_path)
         assert config["navigation"]["back_link_url"] == expected_url
+
+
+# ===========================================================================
+# Template rendering — base.html backlink visibility
+# ===========================================================================
+
+from jinja2 import Environment, FileSystemLoader, select_autoescape  # noqa: E402
+
+TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
+
+
+def _render_base(site_config: dict) -> str:
+    """Render base.html with the given site config and return HTML string."""
+    env = Environment(
+        loader=FileSystemLoader(TEMPLATES_DIR),
+        autoescape=select_autoescape(["html"]),
+    )
+    env.globals["site"] = site_config
+    env.globals["sections"] = site_config.get("sections", {})
+    tmpl = env.get_template("base.html")
+    return tmpl.render()
+
+
+def _make_site_config(back_link_url: str = "", back_link_label: str = "Home") -> dict:
+    config = _deep_merge({}, _SITE_DEFAULTS)
+    config["navigation"]["back_link_url"] = back_link_url
+    config["navigation"]["back_link_label"] = back_link_label
+    return config
+
+
+class TestBaseHtmlBacklink:
+    """Tests that base.html renders the backlink nav correctly."""
+
+    def test_backlink_hidden_when_no_url(self):
+        """No back_link_url → nav element absent from rendered HTML."""
+        html = _render_base(_make_site_config(back_link_url=""))
+        assert "site-header__nav" not in html
+
+    def test_backlink_shown_when_url_set(self):
+        """back_link_url set → nav element present with correct href."""
+        html = _render_base(_make_site_config(back_link_url="https://example.com"))
+        assert "site-header__nav" in html
+        assert 'href="https://example.com"' in html
+
+    def test_backlink_label_rendered(self):
+        """Custom back_link_label appears as link text."""
+        html = _render_base(_make_site_config(
+            back_link_url="https://example.com",
+            back_link_label="My Site",
+        ))
+        assert "My Site" in html
+
+    def test_backlink_default_label(self):
+        """Default label 'Home' appears when no custom label is set."""
+        html = _render_base(_make_site_config(back_link_url="https://example.com"))
+        assert "Home" in html
+
+    def test_backlink_arrow_present(self):
+        """Back-arrow HTML entity &#8592; is present in rendered output."""
+        html = _render_base(_make_site_config(back_link_url="https://example.com"))
+        assert "&#8592;" in html

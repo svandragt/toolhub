@@ -98,8 +98,8 @@ _SITE_DEFAULTS: dict = {
 def _deep_merge(base: dict, override: dict) -> dict:
     result = {**base}
     for key, value in override.items():
-        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
-            result[key] = _deep_merge(result[key], value)
+        if isinstance(value, dict):
+            result[key] = _deep_merge(result.get(key, {}), value)
         else:
             result[key] = value
     return result

@@ -51,6 +51,7 @@ def _make_jinja_env(base_url: str = "") -> Environment:
         "base_url": base_url,
         "footer": "",
         "sections": {"active": "Active", "archived": "Archived", "back_link": "back"},
+        "navigation": {"back_link_url": "", "back_link_label": "Home"},
     }
     env.globals["sections"] = env.globals["site"]["sections"]
     return env
