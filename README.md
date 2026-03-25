@@ -152,9 +152,13 @@ Open `output/index.html` in your browser to preview.
 **First-time setup:**
 
 1. Push this repo to GitHub.
-2. Go to your repo **Settings → Secrets and variables → Actions → Variables** and add:
+2. Go to your repo **Settings → Secrets and variables → Actions → Secrets** and add:
+   - `GH_TOKEN` = a personal access token with `public_repo` and `read:user` scopes
+3. Go to **Settings → Secrets and variables → Actions → Variables** and add:
    - `GH_USERNAME` = your GitHub username
-3. Go to **Settings → Pages** and set the source to the `gh-pages` branch.
+   - `CUSTOM_DOMAIN` = your custom domain e.g. `tools.example.com` (optional — leave unset to use the default `username.github.io` URL)
+4. Go to **Settings → Pages** and set the source to the `gh-pages` branch.
+5. If using a custom domain, add a DNS CNAME record pointing your subdomain at `your-username.github.io.`
 
 From then on, every push to `main` triggers a rebuild and deploy automatically. You can also trigger it manually from the **Actions** tab.
 
@@ -194,11 +198,21 @@ the remote in sync with your build.
 
 ## Configuration reference
 
+### `.env` (local)
+
 | Variable | Default | Description |
 |---|---|---|
-| `GITHUB_TOKEN` | — | GitHub personal access token |
+| `GITHUB_TOKEN` | — | Personal access token (`public_repo`, `read:user` scopes) |
 | `GH_USERNAME` | — | Your GitHub username |
-| `CACHE_TTL_HOURS` | `1.0` | Hours before a cached README is re-fetched. Set to `0` to always re-fetch. |
+| `CACHE_TTL_HOURS` | `1.0` | Hours before cached content is re-fetched. Set to `0` to always re-fetch. |
+
+### GitHub Actions (repo settings)
+
+| Secret / Variable | Description |
+|---|---|
+| `GH_TOKEN` *(secret)* | Personal access token — same scopes as above |
+| `GH_USERNAME` *(variable)* | Your GitHub username |
+| `CUSTOM_DOMAIN` *(variable, optional)* | Custom domain for GitHub Pages e.g. `tools.example.com` |
 
 ---
 
