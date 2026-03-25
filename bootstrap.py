@@ -125,6 +125,8 @@ def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
         "repo_url": repo["html_url"],
         "description": repo["description"] or "",
         "tags": topics,
+        "updated_at": repo.get("pushed_at") or repo.get("updated_at", ""),
+        "archived": bool(repo.get("archived")),
     }
     if repo.get("homepage"):
         entry["homepage"] = repo["homepage"]
@@ -150,6 +152,7 @@ def gist_to_entry(client: httpx.Client, gist: dict) -> dict:
         "md_file": md_file,
         "description": gist["description"] or "",
         "tags": portfolio.get("tags", []),
+        "updated_at": gist.get("updated_at", ""),
     }
 
 
@@ -196,6 +199,14 @@ def main() -> None:
         print("Fetching gists (filtering to .md only)...")
         gists = fetch_gists(client)
         gists = [g for g in gists if g["id"] not in exclusions]
+        # Deduplicate by gist ID (pagination can return duplicates)
+        seen_ids: set[str] = set()
+        deduped = []
+        for g in gists:
+            if g["id"] not in seen_ids:
+                seen_ids.add(g["id"])
+                deduped.append(g)
+        gists = deduped
         print(f"  Found {len(gists)} gists with .md files\n")
 
         print("Building entries (fetching portfolio.toml where present)...")

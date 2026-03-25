@@ -117,6 +117,96 @@ main {
   transition: box-shadow .15s, border-color .15s;
 }
 
+/* ------------------------------------------------------------------ */
+/* Filter bar                                                           */
+/* ------------------------------------------------------------------ */
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: .6rem .9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .8rem;
+}
+
+.filter-bar__label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.filter-group {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+.filter-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  padding: .25em .65em;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  cursor: pointer;
+  user-select: none;
+  font-size: .75rem;
+  transition: border-color .1s, background .1s;
+}
+
+.filter-chip:hover { border-color: var(--accent); }
+
+.filter-chip input {
+  width: 12px;
+  height: 12px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* Table of contents                                                    */
+/* ------------------------------------------------------------------ */
+
+.toc {
+  display: flex;
+  gap: .25rem;
+  margin-bottom: 1.25rem;
+}
+
+.toc__link {
+  font-size: .75rem;
+  font-family: var(--font-mono);
+  padding: .3em .8em;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface);
+  transition: border-color .1s, color .1s;
+}
+
+.toc__link:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+/* ------------------------------------------------------------------ */
+/* Sections                                                             */
+/* ------------------------------------------------------------------ */
+
+.project-section { margin-bottom: 2rem; }
+
 .section-heading {
   font-size: .7rem;
   font-family: var(--font-mono);

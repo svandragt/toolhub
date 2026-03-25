@@ -209,7 +209,16 @@ def build(projects: list[dict], client: httpx.Client, pinned: set[str] | None = 
         )
         (page_dir / "index.html").write_text(rendered, encoding="utf-8")
 
-    enriched_projects.sort(key=lambda p: not p["pinned"])
+    def section_order(p: dict) -> int:
+        if p.get("pinned"):
+            return 0
+        if p.get("archived"):
+            return 2
+        return 1
+
+    # Sort by recency descending first (stable), then by section (stable)
+    enriched_projects.sort(key=lambda p: p.get("updated_at", ""), reverse=True)
+    enriched_projects.sort(key=section_order)
 
     index_template = env.get_template("index.html")
     rendered_index = index_template.render(projects=enriched_projects)

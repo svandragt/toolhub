@@ -3,80 +3,117 @@
 {% block title %}Tools &amp; Projects{% endblock %}
 
 {% block content %}
+{% set pinned_projects  = projects | selectattr("pinned")   | list %}
+{% set active_projects  = projects | rejectattr("pinned") | rejectattr("archived") | list %}
+{% set archived_projects = projects | rejectattr("pinned") | selectattr("archived") | list %}
+{% set section_count = (1 if pinned_projects else 0) + (1 if active_projects else 0) + (1 if archived_projects else 0) %}
+
 <div class="page-heading">
   <h1>Tools &amp; Projects</h1>
   <p>{{ projects | length }} projects</p>
 </div>
 
-{% set pinned_projects = projects | selectattr("pinned") | list %}
-{% set other_projects = projects | rejectattr("pinned") | list %}
-
-{% if pinned_projects %}
-<h2 class="section-heading">Pinned</h2>
-<div class="project-grid project-grid--pinned">
-  {% for project in pinned_projects %}
-  <div class="project-card project-card--pinned">
-    <div class="project-card__name">
-      <span class="pin-icon" title="Pinned">&#9679;</span>
-      <a href="{{ project.name }}/index.html">{{ project.name }}</a>
-    </div>
-    {% if project.description %}
-    <div class="project-card__desc">{{ project.description }}</div>
-    {% endif %}
-    <div class="project-card__meta">
-      <span class="badge badge--type">{{ project.type }}</span>
-      {% for tag in project.tags %}
-      <span class="badge">{{ tag }}</span>
-      {% endfor %}
-    </div>
-    {% if project.live_url or project.docs_url or project.repo_url or project.gist_url %}
-    <div class="project-card__links">
-      {% if project.live_url %}<a href="{{ project.live_url }}">&#8599; live</a>{% endif %}
-      {% if project.docs_url %}<a href="{{ project.docs_url }}">&#8599; docs</a>{% endif %}
-      {% if project.repo_url %}<a href="{{ project.repo_url }}">&#8599; repo</a>
-      {% elif project.gist_url %}<a href="{{ project.gist_url }}">&#8599; gist</a>{% endif %}
-    </div>
-    {% endif %}
+<div class="filter-bar">
+  <span class="filter-bar__label">Show</span>
+  <div class="filter-group">
+    <label class="filter-chip"><input type="checkbox" name="type" value="repo" checked> Repos</label>
+    <label class="filter-chip"><input type="checkbox" name="type" value="gist" checked> Gists</label>
   </div>
-  {% endfor %}
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    {% if pinned_projects  %}<label class="filter-chip"><input type="checkbox" name="section" value="pinned"   checked> Pinned</label>{% endif %}
+    {% if active_projects  %}<label class="filter-chip"><input type="checkbox" name="section" value="active"   checked> Active</label>{% endif %}
+    {% if archived_projects %}<label class="filter-chip"><input type="checkbox" name="section" value="archived" checked> Archived</label>{% endif %}
+  </div>
 </div>
-<h2 class="section-heading">All projects</h2>
+
+{% if section_count >= 2 and projects | length > 15 %}
+<nav class="toc">
+  {% if pinned_projects  %}<a class="toc__link" href="#sec-pinned">Pinned</a>{% endif %}
+  {% if active_projects  %}<a class="toc__link" href="#sec-active">Active projects</a>{% endif %}
+  {% if archived_projects %}<a class="toc__link" href="#sec-archived">Archived</a>{% endif %}
+</nav>
 {% endif %}
 
-<div class="project-grid">
-  {% for project in (other_projects if pinned_projects else projects) %}
-  <div class="project-card">
-    <div class="project-card__name">
-      <a href="{{ project.name }}/index.html">{{ project.name }}</a>
-    </div>
-
-    {% if project.description %}
-    <div class="project-card__desc">{{ project.description }}</div>
-    {% endif %}
-
-    <div class="project-card__meta">
-      <span class="badge badge--type">{{ project.type }}</span>
-      {% for tag in project.tags %}
-      <span class="badge">{{ tag }}</span>
-      {% endfor %}
-    </div>
-
-    {% if project.live_url or project.docs_url or project.repo_url or project.gist_url %}
-    <div class="project-card__links">
-      {% if project.live_url %}
-      <a href="{{ project.live_url }}">&#8599; live</a>
-      {% endif %}
-      {% if project.docs_url %}
-      <a href="{{ project.docs_url }}">&#8599; docs</a>
-      {% endif %}
-      {% if project.repo_url %}
-      <a href="{{ project.repo_url }}">&#8599; repo</a>
-      {% elif project.gist_url %}
-      <a href="{{ project.gist_url }}">&#8599; gist</a>
-      {% endif %}
-    </div>
-    {% endif %}
+{% macro project_card(project, section) %}
+<div class="project-card{% if project.pinned %} project-card--pinned{% endif %}"
+     data-type="{{ project.type }}" data-section="{{ section }}">
+  <div class="project-card__name">
+    {% if project.pinned %}<span class="pin-icon" title="Pinned">&#9679;</span>{% endif %}
+    <a href="{{ project.name }}/index.html">{{ project.name }}</a>
   </div>
-  {% endfor %}
+  {% if project.description %}
+  <div class="project-card__desc">{{ project.description }}</div>
+  {% endif %}
+  <div class="project-card__meta">
+    <span class="badge badge--type">{{ project.type }}</span>
+    {% for tag in project.tags %}<span class="badge">{{ tag }}</span>{% endfor %}
+  </div>
+  {% if project.live_url or project.homepage or project.docs_url or project.repo_url or project.gist_url %}
+  <div class="project-card__links">
+    {% if project.live_url %}<a href="{{ project.live_url }}">&#8599; live</a>
+    {% elif project.homepage %}<a href="{{ project.homepage }}">&#8599; website</a>{% endif %}
+    {% if project.docs_url %}<a href="{{ project.docs_url }}">&#8599; docs</a>{% endif %}
+    {% if project.repo_url %}<a href="{{ project.repo_url }}">&#8599; repo</a>
+    {% elif project.gist_url %}<a href="{{ project.gist_url }}">&#8599; gist</a>{% endif %}
+  </div>
+  {% endif %}
 </div>
+{% endmacro %}
+
+{% if pinned_projects %}
+<section class="project-section" id="sec-pinned" data-section="pinned">
+  <h2 class="section-heading">Pinned</h2>
+  <div class="project-grid">
+    {% for p in pinned_projects %}{{ project_card(p, "pinned") }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if active_projects %}
+<section class="project-section" id="sec-active" data-section="active">
+  <h2 class="section-heading">Active projects</h2>
+  <div class="project-grid">
+    {% for p in active_projects %}{{ project_card(p, "active") }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if archived_projects %}
+<section class="project-section" id="sec-archived" data-section="archived">
+  <h2 class="section-heading">Archived</h2>
+  <div class="project-grid">
+    {% for p in archived_projects %}{{ project_card(p, "archived") }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<script>
+(function () {
+  function applyFilters() {
+    var activeTypes = new Set(
+      Array.from(document.querySelectorAll('input[name="type"]:checked')).map(function(el){ return el.value; })
+    );
+    var activeSections = new Set(
+      Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
+    );
+    document.querySelectorAll('.project-section').forEach(function(section) {
+      if (!activeSections.has(section.dataset.section)) {
+        section.style.display = 'none';
+        return;
+      }
+      var visible = 0;
+      section.querySelectorAll('.project-card').forEach(function(card) {
+        var show = activeTypes.has(card.dataset.type);
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      section.style.display = visible > 0 ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('.filter-bar input').forEach(function(el) {
+    el.addEventListener('change', applyFilters);
+  });
+}());
+</script>
 {% endblock %}
