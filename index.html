@@ -37,6 +37,8 @@
     <label class="filter-chip"><input type="checkbox" name="section" value="active"   checked> Active</label>
     <label class="filter-chip"><input type="checkbox" name="section" value="archived" checked> Archived</label>
   </div>
+  <div class="filter-sep filter-sep--tags" style="display:none"></div>
+  <div class="filter-group filter-group--tags" style="display:none"></div>
 </div>
 
 
@@ -55,7 +57,30 @@
   <div class="project-grid">
     
 <div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
+     data-type="repo" data-section="pinned" data-tags="gists github hub manager portfolio repository tools">
+  <div class="project-card__name">
+    <span class="pin-icon" title="Pinned">&#9679;</span>
+    <a href="toolhub/index.html">toolhub</a>
+  </div>
+  
+  <div class="project-card__desc">Generate portfolio hub site for github repos and gists.</div>
+  
+  <div class="project-card__meta">
+    <span class="badge badge--type">repo</span>
+    <button class="badge badge--tag" data-tag="gists" type="button">gists</button><button class="badge badge--tag" data-tag="github" type="button">github</button><button class="badge badge--tag" data-tag="hub" type="button">hub</button><button class="badge badge--tag" data-tag="manager" type="button">manager</button><button class="badge badge--tag" data-tag="portfolio" type="button">portfolio</button><button class="badge badge--tag" data-tag="repository" type="button">repository</button><button class="badge badge--tag" data-tag="tools" type="button">tools</button>
+  </div>
+  
+  <div class="project-card__links">
+    <a href="https://tools.vandragt.com">&#8599; website</a>
+    
+    <a href="https://github.com/svandragt/toolhub">&#8599; repo</a>
+    
+  </div>
+  
+</div>
+
+<div class="project-card project-card--pinned"
+     data-type="repo" data-section="pinned" data-tags="feed-reader microblog php self-hosted single-author">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
     <a href="lamb/index.html">lamb</a>
@@ -65,7 +90,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">feed-reader</span><span class="badge">microblog</span><span class="badge">php</span><span class="badge">self-hosted</span><span class="badge">single-author</span>
+    <button class="badge badge--tag" data-tag="feed-reader" type="button">feed-reader</button><button class="badge badge--tag" data-tag="microblog" type="button">microblog</button><button class="badge badge--tag" data-tag="php" type="button">php</button><button class="badge badge--tag" data-tag="self-hosted" type="button">self-hosted</button><button class="badge badge--tag" data-tag="single-author" type="button">single-author</button>
   </div>
   
   <div class="project-card__links">
@@ -79,30 +104,7 @@
 </div>
 
 <div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
-  <div class="project-card__name">
-    <span class="pin-icon" title="Pinned">&#9679;</span>
-    <a href="toolhub/index.html">toolhub</a>
-  </div>
-  
-  <div class="project-card__desc">Generate portfolio hub site for github repos and gists.</div>
-  
-  <div class="project-card__meta">
-    <span class="badge badge--type">repo</span>
-    <span class="badge">gists</span><span class="badge">github</span><span class="badge">hub</span><span class="badge">manager</span><span class="badge">portfolio</span><span class="badge">repository</span><span class="badge">tools</span>
-  </div>
-  
-  <div class="project-card__links">
-    <a href="https://tools.vandragt.com">&#8599; website</a>
-    
-    <a href="https://github.com/svandragt/toolhub">&#8599; repo</a>
-    
-  </div>
-  
-</div>
-
-<div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
+     data-type="repo" data-section="pinned" data-tags="cms cuttlefish framework hacktoberfest php">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
     <a href="cuttlefish/index.html">cuttlefish</a>
@@ -112,7 +114,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">cms</span><span class="badge">cuttlefish</span><span class="badge">framework</span><span class="badge">hacktoberfest</span><span class="badge">php</span>
+    <button class="badge badge--tag" data-tag="cms" type="button">cms</button><button class="badge badge--tag" data-tag="cuttlefish" type="button">cuttlefish</button><button class="badge badge--tag" data-tag="framework" type="button">framework</button><button class="badge badge--tag" data-tag="hacktoberfest" type="button">hacktoberfest</button><button class="badge badge--tag" data-tag="php" type="button">php</button>
   </div>
   
   <div class="project-card__links">
@@ -125,7 +127,7 @@
 </div>
 
 <div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
+     data-type="repo" data-section="pinned" data-tags="bookmarks cli favourites firefox indexer python search-engine tui webui">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
     <a href="fafi/index.html">fafi</a>
@@ -135,7 +137,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">bookmarks</span><span class="badge">cli</span><span class="badge">favourites</span><span class="badge">firefox</span><span class="badge">indexer</span><span class="badge">python</span><span class="badge">search-engine</span><span class="badge">tui</span><span class="badge">webui</span>
+    <button class="badge badge--tag" data-tag="bookmarks" type="button">bookmarks</button><button class="badge badge--tag" data-tag="cli" type="button">cli</button><button class="badge badge--tag" data-tag="favourites" type="button">favourites</button><button class="badge badge--tag" data-tag="firefox" type="button">firefox</button><button class="badge badge--tag" data-tag="indexer" type="button">indexer</button><button class="badge badge--tag" data-tag="python" type="button">python</button><button class="badge badge--tag" data-tag="search-engine" type="button">search-engine</button><button class="badge badge--tag" data-tag="tui" type="button">tui</button><button class="badge badge--tag" data-tag="webui" type="button">webui</button>
   </div>
   
   <div class="project-card__links">
@@ -148,7 +150,7 @@
 </div>
 
 <div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
+     data-type="repo" data-section="pinned" data-tags="docker homeserver localhost runner tools">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
     <a href="itool/index.html">itool</a>
@@ -158,7 +160,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">docker</span><span class="badge">homeserver</span><span class="badge">localhost</span><span class="badge">runner</span><span class="badge">tools</span>
+    <button class="badge badge--tag" data-tag="docker" type="button">docker</button><button class="badge badge--tag" data-tag="homeserver" type="button">homeserver</button><button class="badge badge--tag" data-tag="localhost" type="button">localhost</button><button class="badge badge--tag" data-tag="runner" type="button">runner</button><button class="badge badge--tag" data-tag="tools" type="button">tools</button>
   </div>
   
   <div class="project-card__links">
@@ -171,7 +173,7 @@
 </div>
 
 <div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned">
+     data-type="repo" data-section="pinned" data-tags="htmx prototype wordpress wordpress-plugin">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
     <a href="htmxpress/index.html">htmxpress</a>
@@ -181,7 +183,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">htmx</span><span class="badge">prototype</span><span class="badge">wordpress</span><span class="badge">wordpress-plugin</span>
+    <button class="badge badge--tag" data-tag="htmx" type="button">htmx</button><button class="badge badge--tag" data-tag="prototype" type="button">prototype</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button><button class="badge badge--tag" data-tag="wordpress-plugin" type="button">wordpress-plugin</button>
   </div>
   
   <div class="project-card__links">
@@ -203,7 +205,7 @@
   <div class="project-grid">
     
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="chatgpt export">
   <div class="project-card__name">
     
     <a href="chatgpt-export/index.html">chatgpt-export</a>
@@ -213,7 +215,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">chatgpt</span><span class="badge">export</span>
+    <button class="badge badge--tag" data-tag="chatgpt" type="button">chatgpt</button><button class="badge badge--tag" data-tag="export" type="button">export</button>
   </div>
   
   <div class="project-card__links">
@@ -226,7 +228,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="llm/index.html">llm</a>
@@ -247,7 +249,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="fileshare/index.html">fileshare</a>
@@ -270,7 +272,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="yak/index.html">yak</a>
@@ -293,7 +295,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="lnk/index.html">lnk</a>
@@ -316,7 +318,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="devbox devbox-plugin mailpit">
   <div class="project-card__name">
     
     <a href="devbox-mailpit/index.html">devbox-mailpit</a>
@@ -326,7 +328,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">devbox</span><span class="badge">devbox-plugin</span><span class="badge">mailpit</span>
+    <button class="badge badge--tag" data-tag="devbox" type="button">devbox</button><button class="badge badge--tag" data-tag="devbox-plugin" type="button">devbox-plugin</button><button class="badge badge--tag" data-tag="mailpit" type="button">mailpit</button>
   </div>
   
   <div class="project-card__links">
@@ -339,7 +341,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="rulesnapper-data/index.html">rulesnapper-data</a>
@@ -362,7 +364,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="appstate-backup/index.html">appstate-backup</a>
@@ -385,7 +387,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="oap/index.html">oap</a>
@@ -408,7 +410,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="ip5/index.html">ip5</a>
@@ -431,7 +433,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="kiosk pimoroni-presto presto">
   <div class="project-card__name">
     
     <a href="presto-poetrykiosk/index.html">presto-poetrykiosk</a>
@@ -441,7 +443,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">kiosk</span><span class="badge">pimoroni-presto</span><span class="badge">presto</span>
+    <button class="badge badge--tag" data-tag="kiosk" type="button">kiosk</button><button class="badge badge--tag" data-tag="pimoroni-presto" type="button">pimoroni-presto</button><button class="badge badge--tag" data-tag="presto" type="button">presto</button>
   </div>
   
   <div class="project-card__links">
@@ -454,7 +456,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="localhost vala webview">
   <div class="project-card__name">
     
     <a href="hello-browser/index.html">hello-browser</a>
@@ -464,7 +466,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">localhost</span><span class="badge">vala</span><span class="badge">webview</span>
+    <button class="badge badge--tag" data-tag="localhost" type="button">localhost</button><button class="badge badge--tag" data-tag="vala" type="button">vala</button><button class="badge badge--tag" data-tag="webview" type="button">webview</button>
   </div>
   
   <div class="project-card__links">
@@ -477,7 +479,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="task-progress-estimator/index.html">task-progress-estimator</a>
@@ -500,7 +502,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="giftpack/index.html">giftpack</a>
@@ -521,7 +523,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="dry python rain weather">
   <div class="project-card__name">
     
     <a href="dry-check/index.html">dry-check</a>
@@ -531,7 +533,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">dry</span><span class="badge">python</span><span class="badge">rain</span><span class="badge">weather</span>
+    <button class="badge badge--tag" data-tag="dry" type="button">dry</button><button class="badge badge--tag" data-tag="python" type="button">python</button><button class="badge badge--tag" data-tag="rain" type="button">rain</button><button class="badge badge--tag" data-tag="weather" type="button">weather</button>
   </div>
   
   <div class="project-card__links">
@@ -544,7 +546,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="wordpress-plugin">
   <div class="project-card__name">
     
     <a href="hide-trackbacks/index.html">hide-trackbacks</a>
@@ -554,7 +556,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">wordpress-plugin</span>
+    <button class="badge badge--tag" data-tag="wordpress-plugin" type="button">wordpress-plugin</button>
   </div>
   
   <div class="project-card__links">
@@ -567,7 +569,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="ux wordpress wp">
   <div class="project-card__name">
     
     <a href="wp-niggles/index.html">wp-niggles</a>
@@ -577,7 +579,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">ux</span><span class="badge">wordpress</span><span class="badge">wp</span>
+    <button class="badge badge--tag" data-tag="ux" type="button">ux</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button><button class="badge badge--tag" data-tag="wp" type="button">wp</button>
   </div>
   
   <div class="project-card__links">
@@ -590,7 +592,7 @@
 </div>
 
 <div class="project-card"
-     data-type="gist" data-section="active">
+     data-type="gist" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="Google Calendar - Busy or free/index.html">Google Calendar - Busy or free</a>
@@ -612,7 +614,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="experiment">
   <div class="project-card__name">
     
     <a href="mde-tui/index.html">mde-tui</a>
@@ -622,7 +624,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">experiment</span>
+    <button class="badge badge--tag" data-tag="experiment" type="button">experiment</button>
   </div>
   
   <div class="project-card__links">
@@ -635,7 +637,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="automation bash cli-utility cooldown idempotent job-scheduler run-once shell-script">
   <div class="project-card__name">
     
     <a href="once/index.html">once</a>
@@ -645,7 +647,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">automation</span><span class="badge">bash</span><span class="badge">cli-utility</span><span class="badge">cooldown</span><span class="badge">idempotent</span><span class="badge">job-scheduler</span><span class="badge">run-once</span><span class="badge">shell-script</span>
+    <button class="badge badge--tag" data-tag="automation" type="button">automation</button><button class="badge badge--tag" data-tag="bash" type="button">bash</button><button class="badge badge--tag" data-tag="cli-utility" type="button">cli-utility</button><button class="badge badge--tag" data-tag="cooldown" type="button">cooldown</button><button class="badge badge--tag" data-tag="idempotent" type="button">idempotent</button><button class="badge badge--tag" data-tag="job-scheduler" type="button">job-scheduler</button><button class="badge badge--tag" data-tag="run-once" type="button">run-once</button><button class="badge badge--tag" data-tag="shell-script" type="button">shell-script</button>
   </div>
   
   <div class="project-card__links">
@@ -658,7 +660,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="repoman/index.html">repoman</a>
@@ -681,7 +683,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="firefox-addon-move-tab-to-another-window/index.html">firefox-addon-move-tab-to-another-window</a>
@@ -702,7 +704,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="github-open-pullrequest-viewer/index.html">github-open-pullrequest-viewer</a>
@@ -725,7 +727,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="ventura-bug-detective/index.html">ventura-bug-detective</a>
@@ -748,7 +750,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="phpunit-zero-config/index.html">phpunit-zero-config</a>
@@ -771,7 +773,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="macropad/index.html">macropad</a>
@@ -794,7 +796,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="system-update/index.html">system-update</a>
@@ -817,7 +819,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="bosskey/index.html">bosskey</a>
@@ -838,7 +840,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="top-php-errorlog/index.html">top-php-errorlog</a>
@@ -861,7 +863,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="docker textpattern textpattern-development">
   <div class="project-card__name">
     
     <a href="txpshed/index.html">txpshed</a>
@@ -871,7 +873,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">docker</span><span class="badge">textpattern</span><span class="badge">textpattern-development</span>
+    <button class="badge badge--tag" data-tag="docker" type="button">docker</button><button class="badge badge--tag" data-tag="textpattern" type="button">textpattern</button><button class="badge badge--tag" data-tag="textpattern-development" type="button">textpattern-development</button>
   </div>
   
   <div class="project-card__links">
@@ -884,7 +886,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="ia2web/index.html">ia2web</a>
@@ -907,7 +909,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="htmx-php-sandbox/index.html">htmx-php-sandbox</a>
@@ -930,7 +932,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="autosave_app/index.html">autosave_app</a>
@@ -953,7 +955,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="fish-shell shell-script">
   <div class="project-card__name">
     
     <a href="break-aware/index.html">break-aware</a>
@@ -963,7 +965,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">fish-shell</span><span class="badge">shell-script</span>
+    <button class="badge badge--tag" data-tag="fish-shell" type="button">fish-shell</button><button class="badge badge--tag" data-tag="shell-script" type="button">shell-script</button>
   </div>
   
   <div class="project-card__links">
@@ -976,7 +978,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="maintenance plex plex-media-server">
   <div class="project-card__name">
     
     <a href="plex-janitor/index.html">plex-janitor</a>
@@ -986,7 +988,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">maintenance</span><span class="badge">plex</span><span class="badge">plex-media-server</span>
+    <button class="badge badge--tag" data-tag="maintenance" type="button">maintenance</button><button class="badge badge--tag" data-tag="plex" type="button">plex</button><button class="badge badge--tag" data-tag="plex-media-server" type="button">plex-media-server</button>
   </div>
   
   <div class="project-card__links">
@@ -999,7 +1001,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="gallery php">
   <div class="project-card__name">
     
     <a href="phphotos/index.html">phphotos</a>
@@ -1009,7 +1011,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">gallery</span><span class="badge">php</span>
+    <button class="badge badge--tag" data-tag="gallery" type="button">gallery</button><button class="badge badge--tag" data-tag="php" type="button">php</button>
   </div>
   
   <div class="project-card__links">
@@ -1022,7 +1024,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="streamcables/index.html">streamcables</a>
@@ -1045,7 +1047,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="302 404 plugin wordpress">
   <div class="project-card__name">
     
     <a href="404-fallback/index.html">404-fallback</a>
@@ -1055,7 +1057,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">302</span><span class="badge">404</span><span class="badge">plugin</span><span class="badge">wordpress</span>
+    <button class="badge badge--tag" data-tag="302" type="button">302</button><button class="badge badge--tag" data-tag="404" type="button">404</button><button class="badge badge--tag" data-tag="plugin" type="button">plugin</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button>
   </div>
   
   <div class="project-card__links">
@@ -1068,7 +1070,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="php php-phar proof-of-concept">
   <div class="project-card__name">
     
     <a href="phar-web/index.html">phar-web</a>
@@ -1078,7 +1080,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">php</span><span class="badge">php-phar</span><span class="badge">proof-of-concept</span>
+    <button class="badge badge--tag" data-tag="php" type="button">php</button><button class="badge badge--tag" data-tag="php-phar" type="button">php-phar</button><button class="badge badge--tag" data-tag="proof-of-concept" type="button">proof-of-concept</button>
   </div>
   
   <div class="project-card__links">
@@ -1091,7 +1093,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="htmxpress-serverside-block/index.html">htmxpress-serverside-block</a>
@@ -1114,7 +1116,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="webview-go/index.html">webview-go</a>
@@ -1137,7 +1139,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="webview-flask/index.html">webview-flask</a>
@@ -1160,7 +1162,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="nim">
   <div class="project-card__name">
     
     <a href="nim-webview/index.html">nim-webview</a>
@@ -1170,7 +1172,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">nim</span>
+    <button class="badge badge--tag" data-tag="nim" type="button">nim</button>
   </div>
   
   <div class="project-card__links">
@@ -1183,7 +1185,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="docker poetry python zero-configuration">
   <div class="project-card__name">
     
     <a href="pyshed/index.html">pyshed</a>
@@ -1193,7 +1195,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">docker</span><span class="badge">poetry</span><span class="badge">python</span><span class="badge">zero-configuration</span>
+    <button class="badge badge--tag" data-tag="docker" type="button">docker</button><button class="badge badge--tag" data-tag="poetry" type="button">poetry</button><button class="badge badge--tag" data-tag="python" type="button">python</button><button class="badge badge--tag" data-tag="zero-configuration" type="button">zero-configuration</button>
   </div>
   
   <div class="project-card__links">
@@ -1206,7 +1208,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="ch552-six-key-programmable-keypad-tm05620/index.html">ch552-six-key-programmable-keypad-tm05620</a>
@@ -1229,7 +1231,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="secondlife">
   <div class="project-card__name">
     
     <a href="secondlife-streammanager/index.html">secondlife-streammanager</a>
@@ -1239,7 +1241,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">secondlife</span>
+    <button class="badge badge--tag" data-tag="secondlife" type="button">secondlife</button>
   </div>
   
   <div class="project-card__links">
@@ -1252,7 +1254,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="wordplusplus/index.html">wordplusplus</a>
@@ -1275,7 +1277,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="cuttlefish-blog/index.html">cuttlefish-blog</a>
@@ -1298,7 +1300,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="microsites/index.html">microsites</a>
@@ -1321,7 +1323,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="svandragt.github.io/index.html">svandragt.github.io</a>
@@ -1344,7 +1346,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="addon chrome firefox privacy">
   <div class="project-card__name">
     
     <a href="freshcookies/index.html">freshcookies</a>
@@ -1354,7 +1356,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">addon</span><span class="badge">chrome</span><span class="badge">firefox</span><span class="badge">privacy</span>
+    <button class="badge badge--tag" data-tag="addon" type="button">addon</button><button class="badge badge--tag" data-tag="chrome" type="button">chrome</button><button class="badge badge--tag" data-tag="firefox" type="button">firefox</button><button class="badge badge--tag" data-tag="privacy" type="button">privacy</button>
   </div>
   
   <div class="project-card__links">
@@ -1367,7 +1369,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="elasticpress elasticsearch vvv wordpress">
   <div class="project-card__name">
     
     <a href="elasticsearch-vvv-utility/index.html">elasticsearch-vvv-utility</a>
@@ -1377,7 +1379,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">elasticpress</span><span class="badge">elasticsearch</span><span class="badge">vvv</span><span class="badge">wordpress</span>
+    <button class="badge badge--tag" data-tag="elasticpress" type="button">elasticpress</button><button class="badge badge--tag" data-tag="elasticsearch" type="button">elasticsearch</button><button class="badge badge--tag" data-tag="vvv" type="button">vvv</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button>
   </div>
   
   <div class="project-card__links">
@@ -1390,7 +1392,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="esbuild-yarn-react/index.html">esbuild-yarn-react</a>
@@ -1413,7 +1415,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="regex-reverse-cli/index.html">regex-reverse-cli</a>
@@ -1436,7 +1438,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="three-finger-slash/index.html">three-finger-slash</a>
@@ -1459,7 +1461,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="framework php">
   <div class="project-card__name">
     
     <a href="pipeline/index.html">pipeline</a>
@@ -1469,7 +1471,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">framework</span><span class="badge">php</span>
+    <button class="badge badge--tag" data-tag="framework" type="button">framework</button><button class="badge badge--tag" data-tag="php" type="button">php</button>
   </div>
   
   <div class="project-card__links">
@@ -1482,7 +1484,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="active">
+     data-type="repo" data-section="active" data-tags="">
   <div class="project-card__name">
     
     <a href="netdjs-public/index.html">netdjs-public</a>
@@ -1514,7 +1516,7 @@
   <div class="project-grid">
     
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="task-runner">
   <div class="project-card__name">
     
     <a href="Taskfile/index.html">Taskfile</a>
@@ -1524,7 +1526,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">task-runner</span>
+    <button class="badge badge--tag" data-tag="task-runner" type="button">task-runner</button>
   </div>
   
   <div class="project-card__links">
@@ -1537,7 +1539,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="linux maintained php php-manager version-manager">
   <div class="project-card__name">
     
     <a href="php-activate/index.html">php-activate</a>
@@ -1547,7 +1549,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">linux</span><span class="badge">maintained</span><span class="badge">php</span><span class="badge">php-manager</span><span class="badge">version-manager</span>
+    <button class="badge badge--tag" data-tag="linux" type="button">linux</button><button class="badge badge--tag" data-tag="maintained" type="button">maintained</button><button class="badge badge--tag" data-tag="php" type="button">php</button><button class="badge badge--tag" data-tag="php-manager" type="button">php-manager</button><button class="badge badge--tag" data-tag="version-manager" type="button">version-manager</button>
   </div>
   
   <div class="project-card__links">
@@ -1560,7 +1562,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="docker serverless sqlite wordpress">
   <div class="project-card__name">
     
     <a href="wpdock/index.html">wpdock</a>
@@ -1570,7 +1572,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">docker</span><span class="badge">serverless</span><span class="badge">sqlite</span><span class="badge">wordpress</span>
+    <button class="badge badge--tag" data-tag="docker" type="button">docker</button><button class="badge badge--tag" data-tag="serverless" type="button">serverless</button><button class="badge badge--tag" data-tag="sqlite" type="button">sqlite</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button>
   </div>
   
   <div class="project-card__links">
@@ -1583,7 +1585,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="wmm/index.html">wmm</a>
@@ -1606,7 +1608,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="docksal knowncms quickstart">
   <div class="project-card__name">
     
     <a href="docksal-boilerplate-withknown/index.html">docksal-boilerplate-withknown</a>
@@ -1616,7 +1618,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">docksal</span><span class="badge">knowncms</span><span class="badge">quickstart</span>
+    <button class="badge badge--tag" data-tag="docksal" type="button">docksal</button><button class="badge badge--tag" data-tag="knowncms" type="button">knowncms</button><button class="badge badge--tag" data-tag="quickstart" type="button">quickstart</button>
   </div>
   
   <div class="project-card__links">
@@ -1629,7 +1631,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="maintained privacy python twitter">
   <div class="project-card__name">
     
     <a href="twelete/index.html">twelete</a>
@@ -1639,7 +1641,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">maintained</span><span class="badge">privacy</span><span class="badge">python</span><span class="badge">twitter</span>
+    <button class="badge badge--tag" data-tag="maintained" type="button">maintained</button><button class="badge badge--tag" data-tag="privacy" type="button">privacy</button><button class="badge badge--tag" data-tag="python" type="button">python</button><button class="badge badge--tag" data-tag="twitter" type="button">twitter</button>
   </div>
   
   <div class="project-card__links">
@@ -1652,7 +1654,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="psh/index.html">psh</a>
@@ -1675,7 +1677,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="pdfmarks/index.html">pdfmarks</a>
@@ -1698,7 +1700,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="pdp.vandragt.com/index.html">pdp.vandragt.com</a>
@@ -1719,7 +1721,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="mvb/index.html">mvb</a>
@@ -1742,7 +1744,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="wordpress-vandragt/index.html">wordpress-vandragt</a>
@@ -1765,7 +1767,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="plugin wordpress">
   <div class="project-card__name">
     
     <a href="vd-categoryposts/index.html">vd-categoryposts</a>
@@ -1775,7 +1777,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">plugin</span><span class="badge">wordpress</span>
+    <button class="badge badge--tag" data-tag="plugin" type="button">plugin</button><button class="badge badge--tag" data-tag="wordpress" type="button">wordpress</button>
   </div>
   
   <div class="project-card__links">
@@ -1788,7 +1790,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="svn">
   <div class="project-card__name">
     
     <a href="ahk-svnconflictsbackup/index.html">ahk-svnconflictsbackup</a>
@@ -1796,7 +1798,7 @@
   
   <div class="project-card__meta">
     <span class="badge badge--type">repo</span>
-    <span class="badge">svn</span>
+    <button class="badge badge--tag" data-tag="svn" type="button">svn</button>
   </div>
   
   <div class="project-card__links">
@@ -1809,7 +1811,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="ahk-axem/index.html">ahk-axem</a>
@@ -1832,7 +1834,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-ajaxuniquetextfield/index.html">silverstripe-ajaxuniquetextfield</a>
@@ -1855,7 +1857,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-description/index.html">silverstripe-description</a>
@@ -1878,7 +1880,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-hiddenfields/index.html">silverstripe-hiddenfields</a>
@@ -1901,7 +1903,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="bugzscoutlogwriter/index.html">bugzscoutlogwriter</a>
@@ -1924,7 +1926,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-fieldlistmovefield/index.html">silverstripe-fieldlistmovefield</a>
@@ -1947,7 +1949,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-svdrequirements/index.html">silverstripe-svdrequirements</a>
@@ -1970,7 +1972,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="silverstripe-optimisticlocking/index.html">silverstripe-optimisticlocking</a>
@@ -1993,7 +1995,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="vagrant-silverstripe/index.html">vagrant-silverstripe</a>
@@ -2016,7 +2018,7 @@
 </div>
 
 <div class="project-card"
-     data-type="repo" data-section="archived">
+     data-type="repo" data-section="archived" data-tags="">
   <div class="project-card__name">
     
     <a href="advancedworkflow/index.html">advancedworkflow</a>
@@ -2051,6 +2053,9 @@
     var activeSections = new Set(
       Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
     );
+    var activeTagFilters = new Set(
+      Array.from(document.querySelectorAll('input[name="tag"]:checked')).map(function(el){ return el.value; })
+    );
     document.querySelectorAll('.project-section').forEach(function(section) {
       if (!activeSections.has(section.dataset.section)) {
         section.style.display = 'none';
@@ -2058,14 +2063,54 @@
       }
       var visible = 0;
       section.querySelectorAll('.project-card').forEach(function(card) {
-        var show = activeTypes.has(card.dataset.type);
+        var tagMatch = activeTagFilters.size === 0 ||
+          (card.dataset.tags || '').split(' ').filter(Boolean).some(function(t) {
+            return activeTagFilters.has(t);
+          });
+        var show = activeTypes.has(card.dataset.type) && tagMatch;
         card.style.display = show ? '' : 'none';
         if (show) visible++;
       });
       section.style.display = visible > 0 ? '' : 'none';
     });
+    document.querySelectorAll('.badge--tag').forEach(function(badge) {
+      badge.classList.toggle('badge--tag-active', activeTagFilters.has(badge.dataset.tag));
+    });
   }
-  document.querySelectorAll('.filter-bar input').forEach(function(el) {
+
+  // Build tag filter chips from unique tags across all cards
+  var allTags = new Set();
+  document.querySelectorAll('.project-card').forEach(function(card) {
+    (card.dataset.tags || '').split(' ').filter(Boolean).forEach(function(t) { allTags.add(t); });
+  });
+  var tagGroup = document.querySelector('.filter-group--tags');
+  var tagSep = document.querySelector('.filter-sep--tags');
+  if (allTags.size > 0) {
+    Array.from(allTags).sort().forEach(function(tag) {
+      var label = document.createElement('label');
+      label.className = 'filter-chip';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.name = 'tag';
+      input.value = tag;
+      input.addEventListener('change', applyFilters);
+      label.appendChild(input);
+      label.appendChild(document.createTextNode('\u00a0' + tag));
+      tagGroup.appendChild(label);
+    });
+    tagGroup.style.display = '';
+    tagSep.style.display = '';
+  }
+
+  // Clicking a tag badge in a card toggles the corresponding filter chip
+  document.querySelectorAll('.badge--tag').forEach(function(badge) {
+    badge.addEventListener('click', function() {
+      var input = tagGroup.querySelector('input[value="' + this.dataset.tag + '"]');
+      if (input) { input.checked = !input.checked; applyFilters(); }
+    });
+  });
+
+  document.querySelectorAll('input[name="type"], input[name="section"]').forEach(function(el) {
     el.addEventListener('change', applyFilters);
   });
 }());
