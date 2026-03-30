@@ -25,6 +25,8 @@
     {% if active_projects   %}<label class="filter-chip"><input type="checkbox" name="section" value="active"   checked> Active</label>{% endif %}
     {% if archived_projects %}<label class="filter-chip"><input type="checkbox" name="section" value="archived" checked> Archived</label>{% endif %}
   </div>
+  <div class="filter-sep filter-sep--tags" style="display:none"></div>
+  <div class="filter-group filter-group--tags" style="display:none"></div>
 </div>
 
 {% if section_count >= 2 and projects | length > 15 %}
@@ -37,7 +39,7 @@
 
 {% macro project_card(project, section) %}
 <div class="project-card{% if project.pinned %} project-card--pinned{% endif %}"
-     data-type="{{ project.type }}" data-section="{{ section }}">
+     data-type="{{ project.type }}" data-section="{{ section }}" data-tags="{{ project.tags | join(' ') }}">
   <div class="project-card__name">
     {% if project.pinned %}<span class="pin-icon" title="Pinned">&#9679;</span>{% endif %}
     <a href="{{ project.slug }}/index.html">{{ project.name }}</a>
@@ -47,7 +49,7 @@
   {% endif %}
   <div class="project-card__meta">
     <span class="badge badge--type">{{ project.type }}</span>
-    {% for tag in project.tags %}<span class="badge">{{ tag }}</span>{% endfor %}
+    {% for tag in project.tags %}<button class="badge badge--tag" data-tag="{{ tag }}" type="button">{{ tag }}</button>{% endfor %}
   </div>
   {% if project.live_url or project.homepage or project.docs_url or project.repo_url or project.gist_url %}
   <div class="project-card__links">
@@ -97,6 +99,9 @@
     var activeSections = new Set(
       Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
     );
+    var activeTagFilters = new Set(
+      Array.from(document.querySelectorAll('input[name="tag"]:checked')).map(function(el){ return el.value; })
+    );
     document.querySelectorAll('.project-section').forEach(function(section) {
       if (!activeSections.has(section.dataset.section)) {
         section.style.display = 'none';
@@ -104,14 +109,54 @@
       }
       var visible = 0;
       section.querySelectorAll('.project-card').forEach(function(card) {
-        var show = activeTypes.has(card.dataset.type);
+        var tagMatch = activeTagFilters.size === 0 ||
+          (card.dataset.tags || '').split(' ').filter(Boolean).some(function(t) {
+            return activeTagFilters.has(t);
+          });
+        var show = activeTypes.has(card.dataset.type) && tagMatch;
         card.style.display = show ? '' : 'none';
         if (show) visible++;
       });
       section.style.display = visible > 0 ? '' : 'none';
     });
+    document.querySelectorAll('.badge--tag').forEach(function(badge) {
+      badge.classList.toggle('badge--tag-active', activeTagFilters.has(badge.dataset.tag));
+    });
   }
-  document.querySelectorAll('.filter-bar input').forEach(function(el) {
+
+  // Build tag filter chips from unique tags across all cards
+  var allTags = new Set();
+  document.querySelectorAll('.project-card').forEach(function(card) {
+    (card.dataset.tags || '').split(' ').filter(Boolean).forEach(function(t) { allTags.add(t); });
+  });
+  var tagGroup = document.querySelector('.filter-group--tags');
+  var tagSep = document.querySelector('.filter-sep--tags');
+  if (allTags.size > 0) {
+    Array.from(allTags).sort().forEach(function(tag) {
+      var label = document.createElement('label');
+      label.className = 'filter-chip';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.name = 'tag';
+      input.value = tag;
+      input.addEventListener('change', applyFilters);
+      label.appendChild(input);
+      label.appendChild(document.createTextNode('\u00a0' + tag));
+      tagGroup.appendChild(label);
+    });
+    tagGroup.style.display = '';
+    tagSep.style.display = '';
+  }
+
+  // Clicking a tag badge in a card toggles the corresponding filter chip
+  document.querySelectorAll('.badge--tag').forEach(function(badge) {
+    badge.addEventListener('click', function() {
+      var input = tagGroup.querySelector('input[value="' + this.dataset.tag + '"]');
+      if (input) { input.checked = !input.checked; applyFilters(); }
+    });
+  });
+
+  document.querySelectorAll('input[name="type"], input[name="section"]').forEach(function(el) {
     el.addEventListener('change', applyFilters);
   });
 }());
