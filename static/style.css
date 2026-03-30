@@ -274,6 +274,20 @@ main {
   color: var(--accent);
 }
 
+.badge--tag {
+  cursor: pointer;
+  border: 1px solid transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .1s;
+}
+.badge--tag:hover { border-color: var(--accent); }
+.badge--tag.badge--tag-active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
 .project-card__links {
   display: flex;
   gap: .75rem;
