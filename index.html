@@ -57,6 +57,29 @@
   <div class="project-grid">
     
 <div class="project-card project-card--pinned"
+     data-type="repo" data-section="pinned" data-tags="gists github hub manager portfolio repository tools">
+  <div class="project-card__name">
+    <span class="pin-icon" title="Pinned">&#9679;</span>
+    <a href="toolhub/index.html">toolhub</a>
+  </div>
+  
+  <div class="project-card__desc">Generate portfolio hub site for github repos and gists.</div>
+  
+  <div class="project-card__meta">
+    <span class="badge badge--type">repo</span>
+    <button class="badge badge--tag" data-tag="gists" type="button">gists</button><button class="badge badge--tag" data-tag="github" type="button">github</button><button class="badge badge--tag" data-tag="hub" type="button">hub</button><button class="badge badge--tag" data-tag="manager" type="button">manager</button><button class="badge badge--tag" data-tag="portfolio" type="button">portfolio</button><button class="badge badge--tag" data-tag="repository" type="button">repository</button><button class="badge badge--tag" data-tag="tools" type="button">tools</button>
+  </div>
+  
+  <div class="project-card__links">
+    <a href="https://tools.vandragt.com">&#8599; website</a>
+    
+    <a href="https://github.com/svandragt/toolhub">&#8599; repo</a>
+    
+  </div>
+  
+</div>
+
+<div class="project-card project-card--pinned"
      data-type="repo" data-section="pinned" data-tags="feed-reader microblog php self-hosted single-author">
   <div class="project-card__name">
     <span class="pin-icon" title="Pinned">&#9679;</span>
@@ -75,29 +98,6 @@
     
     <a href="https://svandragt.github.io/lamb">&#8599; docs</a>
     <a href="https://github.com/svandragt/lamb">&#8599; repo</a>
-    
-  </div>
-  
-</div>
-
-<div class="project-card project-card--pinned"
-     data-type="repo" data-section="pinned" data-tags="gists github hub manager portfolio repository tools">
-  <div class="project-card__name">
-    <span class="pin-icon" title="Pinned">&#9679;</span>
-    <a href="toolhub/index.html">toolhub</a>
-  </div>
-  
-  <div class="project-card__desc">Generate portfolio hub site for github repos and gists.</div>
-  
-  <div class="project-card__meta">
-    <span class="badge badge--type">repo</span>
-    <button class="badge badge--tag" data-tag="gists" type="button">gists</button><button class="badge badge--tag" data-tag="github" type="button">github</button><button class="badge badge--tag" data-tag="hub" type="button">hub</button><button class="badge badge--tag" data-tag="manager" type="button">manager</button><button class="badge badge--tag" data-tag="portfolio" type="button">portfolio</button><button class="badge badge--tag" data-tag="repository" type="button">repository</button><button class="badge badge--tag" data-tag="tools" type="button">tools</button>
-  </div>
-  
-  <div class="project-card__links">
-    <a href="https://tools.vandragt.com">&#8599; website</a>
-    
-    <a href="https://github.com/svandragt/toolhub">&#8599; repo</a>
     
   </div>
   
@@ -2046,15 +2046,44 @@
 
 <script>
 (function () {
+  var selectedTags = new Set();
+  var tagGroup = document.querySelector('.filter-group--tags');
+  var tagSep = document.querySelector('.filter-sep--tags');
+
+  function renderCapsules() {
+    tagGroup.innerHTML = '';
+    if (selectedTags.size > 0) {
+      selectedTags.forEach(function(tag) {
+        var capsule = document.createElement('span');
+        capsule.className = 'tag-capsule';
+        capsule.appendChild(document.createTextNode(tag));
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tag-capsule__remove';
+        btn.setAttribute('aria-label', 'Remove ' + tag + ' filter');
+        btn.textContent = '\u00d7';
+        btn.addEventListener('click', function() {
+          selectedTags.delete(tag);
+          renderCapsules();
+          applyFilters();
+        });
+        capsule.appendChild(btn);
+        tagGroup.appendChild(capsule);
+      });
+      tagGroup.style.display = '';
+      tagSep.style.display = '';
+    } else {
+      tagGroup.style.display = 'none';
+      tagSep.style.display = 'none';
+    }
+  }
+
   function applyFilters() {
     var activeTypes = new Set(
       Array.from(document.querySelectorAll('input[name="type"]:checked')).map(function(el){ return el.value; })
     );
     var activeSections = new Set(
       Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
-    );
-    var activeTagFilters = new Set(
-      Array.from(document.querySelectorAll('input[name="tag"]:checked')).map(function(el){ return el.value; })
     );
     document.querySelectorAll('.project-section').forEach(function(section) {
       if (!activeSections.has(section.dataset.section)) {
@@ -2063,9 +2092,9 @@
       }
       var visible = 0;
       section.querySelectorAll('.project-card').forEach(function(card) {
-        var tagMatch = activeTagFilters.size === 0 ||
+        var tagMatch = selectedTags.size === 0 ||
           (card.dataset.tags || '').split(' ').filter(Boolean).some(function(t) {
-            return activeTagFilters.has(t);
+            return selectedTags.has(t);
           });
         var show = activeTypes.has(card.dataset.type) && tagMatch;
         card.style.display = show ? '' : 'none';
@@ -2074,45 +2103,29 @@
       section.style.display = visible > 0 ? '' : 'none';
     });
     document.querySelectorAll('.badge--tag').forEach(function(badge) {
-      badge.classList.toggle('badge--tag-active', activeTagFilters.has(badge.dataset.tag));
+      badge.classList.toggle('badge--tag-active', selectedTags.has(badge.dataset.tag));
     });
   }
 
-  // Build tag filter chips from unique tags across all cards
-  var allTags = new Set();
-  document.querySelectorAll('.project-card').forEach(function(card) {
-    (card.dataset.tags || '').split(' ').filter(Boolean).forEach(function(t) { allTags.add(t); });
-  });
-  var tagGroup = document.querySelector('.filter-group--tags');
-  var tagSep = document.querySelector('.filter-sep--tags');
-  if (allTags.size > 0) {
-    Array.from(allTags).sort().forEach(function(tag) {
-      var label = document.createElement('label');
-      label.className = 'filter-chip';
-      var input = document.createElement('input');
-      input.type = 'checkbox';
-      input.name = 'tag';
-      input.value = tag;
-      input.addEventListener('change', applyFilters);
-      label.appendChild(input);
-      label.appendChild(document.createTextNode('\u00a0' + tag));
-      tagGroup.appendChild(label);
-    });
-    tagGroup.style.display = '';
-    tagSep.style.display = '';
-  }
-
-  // Clicking a tag badge in a card toggles the corresponding filter chip
+  // Clicking a tag badge in a card toggles the tag capsule filter
   document.querySelectorAll('.badge--tag').forEach(function(badge) {
     badge.addEventListener('click', function() {
-      var input = tagGroup.querySelector('input[value="' + this.dataset.tag + '"]');
-      if (input) { input.checked = !input.checked; applyFilters(); }
+      var tag = this.dataset.tag;
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+      } else {
+        selectedTags.add(tag);
+      }
+      renderCapsules();
+      applyFilters();
     });
   });
 
   document.querySelectorAll('input[name="type"], input[name="section"]').forEach(function(el) {
     el.addEventListener('change', applyFilters);
   });
+
+  renderCapsules();
 }());
 </script>
 

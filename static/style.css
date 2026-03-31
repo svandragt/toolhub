@@ -288,6 +288,41 @@ main {
   color: var(--accent);
 }
 
+.tag-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  padding: .25em .4em .25em .65em;
+  border-radius: 99px;
+  border: 1px solid var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: .75rem;
+  font-family: var(--font-mono);
+}
+
+.tag-capsule__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 99px;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: .9em;
+  padding: 0;
+  line-height: 1;
+  transition: background .1s, color .1s;
+}
+
+.tag-capsule__remove:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
 .project-card__links {
   display: flex;
   gap: .75rem;
