@@ -35,6 +35,7 @@ from ruamel.yaml import YAML
 
 from lib.github import (
     BOOTSTRAP_VERSION,
+    extract_license,
     extract_topics,
     fetch_gist_portfolio,
     fetch_repo_portfolio,
@@ -119,6 +120,7 @@ def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
     print(f"  [repo] {name}")
     portfolio = fetch_repo_portfolio(client, USERNAME, name)
     topics = extract_topics(repo)
+    license_id = extract_license(repo)
 
     entry = {
         "name": name,
@@ -128,6 +130,7 @@ def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
         "tags": topics,
         "updated_at": repo.get("pushed_at") or repo.get("updated_at", ""),
         "archived": bool(repo.get("archived")),
+        "license": license_id,
     }
     if repo.get("homepage"):
         entry["homepage"] = repo["homepage"]

@@ -194,3 +194,22 @@ def extract_topics(repo: dict) -> list[str]:
     Returns [] if none are set.
     """
     return repo.get("topics", [])
+
+
+# --------------------------------------------------------------------------- #
+# License
+# --------------------------------------------------------------------------- #
+
+def extract_license(repo: dict) -> str:
+    """
+    Extract the SPDX license identifier from a repo API response object.
+    Falls back to the license name if SPDX ID is missing or NOASSERTION.
+    Returns '' if no license is set.
+    """
+    lic = repo.get("license")
+    if not lic:
+        return ""
+    spdx = lic.get("spdx_id", "")
+    if spdx and spdx != "NOASSERTION":
+        return spdx
+    return lic.get("name", "")

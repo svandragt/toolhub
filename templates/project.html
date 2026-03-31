@@ -19,6 +19,9 @@
     {% for tag in project.tags %}
     <span class="badge">{{ tag }}</span>
     {% endfor %}
+    {% if project.license %}
+    <span class="badge">{{ project.license }}</span>
+    {% endif %}
   </div>
 
   <div class="project-header__actions">

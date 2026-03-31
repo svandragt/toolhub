@@ -341,6 +341,32 @@ main {
 
 .project-card__links a:hover { color: var(--accent); text-decoration: none; }
 
+.project-card__license {
+  margin-left: auto;
+  font-size: .7rem;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: .15em .45em;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .1s, color .1s, background .1s;
+}
+
+.project-card__license:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.project-card__license--active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
 /* ------------------------------------------------------------------ */
 /* Project page                                                         */
 /* ------------------------------------------------------------------ */

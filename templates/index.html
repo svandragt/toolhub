@@ -27,6 +27,8 @@
   </div>
   <div class="filter-sep filter-sep--tags" style="display:none"></div>
   <div class="filter-group filter-group--tags" style="display:none"></div>
+  <div class="filter-sep filter-sep--license" style="display:none"></div>
+  <div class="filter-group filter-group--license" style="display:none"></div>
 </div>
 
 {% if section_count >= 2 and projects | length > 15 %}
@@ -39,7 +41,7 @@
 
 {% macro project_card(project, section) %}
 <div class="project-card{% if project.pinned %} project-card--pinned{% endif %}"
-     data-type="{{ project.type }}" data-section="{{ section }}" data-tags="{{ project.tags | join(' ') }}">
+     data-type="{{ project.type }}" data-section="{{ section }}" data-tags="{{ project.tags | join(' ') }}" data-license="{{ project.license or '' }}">
   <div class="project-card__name">
     {% if project.pinned %}<span class="pin-icon" title="Pinned">&#9679;</span>{% endif %}
     <a href="{{ project.slug }}/index.html">{{ project.name }}</a>
@@ -51,13 +53,14 @@
     <span class="badge badge--type">{{ project.type }}</span>
     {% for tag in project.tags %}<button class="badge badge--tag" data-tag="{{ tag }}" type="button">{{ tag }}</button>{% endfor %}
   </div>
-  {% if project.live_url or project.homepage or project.docs_url or project.repo_url or project.gist_url %}
+  {% if project.live_url or project.homepage or project.docs_url or project.repo_url or project.gist_url or project.license %}
   <div class="project-card__links">
     {% if project.live_url %}<a href="{{ project.live_url }}">&#8599; live</a>
     {% elif project.homepage %}<a href="{{ project.homepage }}">&#8599; website</a>{% endif %}
     {% if project.docs_url %}<a href="{{ project.docs_url }}">&#8599; docs</a>{% endif %}
     {% if project.repo_url %}<a href="{{ project.repo_url }}">&#8599; repo</a>
     {% elif project.gist_url %}<a href="{{ project.gist_url }}">&#8599; gist</a>{% endif %}
+    {% if project.license %}<button class="project-card__license" data-license="{{ project.license }}" type="button">{{ project.license }}</button>{% endif %}
   </div>
   {% endif %}
 </div>
@@ -124,6 +127,38 @@
     }
   }
 
+  var selectedLicenses = new Set();
+  var licenseGroup = document.querySelector('.filter-group--license');
+  var licenseSep = document.querySelector('.filter-sep--license');
+
+  function renderLicenseCapsules() {
+    licenseGroup.innerHTML = '';
+    if (selectedLicenses.size > 0) {
+      selectedLicenses.forEach(function(lic) {
+        var capsule = document.createElement('span');
+        capsule.className = 'tag-capsule';
+        capsule.appendChild(document.createTextNode(lic));
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tag-capsule__remove';
+        btn.setAttribute('aria-label', 'Remove ' + lic + ' filter');
+        btn.textContent = '\u00d7';
+        btn.addEventListener('click', function() {
+          selectedLicenses.delete(lic);
+          renderLicenseCapsules();
+          applyFilters();
+        });
+        capsule.appendChild(btn);
+        licenseGroup.appendChild(capsule);
+      });
+      licenseGroup.style.display = '';
+      licenseSep.style.display = '';
+    } else {
+      licenseGroup.style.display = 'none';
+      licenseSep.style.display = 'none';
+    }
+  }
+
   function applyFilters() {
     var activeTypes = new Set(
       Array.from(document.querySelectorAll('input[name="type"]:checked')).map(function(el){ return el.value; })
@@ -142,7 +177,9 @@
           (card.dataset.tags || '').split(' ').filter(Boolean).some(function(t) {
             return selectedTags.has(t);
           });
-        var show = activeTypes.has(card.dataset.type) && tagMatch;
+        var licenseMatch = selectedLicenses.size === 0 ||
+          selectedLicenses.has(card.dataset.license || '');
+        var show = activeTypes.has(card.dataset.type) && tagMatch && licenseMatch;
         card.style.display = show ? '' : 'none';
         if (show) visible++;
       });
@@ -150,6 +187,9 @@
     });
     document.querySelectorAll('.badge--tag').forEach(function(badge) {
       badge.classList.toggle('badge--tag-active', selectedTags.has(badge.dataset.tag));
+    });
+    document.querySelectorAll('.project-card__license').forEach(function(btn) {
+      btn.classList.toggle('project-card__license--active', selectedLicenses.has(btn.dataset.license));
     });
   }
 
@@ -167,11 +207,26 @@
     });
   });
 
+  // Clicking a license button in a card toggles the license capsule filter
+  document.querySelectorAll('.project-card__license').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var lic = this.dataset.license;
+      if (selectedLicenses.has(lic)) {
+        selectedLicenses.delete(lic);
+      } else {
+        selectedLicenses.add(lic);
+      }
+      renderLicenseCapsules();
+      applyFilters();
+    });
+  });
+
   document.querySelectorAll('input[name="type"], input[name="section"]').forEach(function(el) {
     el.addEventListener('change', applyFilters);
   });
 
   renderCapsules();
+  renderLicenseCapsules();
 }());
 </script>
 {% endblock %}
