@@ -7,6 +7,8 @@ footer      = 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub<
 # url is used as the base for Atom feed <id> and <link> elements.
 # Set this to your deployed site URL (no trailing slash).
 url         = "https://example.github.io"
+# author name used in the Atom feed; defaults to GH_USERNAME if not set.
+author      = "Your Name"
 
 [sections]
 active    = "Active projects"

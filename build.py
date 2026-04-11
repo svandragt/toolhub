@@ -296,6 +296,7 @@ def _build_feed(env, projects: list[dict], site_config: dict) -> None:
         feed_updated=feed_updated,
         site_url=site_url,
         feed_url=feed_url,
+        author=site_config.get("author") or USERNAME,
     )
     (OUTPUT_DIR / "feed.xml").write_text(rendered, encoding="utf-8")
     print(f"  [feed]  feed.xml written ({len(feed_projects)} entries)")
