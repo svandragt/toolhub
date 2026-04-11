@@ -268,9 +268,11 @@ def _build_feed(env, projects: list[dict], site_config: dict) -> None:
 
     max_entries = site_config.get("feed", {}).get("max_entries", 20)
 
-    # Annotate each project with its Atom <updated> value
+    # Annotate each project with its Atom <updated> value; skip archived entries
     feed_projects = []
     for p in projects:
+        if p.get("archived"):
+            continue
         feed_updated = _feed_updated_for(p)
         if not feed_updated:
             continue  # skip entries with no date at all
