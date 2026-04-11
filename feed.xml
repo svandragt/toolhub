@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://tools.vandragt.com/feed.xml</id>
+  <title>~/tools</title>
+  <subtitle>Tools & Projects</subtitle>
+  <updated>2026-04-03T09:03:48Z</updated>
+  <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
+  <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
+  
+  <entry>
+    <id>https://github.com/svandragt/focus-border</id>
+    <title>focus-border</title>
+    <updated>2026-04-03T09:03:48Z</updated>
+    <published>2026-04-03T09:03:48Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/focus-border"/>
+    <summary>Small app that focuses the border of the active window.</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/lamb</id>
+    <title>lamb</title>
+    <updated>2026-03-29T22:16:18Z</updated>
+    <published>2023-03-12T11:27:19Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lamb"/>
+    <summary>Literally Another Micro Blog</summary>
+    <category term="feed-reader"/>
+    <category term="microblog"/>
+    <category term="php"/>
+    <category term="self-hosted"/>
+    <category term="single-author"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/toolhub</id>
+    <title>toolhub</title>
+    <updated>2026-03-25T10:45:11Z</updated>
+    <published>2026-03-25T10:45:11Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/toolhub"/>
+    <summary>Generate portfolio hub site for github repos and gists.</summary>
+    <category term="gists"/>
+    <category term="github"/>
+    <category term="hub"/>
+    <category term="manager"/>
+    <category term="portfolio"/>
+    <category term="repository"/>
+    <category term="tools"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/llm</id>
+    <title>llm</title>
+    <updated>2026-03-23T07:31:53Z</updated>
+    <published>2026-03-23T07:31:53Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/llm"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/fileshare</id>
+    <title>fileshare</title>
+    <updated>2026-03-21T09:45:46Z</updated>
+    <published>2026-03-21T09:45:46Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/fileshare"/>
+    <summary>Simple fileshare for personal use</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/lnk</id>
+    <title>lnk</title>
+    <updated>2026-03-19T09:54:14Z</updated>
+    <published>2026-03-19T09:54:14Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lnk"/>
+    <summary>Easily create symbolic + hard links</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/devbox-mailpit</id>
+    <title>devbox-mailpit</title>
+    <updated>2026-03-12T22:43:43Z</updated>
+    <published>2026-03-12T22:43:43Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/devbox-mailpit"/>
+    <summary>Mailpit plugin for devbox</summary>
+    <category term="devbox"/>
+    <category term="devbox-plugin"/>
+    <category term="mailpit"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/rulesnapper-data</id>
+    <title>rulesnapper-data</title>
+    <updated>2026-03-12T21:30:14Z</updated>
+    <published>2026-03-12T21:30:14Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/rulesnapper-data"/>
+    <summary>tracks changes to Vinted's catalog rules</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/appstate-backup</id>
+    <title>appstate-backup</title>
+    <updated>2026-03-05T11:05:04Z</updated>
+    <published>2026-03-05T11:05:04Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/appstate-backup"/>
+    <summary>Back up installed Flatpak and Snap application lists </summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/oap</id>
+    <title>oap</title>
+    <updated>2026-02-26T16:44:19Z</updated>
+    <published>2026-02-26T16:44:19Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/oap"/>
+    <summary>Open Album Package (OAP) v1.0 Specification</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/chatgpt-export</id>
+    <title>chatgpt-export</title>
+    <updated>2026-02-25T12:25:04Z</updated>
+    <published>2026-02-25T12:25:04Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/chatgpt-export"/>
+    <summary>Exporting chat conversations</summary>
+    <category term="chatgpt"/>
+    <category term="export"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/ip5</id>
+    <title>ip5</title>
+    <updated>2026-02-19T14:57:46Z</updated>
+    <published>2026-02-19T14:57:46Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/ip5"/>
+    <summary>pick-from-5 Instapaper triage tool</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/presto-poetrykiosk</id>
+    <title>presto-poetrykiosk</title>
+    <updated>2026-02-13T13:53:57Z</updated>
+    <published>2026-02-13T13:53:57Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/presto-poetrykiosk"/>
+    <summary>Poetry kiosk for Pimoroni Presto</summary>
+    <category term="kiosk"/>
+    <category term="pimoroni-presto"/>
+    <category term="presto"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/itool</id>
+    <title>itool</title>
+    <updated>2026-02-03T15:21:01Z</updated>
+    <published>2026-02-03T15:21:01Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/itool"/>
+    <summary>local internal docker tools runner</summary>
+    <category term="docker"/>
+    <category term="homeserver"/>
+    <category term="localhost"/>
+    <category term="runner"/>
+    <category term="tools"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/task-progress-estimator</id>
+    <title>task-progress-estimator</title>
+    <updated>2025-12-16T13:12:34Z</updated>
+    <published>2025-12-16T13:12:34Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/task-progress-estimator"/>
+    <summary>Agile task progress tracker</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/giftpack</id>
+    <title>giftpack</title>
+    <updated>2025-12-15T13:48:36Z</updated>
+    <published>2025-12-15T13:48:36Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/giftpack"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/dry-check</id>
+    <title>dry-check</title>
+    <updated>2025-12-09T10:00:22Z</updated>
+    <published>2025-12-09T10:00:22Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/dry-check"/>
+    <summary>Can I take the dog out?</summary>
+    <category term="dry"/>
+    <category term="python"/>
+    <category term="rain"/>
+    <category term="weather"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/hide-trackbacks</id>
+    <title>hide-trackbacks</title>
+    <updated>2025-11-28T09:50:22Z</updated>
+    <published>2018-09-05T13:21:02Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/hide-trackbacks"/>
+    <summary>Stops trackbacks and pingbacks from showing up as comments on posts. </summary>
+    <category term="wordpress-plugin"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://gist.github.com/svandragt/81ca692e8fe5b865e0299e4661acf592</id>
+    <title>Google Calendar - Busy or free</title>
+    <updated>2025-11-25T12:03:08Z</updated>
+    <published>2025-11-25T12:03:08Z</published>
+    <link rel="alternate" type="text/html" href="https://gist.github.com/svandragt/81ca692e8fe5b865e0299e4661acf592"/>
+    <summary>Google Calendar - Busy or free</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/mde-tui</id>
+    <title>mde-tui</title>
+    <updated>2025-11-07T14:26:09Z</updated>
+    <published>2025-11-07T14:26:09Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/mde-tui"/>
+    <summary>Markdown Editor TUI</summary>
+    <category term="experiment"/>
+    
+  </entry>
+  
+</feed>
