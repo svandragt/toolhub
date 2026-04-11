@@ -97,6 +97,10 @@ _SITE_DEFAULTS: dict = {
     "description": "Tools & Projects",
     "footer": 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>',
     "url": "",
+    "navigation": {
+        "back_link_url": "",
+        "back_link_label": "Home",
+    },
     "feed": {
         "max_entries": 20,
     },
@@ -115,19 +119,53 @@ _SITE_DEFAULTS: dict = {
 def _deep_merge(base: dict, override: dict) -> dict:
     result = {**base}
     for key, value in override.items():
-        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
-            result[key] = _deep_merge(result[key], value)
+        if isinstance(value, dict):
+            result[key] = _deep_merge(result.get(key, {}), value)
         else:
             result[key] = value
     return result
 
 
+def _derive_parent_url(site_url: str) -> str:
+    """Derive a parent/home URL from site_url for the backlink.
+
+    Rules (applied in order):
+    - Subdomain (e.g. tools.example.com or tools.example.com/path):
+      strip the leading subdomain label → https://example.com
+    - Subdirectory on root domain (e.g. example.com/toolhub):
+      strip the path → https://example.com
+    - Root domain with no path (e.g. example.com): no backlink → ""
+
+    Note: hostnames like username.github.io are treated as subdomains by
+    this heuristic (result: github.io). For such deployments set
+    back_link_url explicitly in site.toml.
+    """
+    from urllib.parse import urlparse
+    parsed = urlparse(site_url)
+    host = parsed.hostname or ""
+    parts = host.split(".")
+
+    # Subdomain present — strip it (works for subdomain-only and subdomain+path)
+    if len(parts) > 2:
+        return f"{parsed.scheme}://{'.'.join(parts[1:])}"
+
+    # No subdomain but deployed in a subdirectory — link to the origin
+    if parsed.path.strip("/"):
+        return f"{parsed.scheme}://{host}"
+
+    return ""
+
+
 def load_site_config() -> dict:
     """Load site.toml if present, merging with defaults."""
     if not SITE_FILE.exists():
-        return _deep_merge({}, _SITE_DEFAULTS)
-    with SITE_FILE.open("rb") as f:
-        return _deep_merge(_deep_merge({}, _SITE_DEFAULTS), tomllib.load(f))
+        config = _deep_merge({}, _SITE_DEFAULTS)
+    else:
+        with SITE_FILE.open("rb") as f:
+            config = _deep_merge(_deep_merge({}, _SITE_DEFAULTS), tomllib.load(f))
+    if not config["navigation"]["back_link_url"] and config.get("url"):
+        config["navigation"]["back_link_url"] = _derive_parent_url(config["url"])
+    return config
 
 
 # --------------------------------------------------------------------------- #

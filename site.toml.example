@@ -4,11 +4,21 @@
 title       = "~/tools"
 description = "Tools & Projects"
 footer      = 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>'
-# url is used as the base for Atom feed <id> and <link> elements.
-# Set this to your deployed site URL (no trailing slash).
+# url is the canonical URL of this site.
+# Used as the base for Atom feed <id>/<link> elements, and to auto-detect
+# a backlink to the parent domain in the site header.
+# Set to your deployed site URL (no trailing slash).
 url         = "https://example.github.io"
 # author name used in the Atom feed; defaults to GH_USERNAME if not set.
 author      = "Your Name"
+
+[navigation]
+# back_link_url: URL shown as a "← Home" link in the site header.
+# Leave empty to auto-derive from url (subdomain or subdirectory deployments).
+# Set explicitly for edge cases, e.g. GitHub Pages: "https://username.github.io"
+back_link_url   = ""
+# Label for the back link (default: "Home").
+back_link_label = "Home"
 
 [sections]
 active    = "Active projects"
