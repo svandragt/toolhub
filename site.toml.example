@@ -4,11 +4,18 @@
 title       = "~/tools"
 description = "Tools & Projects"
 footer      = 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>'
+# url is used as the base for Atom feed <id> and <link> elements.
+# Set this to your deployed site URL (no trailing slash).
+url         = "https://example.github.io"
 
 [sections]
 active    = "Active projects"
 archived  = "Archived"
 back_link = "all projects"
+
+[feed]
+# Maximum number of entries in feed.xml, sorted by most-recently-released.
+max_entries = 20
 
 [theme]
 # Point at your own templates/ and static/ to use a custom theme.

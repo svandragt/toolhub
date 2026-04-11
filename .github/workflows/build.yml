@@ -33,6 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USERNAME: ${{ vars.GH_USERNAME }}
           CACHE_TTL_HOURS: "0"
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4

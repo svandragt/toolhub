@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Portfolio{% endblock %}</title>
   {% block stylesheets %}<link rel="stylesheet" href="static/style.css">{% endblock %}
+  {% block feed_link %}<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="feed.xml">{% endblock %}
 </head>
 <body>
   <header class="site-header">

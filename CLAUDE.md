@@ -30,7 +30,7 @@ See `site.toml.example` for all options. `site.toml` is gitignored; `site.toml.e
 `BOOTSTRAP_VERSION` in `lib/github.py` gates `projects.yaml` compatibility.
 Bump it whenever bootstrap produces new required fields. `build.py` will exit with
 a "re-run bootstrap" message if the file's version is behind.
-Current version: **1** (added `archived`, `updated_at`, `homepage`).
+Current version: **2** (added `created_at`, `latest_release_at` for repos).
 
 ## GitHub API notes
 - REST: `/user/repos` for repos, `/users/{username}/gists` for public gists only
@@ -40,8 +40,8 @@ Current version: **1** (added `archived`, `updated_at`, `homepage`).
 - Portfolio data and READMEs are both cached under `.cache/`, respecting `CACHE_TTL_HOURS`
 
 ## projects.yaml fields
-Repos: `name`, `type=repo`, `repo_url`, `description`, `tags` (from GitHub Topics), `updated_at`, `archived`, optionally `homepage`
-Gists: `name`, `type=gist`, `gist_id`, `gist_url`, `md_file`, `description`, `tags` (from portfolio.toml), `updated_at`
+Repos: `name`, `type=repo`, `repo_url`, `description`, `tags` (from GitHub Topics), `created_at`, `updated_at`, `archived`, optionally `homepage`, optionally `latest_release_at`
+Gists: `name`, `type=gist`, `gist_id`, `gist_url`, `md_file`, `description`, `tags` (from portfolio.toml), `created_at`, `updated_at`
 
 ## Build enrichment
 `build.py` merges `portfolio.toml` fields on top of each entry at build time:

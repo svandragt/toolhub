@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block stylesheets %}<link rel="stylesheet" href="../static/style.css">{% endblock %}
+{% block feed_link %}<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="../feed.xml">{% endblock %}
 {% block home_href %}../index.html{% endblock %}
 
 {% block title %}{{ project.name }}{% endblock %}

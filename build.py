@@ -26,6 +26,7 @@ Output:
 
 import json
 import os
+import re
 import shutil
 import sys
 import time
@@ -62,6 +63,24 @@ TOKEN = os.getenv("GITHUB_TOKEN")
 USERNAME = os.getenv("GH_USERNAME")
 CACHE_TTL_HOURS = float(os.getenv("CACHE_TTL_HOURS", "1.0"))
 
+
+def _derive_site_url() -> str:
+    """
+    Derive the canonical site URL for the Atom feed when site.toml has no url.
+    Priority:
+      1. CUSTOM_DOMAIN env var  → https://{domain}
+      2. GITHUB_REPOSITORY env var (set by Actions) → https://{user}.github.io/{repo}
+      3. Empty string (feed IDs will be relative — valid but not ideal)
+    """
+    custom = os.getenv("CUSTOM_DOMAIN", "").strip()
+    if custom:
+        return f"https://{custom}"
+    gh_repo = os.getenv("GITHUB_REPOSITORY", "").strip()  # "owner/repo"
+    if gh_repo and "/" in gh_repo:
+        owner, repo = gh_repo.split("/", 1)
+        return f"https://{owner}.github.io/{repo}"
+    return ""
+
 if not TOKEN or not USERNAME:
     sys.exit(
         "ERROR: GITHUB_TOKEN and GH_USERNAME must be set in .env\n"
@@ -77,6 +96,10 @@ _SITE_DEFAULTS: dict = {
     "title": "~/tools",
     "description": "Tools & Projects",
     "footer": 'Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>',
+    "url": "",
+    "feed": {
+        "max_entries": 20,
+    },
     "sections": {
         "active": "Active projects",
         "archived": "Archived",
@@ -181,6 +204,33 @@ def get_portfolio(client: httpx.Client, project: dict) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# Atom feed helpers
+# --------------------------------------------------------------------------- #
+
+def _to_atom_date(iso: str) -> str:
+    """
+    Normalise a GitHub ISO-8601 timestamp to an RFC 3339 date-time with a Z
+    suffix, as required by Atom. GitHub always returns UTC strings ending in Z
+    so this is mostly a pass-through with a safety normalisation.
+    """
+    if not iso:
+        return ""
+    # Ensure the string ends with Z (GitHub always uses UTC)
+    iso = iso.strip()
+    if not iso.endswith("Z") and not re.search(r"[+-]\d{2}:\d{2}$", iso):
+        iso += "Z"
+    # Ensure T separator (should already be present from GitHub)
+    return iso
+
+
+def _feed_updated_for(project: dict) -> str:
+    """Return the Atom <updated> value for a project entry."""
+    return _to_atom_date(
+        project.get("latest_release_at") or project.get("created_at", "")
+    )
+
+
+# --------------------------------------------------------------------------- #
 # Markdown rendering
 # --------------------------------------------------------------------------- #
 
@@ -211,6 +261,45 @@ def load_projects() -> list[dict]:
 # --------------------------------------------------------------------------- #
 # Build site
 # --------------------------------------------------------------------------- #
+
+def _build_feed(env, projects: list[dict], site_config: dict) -> None:
+    """Render and write output/feed.xml as an Atom 1.0 feed."""
+    from jinja2 import Environment
+
+    max_entries = site_config.get("feed", {}).get("max_entries", 20)
+
+    # Annotate each project with its Atom <updated> value
+    feed_projects = []
+    for p in projects:
+        feed_updated = _feed_updated_for(p)
+        if not feed_updated:
+            continue  # skip entries with no date at all
+        feed_projects.append({**p, "feed_updated": feed_updated})
+
+    # Sort by feed_updated descending, then cap to max_entries
+    feed_projects.sort(key=lambda p: p["feed_updated"], reverse=True)
+    feed_projects = feed_projects[:max_entries]
+
+    # Feed <updated> = most recent entry updated date (lexicographic on ISO strings)
+    feed_updated = feed_projects[0]["feed_updated"] if feed_projects else ""
+
+    # Determine the canonical site URL: site.toml wins, then env-derived fallback
+    site_url = (site_config.get("url") or _derive_site_url()).rstrip("/")
+    feed_url = (site_url + "/feed.xml") if site_url else "feed.xml"
+
+    # Register a simple filter so the template can format dates
+    env.filters["atom_date"] = _to_atom_date
+
+    feed_template = env.get_template("feed.xml")
+    rendered = feed_template.render(
+        projects=feed_projects,
+        feed_updated=feed_updated,
+        site_url=site_url,
+        feed_url=feed_url,
+    )
+    (OUTPUT_DIR / "feed.xml").write_text(rendered, encoding="utf-8")
+    print(f"  [feed]  feed.xml written ({len(feed_projects)} entries)")
+
 
 def build(
     projects: list[dict],
@@ -281,6 +370,8 @@ def build(
     index_template = env.get_template("index.html")
     rendered_index = index_template.render(projects=enriched_projects)
     (OUTPUT_DIR / "index.html").write_text(rendered_index, encoding="utf-8")
+
+    _build_feed(env, enriched_projects, site_config)
 
     print(f"\nBuilt {len(projects)} project pages → {OUTPUT_DIR}/")
 

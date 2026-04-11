@@ -15,7 +15,7 @@ BASE_URL = "https://api.github.com"
 
 # Bump this when bootstrap produces new required fields.
 # build.py will exit with a helpful message if projects.yaml is behind.
-BOOTSTRAP_VERSION = 1
+BOOTSTRAP_VERSION = 2
 
 
 # --------------------------------------------------------------------------- #
@@ -186,6 +186,24 @@ def fetch_pinned_names(client: httpx.Client, username: str) -> set[str]:
 # --------------------------------------------------------------------------- #
 # Topics (tags)
 # --------------------------------------------------------------------------- #
+
+def fetch_latest_release_date(
+    client: httpx.Client, username: str, repo_name: str
+) -> str | None:
+    """
+    Return the published_at date of the latest release for a repo, or None
+    if the repo has no releases or if the request fails.
+    """
+    url = f"{BASE_URL}/repos/{username}/{repo_name}/releases/latest"
+    try:
+        response = client.get(url)
+        response.raise_for_status()
+        return response.json().get("published_at")
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 404:
+            return None
+        raise
+
 
 def extract_topics(repo: dict) -> list[str]:
     """

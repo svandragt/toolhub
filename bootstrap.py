@@ -38,6 +38,7 @@ from lib.github import (
     extract_license,
     extract_topics,
     fetch_gist_portfolio,
+    fetch_latest_release_date,
     fetch_repo_portfolio,
     make_client,
     paginate,
@@ -122,16 +123,21 @@ def repo_to_entry(client: httpx.Client, repo: dict) -> dict:
     topics = extract_topics(repo)
     license_id = extract_license(repo)
 
+    latest_release_at = fetch_latest_release_date(client, USERNAME, name)
+
     entry = {
         "name": name,
         "type": "repo",
         "repo_url": repo["html_url"],
         "description": repo["description"] or "",
         "tags": topics,
+        "created_at": repo.get("created_at", ""),
         "updated_at": repo.get("pushed_at") or repo.get("updated_at", ""),
         "archived": bool(repo.get("archived")),
         "license": license_id,
     }
+    if latest_release_at:
+        entry["latest_release_at"] = latest_release_at
     if repo.get("homepage"):
         entry["homepage"] = repo["homepage"]
     return entry
@@ -156,6 +162,7 @@ def gist_to_entry(client: httpx.Client, gist: dict) -> dict:
         "md_file": md_file,
         "description": gist["description"] or "",
         "tags": portfolio.get("tags", []),
+        "created_at": gist.get("created_at", ""),
         "updated_at": gist.get("updated_at", ""),
     }
 
