@@ -321,7 +321,7 @@ def build(
 
     env = Environment(
         loader=FileSystemLoader(templates_dir),
-        autoescape=select_autoescape(["html"]),
+        autoescape=select_autoescape(["html", "xml"]),
     )
     env.globals["site"] = site_config
     env.globals["sections"] = site_config["sections"]
