@@ -4,3 +4,4 @@ projects.yaml
 exclude.txt
 site.toml
 output/
+__pycache__/

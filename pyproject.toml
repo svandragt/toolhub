@@ -1,0 +1,16 @@
+[project]
+name = "toolhub"
+version = "0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+test = [
+    "httpx",
+    "jinja2",
+    "markdown-it-py",
+    "pytest",
+    "python-dotenv",
+    "ruamel.yaml",
+]
