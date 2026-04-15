@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>snoozer</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>snoozer</h1>
+
+  
+  <div class="project-header__desc">Snooze yer tabs</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">addon</span>
+    
+    <span class="badge">browser</span>
+    
+    <span class="badge">extension</span>
+    
+    <span class="badge">firefox</span>
+    
+    <span class="badge">tabs</span>
+    
+    
+    <span class="badge">GPL-3.0</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/snoozer">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Snoozer</h1>
+<p>Firefox extension that snoozes the current tab or selected tabs from the tab context menu and restores them later from the toolbar popup.</p>
+<h2>Project</h2>
+<ul>
+<li>Homepage: https://vandragt.com</li>
+<li>Source: https://github.com/svandragt/tab-snoozer</li>
+<li>License: GPL-3.0</li>
+</ul>
+<h2>Features</h2>
+<ul>
+<li>Snooze from the tab context menu under <code>Snoozer</code></li>
+<li>Presets for later today, tomorrow, this weekend, next week, next month, and next session</li>
+<li>Bookmark-backed persistence under <code>Other Bookmarks &gt; Snoozer</code></li>
+<li>Popup queue with <code>Restore now</code> and <code>Delete</code></li>
+<li>Automatic restore for due tabs and next-session tabs when the extension initializes</li>
+</ul>
+<h2>Development</h2>
+<p>Load the repo as a temporary add-on from <code>about:debugging</code> in Firefox.</p>
+<h2>Packaging</h2>
+<p>Build an unsigned <code>.xpi</code>:</p>
+<pre><code class="language-bash">make package
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">dist/snoozer-&lt;version&gt;.xpi
+</code></pre>
+<p>Clean build artifacts:</p>
+<pre><code class="language-bash">make clean
+</code></pre>
+<h2>Installation Notes</h2>
+<ul>
+<li>Temporary install: load the directory as a temporary add-on from <code>about:debugging</code></li>
+<li>Permanent install in standard Firefox release: requires Mozilla signing/verification</li>
+<li>Unsigned <code>.xpi</code> packages generally only install in developer-oriented Firefox builds or temporary-addon workflows</li>
+</ul>
+<h2>Permissions</h2>
+<ul>
+<li><code>bookmarks</code></li>
+<li><code>menus</code></li>
+<li><code>notifications</code></li>
+<li><code>tabs</code></li>
+<li><code>&lt;all_urls&gt;</code></li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
