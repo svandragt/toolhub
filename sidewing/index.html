@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sidewing</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>sidewing</h1>
+
+  
+  <div class="project-header__desc">A xbar / bitbar compatible GTK4 desktop bar</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">bitbar</span>
+    
+    <span class="badge">elementaryos</span>
+    
+    <span class="badge">gtk4</span>
+    
+    <span class="badge">menubar</span>
+    
+    <span class="badge">scripting</span>
+    
+    <span class="badge">wingpanel</span>
+    
+    <span class="badge">xbar</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://tools.vandragt.com/sidewing/index.html">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/sidewing">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Sidewing</h1>
+<p>Sidewing is a GTK4 desktop bar for elementary OS-style multi-monitor setups. It runs local executable plugins, parses <a href="https://github.com/matryer/xbar">xbar-style</a> output, and renders the result in a slim bar window on a selected display.</p>
+<p>Current target:</p>
+<ul>
+<li>elementary OS 8 / Linux desktop environments with X11</li>
+<li>GTK4 + Vala</li>
+<li>local, unsandboxed script plugins</li>
+</ul>
+<p>The current codebase is an MVP-in-progress. It already discovers and runs plugins, schedules refreshes from xbar-style filenames, renders a bar window, and opens plugin menus. Several planned features are still not implemented yet.</p>
+<img width="531" height="257" alt="image" src="https://github.com/user-attachments/assets/430e3cce-cd05-4bf9-ada2-eced9fa48f63" />
+<h2>What It Does</h2>
+<ul>
+<li>Scans a plugins directory for executable files with xbar-style refresh intervals such as <code>clock.5s.sh</code> or <code>disk.1m.py</code></li>
+<li>Runs each plugin on its own refresh schedule</li>
+<li>Uses the first pre-<code>---</code> line as the visible bar label</li>
+<li>Uses lines after <code>---</code> as menu items</li>
+<li>Supports menu separators, disabled items, basic nested indentation, <code>href=...</code>, and <code>refresh=true</code></li>
+<li>Seeds the user plugin directory with bundled example plugins on first launch</li>
+<li>Prefers a non-primary monitor and falls back to the primary monitor if needed</li>
+</ul>
+<h2>Current Limitations</h2>
+<p>The implementation is narrower than the long-term spec.</p>
+<ul>
+<li>X11 placement is implemented; Wayland support is not</li>
+<li>There is no settings UI yet</li>
+<li>There is no installed desktop file or autostart integration yet</li>
+<li>Plugin actions currently support opening URLs and triggering refreshes, but not <code>shell=</code> / <code>paramN=</code> execution</li>
+<li>Unsupported xbar metadata is ignored</li>
+<li>Only the first bar line is shown as the visible title</li>
+<li>Plugin variables are stubbed out and not yet user-configurable</li>
+</ul>
+<h2>Build Requirements</h2>
+<p>You need:</p>
+<ul>
+<li><code>meson</code></li>
+<li><code>ninja</code></li>
+<li><code>valac</code></li>
+<li>GTK4 development files</li>
+<li><code>gtk4-x11</code></li>
+<li><code>glib-2.0</code></li>
+<li><code>gio-2.0</code></li>
+<li><code>gobject-2.0</code></li>
+<li><code>gee-0.8</code></li>
+<li><code>x11</code></li>
+</ul>
+<p>On Debian/Ubuntu-based systems that usually means packages along these lines:</p>
+<pre><code class="language-sh">sudo apt install meson ninja-build valac libgtk-4-dev libgee-0.8-dev libx11-dev
+</code></pre>
+<p>If <code>gtk4-x11</code> is packaged separately on your distro, install that too.</p>
+<h2>Build</h2>
+<pre><code class="language-sh">meson setup build
+meson compile -C build
+</code></pre>
+<h2>Run</h2>
+<pre><code class="language-sh">./build/src/sidewing
+</code></pre>
+<p>The app stores its state under:</p>
+<ul>
+<li>Config: <code>~/.config/sidewing/config.ini</code></li>
+<li>User data: <code>~/.local/share/sidewing/</code></li>
+<li>Plugins directory: <code>~/.local/share/sidewing/plugins/</code></li>
+</ul>
+<p>On first launch, <code>Sidewing</code> copies the example plugins from <a href="./examples/plugins/"><code>examples/plugins</code></a> into the user plugins directory if that directory is empty.</p>
+<h2>Plugin Naming</h2>
+<p>Plugins must be executable files whose filenames encode the refresh interval:</p>
+<pre><code class="language-text">name.10s.sh
+name.5m.py
+name.1h.rb
+name.1d.sh
+</code></pre>
+<p>Supported interval suffixes:</p>
+<ul>
+<li><code>s</code> seconds</li>
+<li><code>m</code> minutes</li>
+<li><code>h</code> hours</li>
+<li><code>d</code> days</li>
+</ul>
+<p>If the filename does not match that pattern, the file is ignored.</p>
+<h2>Plugin Output</h2>
+<p>Sidewing follows the xbar text protocol loosely.</p>
+<p>Basic structure:</p>
+<pre><code class="language-text">Visible title
+---
+Menu item
+Another item | href=https://example.com
+Refresh now | refresh=true
+Disabled item | disabled=true
+--Indented child
+</code></pre>
+<p>Current behavior:</p>
+<ul>
+<li>The first non-empty line before <code>---</code> becomes the bar title</li>
+<li>Lines after <code>---</code> become menu items</li>
+<li><code>---</code> inside the menu becomes a separator</li>
+<li>Leading <code>--</code> increases indentation depth for menu items</li>
+<li>Metadata is parsed from the <code>|</code> section</li>
+</ul>
+<p>Currently recognized metadata:</p>
+<ul>
+<li><code>href=&quot;...&quot;</code></li>
+<li><code>refresh=true</code></li>
+<li><code>disabled=true</code></li>
+</ul>
+<p>Environment variables set for plugins:</p>
+<ul>
+<li><code>STABA=1</code></li>
+<li><code>XBAR=1</code></li>
+<li><code>STABA_PLUGIN_PATH</code></li>
+<li><code>STABA_PLUGIN_DIR</code></li>
+</ul>
+<p>Plugins run with their own directory as the current working directory.</p>
+<h2>Examples</h2>
+<p>Bundled examples live in <a href="./examples/plugins/"><code>examples/plugins</code></a>:</p>
+<ul>
+<li><a href="./examples/plugins/available-memory.10s.sh"><code>available-memory.10s.sh</code></a></li>
+<li><a href="./examples/plugins/available-disk-space.1m.sh"><code>available-disk-space.1m.sh</code></a></li>
+<li><a href="./examples/plugins/public-ip.5m.sh"><code>public-ip.5m.sh</code></a></li>
+<li><a href="./examples/plugins/github-assigned-prs.5m.sh"><code>github-assigned-prs.5m.sh</code></a></li>
+</ul>
+<p>The GitHub example requires the <code>gh</code> CLI and an authenticated session.</p>
+<h2>Project Layout</h2>
+<pre><code class="language-text">src/
+  application.vala
+  bar-window.vala
+  monitor-manager.vala
+  plugin-manager.vala
+  plugin-runner.vala
+  xbar-parser.vala
+  menu-builder.vala
+  action-dispatcher.vala
+examples/plugins/
+docs/
+</code></pre>
+<h2>Status</h2>
+<p>Related design and planning docs:</p>
+<ul>
+<li><a href="./docs/staba-spec.md"><code>docs/staba-spec.md</code></a></li>
+<li><a href="./docs/implementation-plan.md"><code>docs/implementation-plan.md</code></a></li>
+<li><a href="./docs/TODO.md"><code>docs/TODO.md</code></a></li>
+</ul>
+<p>Note that some docs still use the older internal name <code>staba</code>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
