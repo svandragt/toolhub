@@ -76,20 +76,21 @@
 <li>Runs each plugin on its own refresh schedule</li>
 <li>Uses the first pre-<code>---</code> line as the visible bar label</li>
 <li>Uses lines after <code>---</code> as menu items</li>
-<li>Supports menu separators, disabled items, basic nested indentation, <code>href=...</code>, and <code>refresh=true</code></li>
+<li>Supports menu separators, disabled items, basic nested indentation, <code>href=...</code>, <code>shell=...</code>, <code>paramN=...</code>, and <code>refresh=true</code></li>
+<li>Adds a right-aligned app menu with plugin-folder, desktop-entry, autostart, reserve-space, and refresh-all actions</li>
 <li>Seeds the user plugin directory with bundled example plugins on first launch</li>
 <li>Prefers a non-primary monitor and falls back to the primary monitor if needed</li>
+<li>Uses a Wingpanel-inspired translucent bar that becomes opaque when the active window on that monitor is maximized</li>
 </ul>
 <h2>Current Limitations</h2>
 <p>The implementation is narrower than the long-term spec.</p>
 <ul>
 <li>X11 placement is implemented; Wayland support is not</li>
-<li>There is no settings UI yet</li>
-<li>There is no installed desktop file or autostart integration yet</li>
-<li>Plugin actions currently support opening URLs and triggering refreshes, but not <code>shell=</code> / <code>paramN=</code> execution</li>
+<li>There is no full settings UI yet</li>
+<li><code>terminal=true</code> command launching is not implemented yet; command actions currently run without a terminal</li>
 <li>Unsupported xbar metadata is ignored</li>
 <li>Only the first bar line is shown as the visible title</li>
-<li>Plugin variables are stubbed out and not yet user-configurable</li>
+<li>Plugin variables are loaded from <code>&lt;plugin&gt;.vars.json</code>; there is no in-app variables editor yet</li>
 </ul>
 <h2>Build Requirements</h2>
 <p>You need:</p>
@@ -119,10 +120,19 @@ meson compile -C build
 <p>The app stores its state under:</p>
 <ul>
 <li>Config: <code>~/.config/sidewing/config.ini</code></li>
+<li>Autostart entry: <code>~/.config/autostart/com.vandragt.sidewing.desktop</code></li>
 <li>User data: <code>~/.local/share/sidewing/</code></li>
+<li>Desktop entry: <code>~/.local/share/applications/com.vandragt.sidewing.desktop</code></li>
 <li>Plugins directory: <code>~/.local/share/sidewing/plugins/</code></li>
 </ul>
 <p>On first launch, <code>Sidewing</code> copies the example plugins from <a href="./examples/plugins/"><code>examples/plugins</code></a> into the user plugins directory if that directory is empty.</p>
+<p>From the bar app menu you can:</p>
+<ul>
+<li>install a user desktop entry</li>
+<li>enable or disable autostart for the current user session</li>
+<li>toggle whether the bar should reserve space for maximized windows on X11</li>
+<li>refresh all plugins</li>
+</ul>
 <h2>Plugin Naming</h2>
 <p>Plugins must be executable files whose filenames encode the refresh interval:</p>
 <pre><code class="language-text">name.10s.sh
@@ -160,24 +170,42 @@ Disabled item | disabled=true
 <p>Currently recognized metadata:</p>
 <ul>
 <li><code>href=&quot;...&quot;</code></li>
+<li><code>shell=&quot;...&quot;</code></li>
+<li><code>param1=&quot;...&quot;</code>, <code>param2=&quot;...&quot;</code>, ...</li>
+<li><code>terminal=true</code></li>
 <li><code>refresh=true</code></li>
 <li><code>disabled=true</code></li>
 </ul>
 <p>Environment variables set for plugins:</p>
 <ul>
-<li><code>STABA=1</code></li>
+<li>configured <code>&lt;xbar.var&gt;</code> values from <code>&lt;plugin&gt;.vars.json</code></li>
+<li><code>SIDEWING=1</code></li>
 <li><code>XBAR=1</code></li>
-<li><code>STABA_PLUGIN_PATH</code></li>
-<li><code>STABA_PLUGIN_DIR</code></li>
+<li><code>SIDEWING_PLUGIN_PATH</code></li>
+<li><code>SIDEWING_PLUGIN_DIR</code></li>
 </ul>
+<p>This renamed the older <code>STABA_*</code> variables. Existing plugins that read those names need to be updated.</p>
 <p>Plugins run with their own directory as the current working directory.</p>
+<h2>Plugin Variables</h2>
+<p>Sidewing supports xbar-style variable metadata in plugin comments:</p>
+<pre><code class="language-text"># &lt;xbar.var&gt;string(VAR_NAME=&quot;Sidewing&quot;): Display name.&lt;/xbar.var&gt;
+# &lt;xbar.var&gt;number(VAR_COUNT=3): Number of rows.&lt;/xbar.var&gt;
+# &lt;xbar.var&gt;boolean(VAR_VERBOSE=false): Show extra detail?&lt;/xbar.var&gt;
+# &lt;xbar.var&gt;select(VAR_STYLE=&quot;normal&quot;): Style preset. [compact, normal, loud]&lt;/xbar.var&gt;
+</code></pre>
+<p>When a plugin with variables is discovered, Sidewing creates a sidecar file next to it:</p>
+<pre><code class="language-text">plugin.1m.sh.vars.json
+</code></pre>
+<p>That JSON file stores the current values and Sidewing exports them as environment variables before each plugin run. Variable values are user-configurable by editing the sidecar JSON file and refreshing the plugin.</p>
 <h2>Examples</h2>
 <p>Bundled examples live in <a href="./examples/plugins/"><code>examples/plugins</code></a>:</p>
 <ul>
+<li><a href="./examples/plugins/action-demo.30s.sh"><code>action-demo.30s.sh</code></a></li>
 <li><a href="./examples/plugins/available-memory.10s.sh"><code>available-memory.10s.sh</code></a></li>
 <li><a href="./examples/plugins/available-disk-space.1m.sh"><code>available-disk-space.1m.sh</code></a></li>
 <li><a href="./examples/plugins/public-ip.5m.sh"><code>public-ip.5m.sh</code></a></li>
 <li><a href="./examples/plugins/github-assigned-prs.5m.sh"><code>github-assigned-prs.5m.sh</code></a></li>
+<li><a href="./examples/plugins/variable-demo.1m.sh"><code>variable-demo.1m.sh</code></a></li>
 </ul>
 <p>The GitHub example requires the <code>gh</code> CLI and an authenticated session.</p>
 <h2>Project Layout</h2>
@@ -196,11 +224,10 @@ docs/
 <h2>Status</h2>
 <p>Related design and planning docs:</p>
 <ul>
-<li><a href="./docs/staba-spec.md"><code>docs/staba-spec.md</code></a></li>
+<li><a href="./docs/sidewing-spec.md"><code>docs/sidewing-spec.md</code></a></li>
 <li><a href="./docs/implementation-plan.md"><code>docs/implementation-plan.md</code></a></li>
 <li><a href="./docs/TODO.md"><code>docs/TODO.md</code></a></li>
 </ul>
-<p>Note that some docs still use the older internal name <code>staba</code>.</p>
 
 </div>
 
