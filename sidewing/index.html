@@ -69,7 +69,7 @@
 <li>local, unsandboxed script plugins</li>
 </ul>
 <p>The current codebase is an MVP-in-progress. It already discovers and runs plugins, schedules refreshes from xbar-style filenames, renders a bar window, and opens plugin menus. Several planned features are still not implemented yet.</p>
-<img width="531" height="257" alt="image" src="https://github.com/user-attachments/assets/430e3cce-cd05-4bf9-ada2-eced9fa48f63" />
+<img width="392" height="223" alt="image" src="https://github.com/user-attachments/assets/87284b40-2c1b-46ac-b92a-f8b047667c72" />
 <h2>What It Does</h2>
 <ul>
 <li>Scans a plugins directory for executable files with xbar-style refresh intervals such as <code>clock.5s.sh</code> or <code>disk.1m.py</code></li>
@@ -80,7 +80,9 @@
 <li>Adds a right-aligned app menu with plugin-folder, desktop-entry, autostart, reserve-space, and refresh-all actions</li>
 <li>Seeds the user plugin directory with bundled example plugins on first launch</li>
 <li>Prefers a non-primary monitor and falls back to the primary monitor if needed</li>
-<li>Uses a Wingpanel-inspired translucent bar that becomes opaque when the active window on that monitor is maximized</li>
+<li>Uses a Wingpanel-inspired translucent bar that becomes opaque when the selected monitor has a maximized window</li>
+<li>Dismisses open plugin menus when the bar loses focus so popovers do not linger on X11</li>
+<li>Extends plugin and settings button hit targets to the top edge of the bar for easier pointer access</li>
 </ul>
 <h2>Current Limitations</h2>
 <p>The implementation is narrower than the long-term spec.</p>
@@ -91,6 +93,7 @@
 <li>Unsupported xbar metadata is ignored</li>
 <li>Only the first bar line is shown as the visible title</li>
 <li>Plugin variables are loaded from <code>&lt;plugin&gt;.vars.json</code>; there is no in-app variables editor yet</li>
+<li>Maximized-window tracking, focus-loss menu dismissal, and reserve-space behavior are implemented for X11 only</li>
 </ul>
 <h2>Build Requirements</h2>
 <p>You need:</p>
@@ -133,6 +136,7 @@ meson compile -C build
 <li>toggle whether the bar should reserve space for maximized windows on X11</li>
 <li>refresh all plugins</li>
 </ul>
+<p>On X11, Sidewing also detects whether the selected monitor currently has a maximized window. That state is checked when the bar appears and then polled periodically so the bar can switch between its translucent and opaque styles as window state changes.</p>
 <h2>Plugin Naming</h2>
 <p>Plugins must be executable files whose filenames encode the refresh interval:</p>
 <pre><code class="language-text">name.10s.sh
@@ -226,7 +230,6 @@ docs/
 <ul>
 <li><a href="./docs/sidewing-spec.md"><code>docs/sidewing-spec.md</code></a></li>
 <li><a href="./docs/implementation-plan.md"><code>docs/implementation-plan.md</code></a></li>
-<li><a href="./docs/TODO.md"><code>docs/TODO.md</code></a></li>
 </ul>
 
 </div>
