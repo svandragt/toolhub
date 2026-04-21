@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>park</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>park</h1>
+
+  
+  <div class="project-header__desc">A CLI tool for saving and recalling human work context across time and space.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/park">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>park</h1>
+<p>A CLI tool for saving and recalling human work context, backed by SQLite. (private alternative for GitHub Issues)</p>
+<p><strong>You're mid-debug when a colleague asks for urgent help.</strong> Park where you are, context-switch, come back and pick up exactly where you left off — right file, right line, right next step.</p>
+<p><strong>You're juggling three repos.</strong> <code>park list</code> shows everything active across all of them. <code>park list --remote github.com/org/repo</code> scopes it to one.</p>
+<p><strong>You context-switch between machines.</strong> Point <code>PARK_DB</code> at a synced folder (Syncthing, Dropbox) and your parked items follow you.</p>
+<p><strong>Your AI assistant's context window is filling up.</strong> Park the current task so the next session can pick up exactly where you left off, without re-explaining everything.</p>
+<h2>How is park different?</h2>
+<p>| Tool | What it does | What park adds |
+|---|---|---|
+| <strong>git stash</strong> | Saves uncommitted code changes in the current repo | Saves <em>why</em> you were there, the next step, and context across <em>all</em> repos — no code changes required |
+| <strong>LLM session resume</strong> | Re-feeds prior conversation to the AI | A structured, queryable record you write once; the next session starts from facts, not a transcript |
+| <strong>GitHub Issues</strong> | Tracks bugs and features for a team | Local-first and private; captures device, branch, and &quot;how to pick up&quot; automatically; spans repos without a remote |
+| <strong>Todo list</strong> | Records tasks to complete | Records the full context — where in the code, why it matters, exact next step — not just the task name |</p>
+<h2>Install</h2>
+<pre><code class="language-bash">go install github.com/svandragt/park@latest
+</code></pre>
+<h2>Usage</h2>
+<pre><code class="language-bash">park add --name &quot;fix auth bug&quot; --desc &quot;Session token issue&quot; --body &quot;...&quot; --why &quot;Blocks release&quot; --how &quot;Start at auth.go:42&quot;
+park edit &lt;id&gt; --body &quot;updated context&quot; --tags &quot;auth,urgent&quot;
+park list                          # active items
+park list --current                # scope to current git remote + branch
+park list --status resolved        # resolved items
+park list --remote github.com/org/repo  # filter by repo (SSH or HTTPS format)
+park list --branch main            # filter by branch
+park list --tag auth               # filter by tag
+park list --type bug               # filter by type (project/bug/feature/chore/docs)
+park search &quot;JWT&quot;                  # full-text search (porter stemming, active items only)
+park search --status all &quot;JWT&quot;     # search across all statuses
+park show &lt;id&gt;                     # full detail
+park show -                        # show most recently added item
+park done &lt;id&gt;                     # mark resolved
+park done -                        # resolve most recently added item
+park archive &lt;id&gt;                  # archive
+park reopen &lt;id&gt;                   # move back to active
+park delete &lt;id&gt;                   # hard-delete an item
+park prune --days 30               # hard-delete resolved/archived items older than N days
+park migrate &lt;dest-dir&gt;            # copy DB to new location, print PARK_DB export line
+park rename-remote &lt;old&gt; &lt;new&gt;     # update remote URL across all items
+</code></pre>
+<p><code>add</code> automatically captures hostname, git remote, and current branch. If the
+remote has been renamed (e.g. a GitHub repo rename), <code>add</code> detects the redirect
+and updates all existing items to the canonical URL automatically.</p>
+<h2>Configuration</h2>
+<p>| Variable | Default |
+|---|---|
+| <code>PARK_DB</code> | <code>~/.local/share/park/park.db</code> (XDG-aware) |</p>
+<h2>Claude Code skill</h2>
+<p>A skill for <a href="https://claude.ai/code">Claude Code</a> is included in the repository. It lets you park and resume context using natural language (&quot;park this&quot;, &quot;show parked&quot;, &quot;work on #2&quot;).</p>
+<p>To install, copy the skill into Claude's skills directory:</p>
+<pre><code class="language-bash">mkdir -p ~/.claude/skills/park
+cp .claude/skills/park/SKILL.md ~/.claude/skills/park/SKILL.md
+</code></pre>
+<p>Once installed, Claude will recognize park-related phrases and call the <code>park</code> CLI automatically.</p>
+<h2>Build</h2>
+<pre><code class="language-bash">go build ./...
+go test ./...
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
