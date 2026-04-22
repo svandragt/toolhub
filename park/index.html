@@ -70,6 +70,10 @@ park list --tag auth               # filter by tag
 park list --type bug               # filter by type (project/bug/feature/chore/docs)
 park search &quot;JWT&quot;                  # full-text search (porter stemming, active items only)
 park search --status all &quot;JWT&quot;     # search across all statuses
+park search --tag auth &quot;token&quot;     # search within a tag
+park search --type bug &quot;crash&quot;     # search within a type
+park search --remote github.com/org/repo &quot;fix&quot;  # search within a repo
+park search --current &quot;token&quot;      # search in current git remote + branch
 park show &lt;id&gt;                     # full detail
 park show -                        # show most recently added item
 park done &lt;id&gt;                     # mark resolved
