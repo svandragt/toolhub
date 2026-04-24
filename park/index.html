@@ -47,7 +47,7 @@
 <p><strong>You're mid-debug when a colleague asks for urgent help.</strong> Park where you are, context-switch, come back and pick up exactly where you left off — right file, right line, right next step.</p>
 <p><strong>You're juggling three repos.</strong> <code>park list</code> shows everything active across all of them. <code>park list --remote github.com/org/repo</code> scopes it to one.</p>
 <p><strong>You context-switch between machines.</strong> Point <code>PARK_DB</code> at a synced folder (Syncthing, Dropbox) and your parked items follow you.</p>
-<p><strong>Your AI assistant's context window is filling up.</strong> Park the current task so the next session can pick up exactly where you left off, without re-explaining everything.</p>
+<p><strong>Your AI assistant's context window is filling up, or you switch between multiple assistants.</strong> Park the current task so the next session can pick up exactly where you left off, without re-explaining everything.</p>
 <h2>How is park different?</h2>
 <p>| Tool | What it does | What park adds |
 |---|---|---|
@@ -85,9 +85,12 @@ park prune --days 30               # hard-delete resolved/archived items older t
 park migrate &lt;dest-dir&gt;            # copy DB to new location, print PARK_DB export line
 park rename-remote &lt;old&gt; &lt;new&gt;     # update remote URL across all items
 </code></pre>
-<p><code>add</code> automatically captures hostname, git remote, and current branch. If the
-remote has been renamed (e.g. a GitHub repo rename), <code>add</code> detects the redirect
-and updates all existing items to the canonical URL automatically.</p>
+<p><code>add</code> automatically captures hostname, remote, and current branch. Both git and
+<a href="https://docs.jj-vcs.dev/latest/">jj</a> repos are supported: git is tried first, with a
+jj fallback (nearest bookmark for branch, <code>jj git remote list</code> for remote) so
+non-colocated jj repos and jj changes without a git branch also get populated.
+If the remote has been renamed (e.g. a GitHub repo rename), <code>add</code> detects the
+redirect and updates all existing items to the canonical URL automatically.</p>
 <h2>Configuration</h2>
 <p>| Variable | Default |
 |---|---|
