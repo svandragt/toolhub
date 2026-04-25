@@ -61,6 +61,7 @@
 <h2>Usage</h2>
 <pre><code class="language-bash">park add --name &quot;fix auth bug&quot; --desc &quot;Session token issue&quot; --body &quot;...&quot; --why &quot;Blocks release&quot; --how &quot;Start at auth.go:42&quot;
 park edit &lt;id&gt; --body &quot;updated context&quot; --tags &quot;auth,urgent&quot;
+park edit &lt;id&gt; --status resolved   # equivalent to park done &lt;id&gt;
 park list                          # active items
 park list --current                # scope to current git remote + branch
 park list --status resolved        # resolved items
@@ -84,6 +85,7 @@ park delete &lt;id&gt;                   # hard-delete an item
 park prune --days 30               # hard-delete resolved/archived items older than N days
 park migrate &lt;dest-dir&gt;            # copy DB to new location, print PARK_DB export line
 park rename-remote &lt;old&gt; &lt;new&gt;     # update remote URL across all items
+park help                          # show usage (also --help, -h)
 </code></pre>
 <p><code>add</code> automatically captures hostname, remote, and current branch. Both git and
 <a href="https://docs.jj-vcs.dev/latest/">jj</a> repos are supported: git is tried first, with a
