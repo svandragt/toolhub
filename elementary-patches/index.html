@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>elementary-patches</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>elementary-patches</h1>
+
+  
+  <div class="project-header__desc">Personal patches for elementary OS packages</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+    <span class="badge">GPL-3.0</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/elementary-patches">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>elementary OS Patches</h1>
+<p>Personal patches for elementary OS packages — bug fixes and improvements that
+bother me enough to maintain them locally.</p>
+<blockquote>
+<p><strong>Note:</strong> Patches in this repo are AI-assisted and reviewed/tested by me.
+elementary OS does not accept AI contributions upstream, so these live here
+for anyone who finds them useful.</p>
+</blockquote>
+<h2>Packages</h2>
+<p>| Package | Patches | Description |
+|---------|---------|-------------|
+| <a href="io.elementary.notifications/">io.elementary.notifications</a> | <a href="io.elementary.notifications/series">series</a> | Don't steal focus when a notification bubble appears on X11 |</p>
+<p>Target: elementary OS 8 (Ubuntu 24.04 / noble).</p>
+<h2>Install a patched package (end users)</h2>
+<p>If you just want a patched build of one of these packages on your own machine —
+no contributing, no patch authoring — this is the short path.</p>
+<h3>1. Prerequisites (one time)</h3>
+<pre><code class="language-bash">sudo apt install quilt git build-essential devscripts
+</code></pre>
+<p><code>apt source</code> and <code>apt build-dep</code> need a <code>deb-src</code> line for the elementary
+archive enabled in <code>/etc/apt/sources.list</code> (or a file in
+<code>/etc/apt/sources.list.d/</code>). Then refresh:</p>
+<pre><code class="language-bash">sudo apt update
+</code></pre>
+<h3>2. Clone and run</h3>
+<pre><code class="language-bash">git clone https://github.com/svandragt/elementary-patches.git
+cd elementary-patches
+chmod +x ep _scripts/*.sh
+cat quiltrc &gt;&gt; ~/.quiltrc        # one time
+
+./ep apply io.elementary.notifications       # fetch source + apply patches
+./ep build io.elementary.notifications --install
+</code></pre>
+<p><code>--install</code> runs <code>sudo dpkg -i</code> on the freshly built <code>.deb</code>. The unpatched
+upstream package will be replaced; remove it later with
+<code>sudo apt install --reinstall io.elementary.notifications</code> to revert.</p>
+<h3>Reverting</h3>
+<pre><code class="language-bash">sudo apt install --reinstall io.elementary.notifications
+</code></pre>
+<p>That pulls the unpatched upstream version back from the archive.</p>
+<h2>Contributor workflow</h2>
+<p>The end-user steps above already get you a working dev environment. From there:</p>
+<h3>Full command reference</h3>
+<pre><code>ep apply   &lt;package&gt;              Fetch source and apply all patches
+ep new     &lt;package&gt; &lt;desc&gt;       Create a new patch
+ep edit    &lt;package&gt; &lt;file&gt;       Add a file to current patch and open editor
+ep refresh &lt;package&gt;              Refresh top patch after editing
+ep refresh &lt;package&gt; --rebase     Rebase all patches onto new upstream version
+ep build   &lt;package&gt; [--install]  Build package, optionally install it
+ep status  [package]              Show patch status
+</code></pre>
+<h3>Adding a new patch</h3>
+<pre><code class="language-bash">./ep apply   &lt;package&gt;                       # make sure source is ready
+./ep new     &lt;package&gt; &quot;fix crash on startup&quot; # create the patch
+./ep edit    &lt;package&gt; path/to/file.vala     # add file to patch and open in $EDITOR
+./ep refresh &lt;package&gt;                        # finalise the patch
+git add &lt;package&gt;/
+git commit -m &quot;&lt;package&gt;: fix crash on startup&quot;
+</code></pre>
+<h3>Updating after a new upstream release</h3>
+<pre><code class="language-bash">./ep refresh io.elementary.notifications --rebase
+# Fix any failures (quilt will stop and tell you)
+git add io.elementary.notifications/
+git commit -m &quot;io.elementary.notifications: rebase patches onto 8.x&quot;
+</code></pre>
+<h3>Environment variables</h3>
+<p>| Variable | Default | Description |
+|----------|---------|-------------|
+| <code>WORK_DIR</code> | <code>~/src</code> | Where source packages are fetched |
+| <code>EDITOR</code> | <code>nano</code> | Editor used by <code>ep edit</code> |</p>
+<h2>Why not upstream?</h2>
+<p>These patches were written with AI assistance. elementary OS (and many projects)
+don't accept AI-generated contributions due to code review and licensing concerns.
+If a patch ever gets rewritten by a human and passes review, it could go upstream.</p>
+<h2>Licence</h2>
+<p>This repo is <strong>GPL-3.0</strong> — same as the upstream packages it patches
+(io.elementary.notifications is GPL-3.0). Patch files are derivative works of
+the upstream source they apply to and inherit that licence; the wrapper
+tooling (<code>ep</code>, <code>_scripts/</code>) is licensed under GPL-3.0 too for simplicity.</p>
+<p>See <a href="LICENSE">LICENSE</a> for the full text.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
