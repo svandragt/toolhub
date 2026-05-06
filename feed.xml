@@ -3,10 +3,23 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-05-04T09:29:36Z</updated>
+  <updated>2026-05-05T12:54:24Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/hello-browser</id>
+    <title>hello-browser</title>
+    <updated>2026-05-05T12:54:24Z</updated>
+    <published>2023-06-15T07:11:14Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/hello-browser"/>
+    <summary>Hello Browser is a webview window for desktop web apps (written in vala, GTK4).</summary>
+    <category term="localhost"/>
+    <category term="vala"/>
+    <category term="webview"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/elementary-patches</id>
@@ -232,16 +245,6 @@
     <published>2025-12-16T13:12:34Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/task-progress-estimator"/>
     <summary>Agile task progress tracker</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/giftpack</id>
-    <title>giftpack</title>
-    <updated>2025-12-15T13:48:36Z</updated>
-    <published>2025-12-15T13:48:36Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/giftpack"/>
-    <summary>giftpack</summary>
     
   </entry>
   

@@ -23,7 +23,7 @@
   <h1>hello-browser</h1>
 
   
-  <div class="project-header__desc">Webview window example for desktop web apps</div>
+  <div class="project-header__desc">Hello Browser is a webview window for desktop web apps (written in vala, GTK4).</div>
   
 
   <div class="project-header__meta">
@@ -48,19 +48,25 @@
 </div>
 
 <div class="readme">
-  <p>This is a minimal example of how to build a GTK native app containing just a webview.</p>
-<p>The goal here is to bundle this with a web app served locally into something that behaves like a native app.</p>
-<p>I don't like locally served apps to be just another browser tab, so rules out just launching the URL, even though that's simpler.
-Also some browser like Gnome Web allow the user to install the website into the applications, however this requires user interaction so is not as convenient.</p>
-<pre><code class="language-shell"># Bootstrap
-meson build --prefix=/usr &amp;&amp; cd build
-ninja install
-
-# Build and run
-ninja &amp;&amp; src/com.github.svandragt.ordner --url https://github.com/svandragt/vala-webview
+  <p>This is a minimal example of how to build a GTK4 native app containing just a webview (WebKitGTK 6.0, Vala).</p>
+<p>The goal is to bundle a locally-served web app into something that behaves like a native desktop app.</p>
+<p>I don't like locally served apps to be just another browser tab, which rules out just launching the URL — even though that's simpler. Browsers like GNOME Web can install a site into the applications menu, but that requires manual user interaction per site.</p>
+<h2>Build and run</h2>
+<p>A <code>Makefile</code> wraps the meson/ninja workflow. Defaults install under <code>$HOME/.local</code>.</p>
+<pre><code class="language-shell">make install                      # build + install binary, compile GSettings schema
+make link                         # symlink ~/bin/hello-browser -&gt; installed binary
+hello-browser https://example.org
 </code></pre>
+<p>Both <code>hello-browser &lt;url&gt;</code> and <code>hello-browser --url &lt;url&gt;</code> are accepted. With no URL it loads <code>example.com</code>.</p>
+<p>When running from <code>$HOME/.local</code>, <code>XDG_DATA_DIRS</code> must include <code>$HOME/.local/share</code> so the GSettings schema is discoverable. <code>make run</code> sets this for you.</p>
+<h2>Site launcher</h2>
+<p>To register a site as a desktop application:</p>
+<pre><code class="language-shell">make desktop NAME=&quot;My App&quot; URL=https://my-app.local:8000/ [ICON=icon-name]
+</code></pre>
+<p>This writes <code>~/.local/share/applications/hello-browser-&lt;slug&gt;.desktop</code> and refreshes the desktop database. The entry then appears in the apps menu and launches the site in its own <code>hello-browser</code> window.</p>
+<h2>Dependencies</h2>
+<p>System packages: <code>meson</code>, <code>ninja-build</code>, <code>valac</code>, <code>libgtk-4-dev</code>, <code>libwebkitgtk-6.0-dev</code>.</p>
 <p><img src="https://github.com/svandragt/vala-webview/assets/594871/6c9ca0fe-c8fd-48f3-afab-c11d31dcbcbf" alt="image" /></p>
-<p>If you leave out the url parameter it will load example.com.</p>
 
 </div>
 
