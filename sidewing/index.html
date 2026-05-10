@@ -50,7 +50,7 @@
 
   <div class="project-header__actions">
     
-    <a class="btn btn--primary" href="https://tools.vandragt.com/sidewing/index.html">&#8599; Website</a>
+    <a class="btn btn--primary" href="https://vandragt.com/tag/sidewing">&#8599; Website</a>
     
     
     
@@ -68,7 +68,7 @@
 <li>GTK4 + Vala</li>
 <li>local, unsandboxed script plugins</li>
 </ul>
-<p>The current codebase is an MVP-in-progress. It already discovers and runs plugins, schedules refreshes from xbar-style filenames, renders a bar window, and opens plugin menus. Several planned features are still not implemented yet.</p>
+<p>Sidewing discovers and runs plugins, schedules refreshes from xbar-style filenames, renders a translucent bar, and opens per-plugin popover menus with a built-in variables editor. See <a href="#current-limitations">Current Limitations</a> for scope boundaries.</p>
 <img width="392" height="223" alt="image" src="https://github.com/user-attachments/assets/87284b40-2c1b-46ac-b92a-f8b047667c72" />
 <h2>What It Does</h2>
 <ul>
@@ -88,13 +88,24 @@
 <p>The implementation is narrower than the long-term spec.</p>
 <ul>
 <li>X11 placement is implemented; Wayland support is not</li>
-<li>There is no full settings UI yet</li>
-<li><code>terminal=true</code> command launching is not implemented yet; command actions currently run without a terminal</li>
 <li>Unsupported xbar metadata is ignored</li>
 <li>Only the first bar line is shown as the visible title</li>
-<li>Plugin variables are loaded from <code>&lt;plugin&gt;.vars.json</code>; there is no in-app variables editor yet</li>
 <li>Maximized-window tracking, focus-loss menu dismissal, and reserve-space behavior are implemented for X11 only</li>
 </ul>
+<h2>Install</h2>
+<p>Prebuilt artifacts are attached to each <a href="https://github.com/svandragt/sidewing/releases">GitHub Release</a>.</p>
+<h3>elementary OS / Ubuntu / Debian</h3>
+<p>Download the latest <code>.deb</code> and install it (apt resolves the runtime libs):</p>
+<pre><code class="language-sh">sudo apt install ./sidewing_*.deb
+</code></pre>
+<h3>Other Linux (Flatpak)</h3>
+<p>Download <code>sidewing.flatpak</code> and run:</p>
+<pre><code class="language-sh">flatpak install --user sidewing.flatpak
+flatpak run com.vandragt.sidewing
+</code></pre>
+<p>The Flatpak uses <code>--filesystem=host</code> and <code>--share=network</code> so plugin scripts can read host files and reach the network — Sidewing's plugin model is incompatible with a strict sandbox.</p>
+<h3>From source</h3>
+<p>See <a href="#build-requirements">Build Requirements</a> and <a href="#build">Build</a> below.</p>
 <h2>Build Requirements</h2>
 <p>You need:</p>
 <ul>
@@ -131,11 +142,12 @@ meson compile -C build
 <p>On first launch, <code>Sidewing</code> copies the example plugins from <a href="./examples/plugins/"><code>examples/plugins</code></a> into the user plugins directory if that directory is empty.</p>
 <p>From the bar app menu you can:</p>
 <ul>
-<li>install a user desktop entry</li>
-<li>enable or disable autostart for the current user session</li>
+<li>open the plugins folder</li>
+<li>enable or disable autostart for the current user session (managed via a systemd user unit)</li>
 <li>toggle whether the bar should reserve space for maximized windows on X11</li>
 <li>reload (rediscover the plugins directory and refresh all plugins)</li>
 </ul>
+<p>Each plugin's own popover ends with a footer containing a <strong>Refresh</strong> button and, when the plugin declares variables, an <strong>Edit Variables…</strong> button that opens a generated form (see <a href="#plugin-variables">Plugin Variables</a>).</p>
 <p>On X11, Sidewing also detects whether the selected monitor currently has a maximized window. That state is checked when the bar appears and then polled periodically so the bar can switch between its translucent and opaque styles as window state changes.</p>
 <h2>Plugin Naming</h2>
 <p>Plugins must be executable files whose filenames encode the refresh interval:</p>
@@ -176,8 +188,8 @@ Disabled item | disabled=true
 <li><code>href=&quot;...&quot;</code></li>
 <li><code>shell=&quot;...&quot;</code></li>
 <li><code>param1=&quot;...&quot;</code>, <code>param2=&quot;...&quot;</code>, ...</li>
-<li><code>terminal=true</code></li>
-<li><code>refresh=true</code></li>
+<li><code>terminal=true</code> (runs the command inside a detected terminal emulator: honours <code>$TERMINAL</code>, then falls back through <code>x-terminal-emulator</code>, <code>gnome-terminal</code>, <code>konsole</code>, <code>xfce4-terminal</code>, <code>alacritty</code>, <code>kitty</code>, <code>wezterm</code>, <code>foot</code>, <code>tilix</code>, <code>xterm</code>)</li>
+<li><code>refresh=true</code> (items whose only effect is <code>refresh=true</code> are hidden — the popover footer's Refresh button covers that case)</li>
 <li><code>disabled=true</code></li>
 </ul>
 <p>Environment variables set for plugins:</p>
@@ -200,7 +212,8 @@ Disabled item | disabled=true
 <p>When a plugin with variables is discovered, Sidewing creates a sidecar file next to it:</p>
 <pre><code class="language-text">plugin.1m.sh.vars.json
 </code></pre>
-<p>That JSON file stores the current values and Sidewing exports them as environment variables before each plugin run. Variable values are user-configurable by editing the sidecar JSON file and refreshing the plugin.</p>
+<p>That JSON file stores the current values and Sidewing exports them as environment variables before each plugin run.</p>
+<p>Each plugin popover footer includes a <strong>Refresh</strong> button. Plugins that declare any <code>&lt;xbar.var&gt;</code> metadata also get an <strong>Edit Variables…</strong> button that opens a generated form: text fields for <code>string</code> and <code>number</code>, a switch for <code>boolean</code>, a dropdown for <code>select</code>. Variables whose name contains <code>TOKEN</code>, <code>SECRET</code>, <code>PASSWORD</code>, or <code>API_KEY</code> are masked. Saving writes the sidecar JSON and refreshes the plugin so the new values take effect immediately. The sidecar can still be edited by hand if preferred.</p>
 <h2>Examples</h2>
 <p>Bundled examples live in <a href="./examples/plugins/"><code>examples/plugins</code></a>:</p>
 <ul>
