@@ -47,15 +47,18 @@
   <h1>system-update</h1>
 <p>A system update script for developers, using Ubuntu / Debian / elementaryOS based systems or OpenSUSE based systems.</p>
 <h2>Usage</h2>
-<pre><code># Daily Example - system packages from apt / zypper / snap / flatpak
+<pre><code># Daily Example - update system packages from apt / zypper / snap / flatpak
 ./system-update.sh
 
-# Weekly example, update everything
+# Weekly example - broader maintenance and safe disk cleanup
 ./system-update.sh --full
 </code></pre>
 <h2>Features</h2>
 <ul>
 <li>Only runs updates for tools that are currently installed.</li>
+<li>Adds conservative APT cleanup on <code>--full</code> with <code>autoremove</code>, <code>autoclean</code>, and <code>clean</code></li>
+<li>Vacuums systemd journals and forces log rotation on <code>--full</code> when supported</li>
+<li>Removes unused Flatpak runtimes on <code>--full</code></li>
 <li>Prunes unused Docker containers</li>
 <li>Optionally prunes leftover tooling caches</li>
 </ul>
@@ -74,6 +77,7 @@
 <li>pipx</li>
 <li>pyenv</li>
 <li>snap</li>
+<li>tldr</li>
 <li>uv</li>
 <li>zypper</li>
 </ul>
