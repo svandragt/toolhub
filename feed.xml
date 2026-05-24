@@ -3,10 +3,29 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-05-15T07:31:16Z</updated>
+  <updated>2026-05-23T12:08:23Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/fafi</id>
+    <title>fafi</title>
+    <updated>2026-05-23T12:08:23Z</updated>
+    <published>2020-03-08T12:05:45Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/fafi"/>
+    <summary>Web content indexing and search tool</summary>
+    <category term="bookmarks"/>
+    <category term="cli"/>
+    <category term="favourites"/>
+    <category term="firefox"/>
+    <category term="indexer"/>
+    <category term="python"/>
+    <category term="search-engine"/>
+    <category term="tui"/>
+    <category term="webui"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/claudegauge</id>
@@ -229,19 +248,6 @@
     <published>2026-02-19T14:57:46Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/ip5"/>
     <summary>pick-from-5 Instapaper triage tool</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/presto-poetrykiosk</id>
-    <title>presto-poetrykiosk</title>
-    <updated>2026-02-13T13:53:57Z</updated>
-    <published>2026-02-13T13:53:57Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/presto-poetrykiosk"/>
-    <summary>Poetry kiosk for Pimoroni Presto</summary>
-    <category term="kiosk"/>
-    <category term="pimoroni-presto"/>
-    <category term="presto"/>
     
   </entry>
   
