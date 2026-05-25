@@ -67,7 +67,8 @@
 <ol>
 <li>Easily index your browser bookmarks: importing list of files, a live Firefox profile, and individual URLs</li>
 <li>Store the readability content of each bookmark</li>
-<li>Full text search matching the title and contents of the collection.</li>
+<li>Full text search matching the title and contents of the collection</li>
+<li>Detect non-text bookmarks (PDFs, images, video, audio) — saved with a category icon, skipped for article extraction.</li>
 </ol>
 <p>In the latest incarnation:</p>
 <ul>
@@ -87,7 +88,8 @@ FAFI_SKIP_RECORDS=0
 # Set to 0 to disable indexing on startup
 FAFI_ENABLE_INDEXING=1
 # Set to 1 to clear the indexed state on every bookmark before indexing
-# (forces a full re-index). Unset after one run.
+# (forces a full re-index). Also migrates legacy databases to the latest
+# schema version. Unset after one run.
 FAFI_RESET_INDEX=0
 # Default database path:
 FAFI_DB_FILEPATH=/home/user/fafi.sqlite3
@@ -99,9 +101,19 @@ FAFI_FIREFOX=/home/san.../32kuswpy.default-release/places.sqlite
 <h2>Command-line arguments</h2>
 <p>Each of the environment variables are available as a longform command-line argument by discarding <code>FAFI_</code> and lower-casing the result, replacing underscores with dashes. For example <code>FAFI_ENABLE_INDEXING=0</code> and <code>--enable-indexing=0</code> are equivalent.</p>
 <h2>Build and run</h2>
-<pre><code class="language-shell"># build with full-text search
-$ go build --tags fts5 -o tmp/fafi2 fafi2 
-# run, eg indexing your Firefox places database
+<p>The project uses <a href="https://www.jetify.com/devbox">devbox</a> to pin the Go toolchain. With devbox installed:</p>
+<pre><code class="language-shell">make build              # build tmp/fafi2 (--tags fts5)
+make test               # go test -race ./...
+make run                # build and run locally
+make restart            # systemctl --user restart fafi.service
+make migrate            # build + restart (schema migrations run on startup)
+</code></pre>
+<p>Schema migrations run automatically on every startup — scraped content
+is preserved, so upgrading the binary and restarting the service is all
+that's needed. Use <code>FAFI_RESET_INDEX=1</code> only when you want to force a
+full re-scrape.</p>
+<p>To build without <code>make</code>:</p>
+<pre><code class="language-shell">$ devbox run -- go build --tags fts5 -o tmp/fafi2 fafi2
 $ tmp/fafi2 --firefox=/path/to/firefox/profile/places.sqlite
 </code></pre>
 
