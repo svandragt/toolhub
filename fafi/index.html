@@ -77,6 +77,33 @@
 </ul>
 <p>This is how it looks:</p>
 <p><img src="https://github.com/svandragt/fafi/assets/594871/c7f9a06c-fa2a-430b-a9be-2bc66b0615d3" alt="image" /></p>
+<h2>Searching</h2>
+<p>The search box accepts plain words plus a few extras:</p>
+<ul>
+<li><strong>Phrase queries</strong> — wrap words in double quotes: <code>&quot;react hooks&quot;</code>.</li>
+<li><strong>Prefix queries</strong> — the last unquoted token is auto-prefixed, so <code>lidar</code> also matches <code>lidarr</code>. Add an explicit <code>*</code> (e.g. <code>desig*</code>) to control where prefixing applies.</li>
+<li><strong>Domain queries</strong> — paste a URL or host (e.g. <code>lidarr.audio</code>); punctuation is split into tokens so it still matches.</li>
+<li><strong>Porter stemming</strong> — <code>design</code> matches <code>designs</code>, <code>designed</code>, <code>designing</code>. Powered by the FTS5 <code>porter unicode61</code> tokenizer.</li>
+<li><strong>Highlighting</strong> — matched terms are highlighted in titles, URLs, and snippets. Click a snippet to expand the full extracted text.</li>
+<li>Results are filtered by HTTP status with the chips above the list (2xx / 3xx / 4xx / 5xx / none).</li>
+</ul>
+<h2>Keyboard shortcuts</h2>
+<p>Press <kbd>?</kbd> in the UI for the full list. Currently:</p>
+<p>| Key | Action |
+| --- | --- |
+| <kbd>/</kbd> | Focus the search box |
+| <kbd>Esc</kbd> | Clear search, then blur |
+| <kbd>j</kbd> / <kbd>↓</kbd> | Next result |
+| <kbd>k</kbd> / <kbd>↑</kbd> | Previous result |
+| <kbd>Enter</kbd> | Open the selected result |
+| <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>Enter</kbd> | Open in new tab |
+| <kbd>?</kbd> | Toggle the shortcut help |</p>
+<h2>Managing bookmarks</h2>
+<p>Each row has inline actions:</p>
+<ul>
+<li><strong>Reindex</strong> — re-fetches the page and refreshes the stored title/text.</li>
+<li><strong>Delete</strong> — soft-deletes the bookmark. Soft-deleted entries are hidden and blocked from re-import (e.g. on the next Firefox sync), so accidental re-adds don't bring them back.</li>
+</ul>
 <h2>Environment variables</h2>
 <p>If the working directory contains a <code>.env</code> file, then the following configuration can be declared:</p>
 <pre><code class="language-env"># Defaults are below:
