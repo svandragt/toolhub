@@ -118,12 +118,32 @@ FAFI_ENABLE_INDEXING=1
 # (forces a full re-index). Also migrates legacy databases to the latest
 # schema version. Unset after one run.
 FAFI_RESET_INDEX=0
+# Set to 1 to clear every stored HTTP status and re-probe all bookmarks
+# (destructive). Unset after one run.
+FAFI_RESET_STATUS=0
+# Set to 1 to probe only bookmarks that have no stored HTTP status, leaving
+# known-good entries alone. Idempotent — safe to leave on but typically set
+# once after a schema upgrade then unset. Also re-probes rows whose previous
+# probe failed at the network layer (DNS, timeout, refused), and runs the
+# auto-soft-delete pass for stale unreachable bookmarks (&gt;=3 failures, first
+# failure &gt;14 days ago, no scraped text).
+FAFI_BACKFILL_STATUS=0
+# Set to 1 to soft-delete every bookmark whose probe currently fails AND has
+# no scraped text. Manual escape hatch — bypasses the time/strike rule.
+FAFI_PURGE_UNREACHABLE=0
 # Default database path:
 FAFI_DB_FILEPATH=/home/user/fafi.sqlite3
 
 # Enable importing bookmarks from Firefox profile db:
 FAFI_FIREFOX=/home/san.../32kuswpy.default-release/places.sqlite
 
+# Privacy-preserving malware blocklist. On by default. Downloads the
+# URLhaus &quot;online URLs&quot; feed to FAFI_BLOCKLIST_DIR on the configured
+# interval; all per-bookmark checks happen locally against the snapshot.
+# Set FAFI_BLOCKLIST_ENABLED=0 to disable the feature entirely.
+FAFI_BLOCKLIST_ENABLED=1
+FAFI_BLOCKLIST_DIR=blocklists
+FAFI_BLOCKLIST_REFRESH=6h
 </code></pre>
 <h2>Command-line arguments</h2>
 <p>Each of the environment variables are available as a longform command-line argument by discarding <code>FAFI_</code> and lower-casing the result, replacing underscores with dashes. For example <code>FAFI_ENABLE_INDEXING=0</code> and <code>--enable-indexing=0</code> are equivalent.</p>

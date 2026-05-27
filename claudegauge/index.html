@@ -59,7 +59,7 @@
 <ul>
 <li><strong>Node.js 18+</strong> on PATH.</li>
 <li><strong>OpenDeck</strong> (Linux deb / Flatpak) or <strong>Elgato Stream Deck</strong> software.</li>
-<li>The first run downloads <code>ccusage</code> via <code>npx</code>; needs network once.</li>
+<li><code>npm install</code> fetches <code>ccusage</code> (pinned in <code>package.json</code>); needs network at install time.</li>
 </ul>
 <h2>Install</h2>
 <h3>OpenDeck (Linux, deb)</h3>
@@ -97,6 +97,12 @@ flatpak override --user --filesystem=~/.config/claude:ro me.amankhanna.opendeck
 <li><strong>&quot;no 'node' on PATH&quot;</strong> in <code>plugin.log</code> — install Node or expose your existing install to the host's spawn environment.</li>
 <li><strong><code>ccusage … failed</code></strong> — make sure <code>~/.claude/projects/</code> exists and has at least one session JSONL. For Flatpak OpenDeck, check the filesystem overrides above.</li>
 </ul>
+<h2>Development</h2>
+<pre><code class="language-sh">npm install
+npm test           # unit tests for the parsers and renderer
+make test          # live ccusage call against your own data
+</code></pre>
+<p>CI (GitHub Actions) runs <code>npm test</code> plus a CLI surface check against ccusage, so dependabot bumps that would break the plugin fail the PR.</p>
 <h2>License</h2>
 <p>MIT — see <a href="LICENSE">LICENSE</a>.</p>
 <h2>Author</h2>
