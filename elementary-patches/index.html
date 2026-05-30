@@ -29,12 +29,20 @@
   <div class="project-header__meta">
     <span class="badge badge--type">repo</span>
     
+    <span class="badge">elementaryos</span>
+    
+    <span class="badge">patch</span>
+    
+    <span class="badge">quilt</span>
+    
     
     <span class="badge">GPL-3.0</span>
     
   </div>
 
   <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://tools.vandragt.com/elementary-patches/">&#8599; Website</a>
     
     
     
@@ -57,7 +65,9 @@ for anyone who finds them useful.</p>
 |---------|---------|-------------|
 | <a href="io.elementary.notifications/">io.elementary.notifications</a> | <a href="io.elementary.notifications/series">series</a> | Don't steal focus when a notification bubble appears on X11 |
 | <a href="gala/">gala</a> | <a href="gala/series">series</a> | Stop crash loop from unbalanced <code>WorkspaceManager.thaw_remove</code> when a workspace is added outside a swipe gesture; prevent focus-stealing on attention demand |
-| <a href="io.elementary.terminal/">io.elementary.terminal</a> | <a href="io.elementary.terminal/series">series</a> | Restore double-click on empty tab bar to open a new tab (GTK4 regression) |</p>
+| <a href="io.elementary.terminal/">io.elementary.terminal</a> | <a href="io.elementary.terminal/series">series</a> | Restore double-click on empty tab bar to open a new tab (GTK4 regression) |
+| <a href="pantheon-files/">pantheon-files</a> | <a href="pantheon-files/series">series</a> | Double-click on empty tab bar opens a new tab (matches terminal behavior) |
+| <a href="appcenter/">appcenter</a> | <a href="appcenter/series">series</a> | Don't show AppCenter in the dock with a &quot;0&quot; badge when there are no pending updates |</p>
 <p>Target: elementary OS 8 (Ubuntu 24.04 / noble).</p>
 <h2>Install a patched package (end users)</h2>
 <p>If you just want a patched build of one of these packages on your own machine —
@@ -111,6 +121,16 @@ git commit -m &quot;&lt;package&gt;: fix crash on startup&quot;
 git add io.elementary.notifications/
 git commit -m &quot;io.elementary.notifications: rebase patches onto 8.x&quot;
 </code></pre>
+<h3>Verified-against version</h3>
+<p>Each package directory contains (or will contain after the next refresh) a
+<code>VERIFIED</code> file recording the upstream version the patch series was last
+refreshed against. It's a breadcrumb, not a lock — <code>ep apply</code> still pulls
+whatever <code>apt source</code> currently ships, but it warns when that version differs
+from the recorded one so you know to eyeball the result. <code>ep refresh</code> rewrites
+<code>VERIFIED</code> on success.</p>
+<p>To record <code>VERIFIED</code> for every package whose patches already apply cleanly
+against the current archive, run the one-shot
+<code>./_scripts/backfill-verified.sh</code> (optionally pass package names to limit it).</p>
 <h3>Environment variables</h3>
 <p>| Variable | Default | Description |
 |----------|---------|-------------|
@@ -119,7 +139,8 @@ git commit -m &quot;io.elementary.notifications: rebase patches onto 8.x&quot;
 <h2>Why not upstream?</h2>
 <p>These patches were written with AI assistance. elementary OS (and many projects)
 don't accept AI-generated contributions due to code review and licensing concerns.
-If a patch ever gets rewritten by a human and passes review, it could go upstream.</p>
+If a patch ever gets rewritten by a human and passes review, it could go upstream.
+Permission is hereby granted to integrate the patches upstream.</p>
 <h2>Licence</h2>
 <p>This repo is <strong>GPL-3.0</strong> — same as the upstream packages it patches
 (io.elementary.notifications is GPL-3.0). Patch files are derivative works of
