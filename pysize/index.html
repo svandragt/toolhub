@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pysize</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>pysize</h1>
+
+  
+  <div class="project-header__desc">Find the install size of a PyPI package — wheel + all dependencies.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">cost</span>
+    
+    <span class="badge">dependencies</span>
+    
+    <span class="badge">performance</span>
+    
+    <span class="badge">pypi</span>
+    
+    <span class="badge">python</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://pysize.vandragt.com/">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/pysize">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>pysize</h1>
+<p>A <a href="https://bundlephobia.com">bundlephobia</a>-style size explorer for <strong>PyPI</strong>
+packages. Type a package — <code>requests</code>, or <code>headroom-ai[all]</code> with extras — and
+see its install size: the wheel plus every dependency, deduplicated, sorted
+largest-first. Click any dependency to drill into it; the URL is shareable.</p>
+<p>It resolves entirely against the public PyPI JSON API — no installing, no
+sandbox.</p>
+<h2>Quick start</h2>
+<pre><code class="language-bash">make run        # or: uv run main.py
+# open http://127.0.0.1:8731
+</code></pre>
+<p>That's it — <a href="https://docs.astral.sh/uv/">uv</a> reads the dependencies from the
+inline script header in <code>main.py</code> and runs the server. Run <code>make help</code> for the
+other targets (<code>verify</code>, <code>ping</code>, <code>deploy</code>, <code>logs</code>, <code>clean</code>).</p>
+<h2>How sizes are measured</h2>
+<p>The total is the <strong>download size of one wheel per package</strong> (prefers the
+<code>py3-none-any</code> wheel), summed across the package and the full deduplicated
+dependency set. It is a close analog to bundlephobia's number, not an exact
+on-disk install size — see <a href="docs/accuracy.md">docs/accuracy.md</a>.</p>
+<h2>API</h2>
+<pre><code>GET /api/size?pkg=&lt;requirement&gt;
+</code></pre>
+<p><code>&lt;requirement&gt;</code> is any PEP 508 requirement: <code>flask</code>, <code>httpx</code>, <code>boto3</code>,
+<code>headroom-ai[all]</code>, <code>django&gt;=5</code>. Response:</p>
+<pre><code class="language-jsonc">{
+  &quot;name&quot;: &quot;Flask&quot;,
+  &quot;version&quot;: &quot;3.x&quot;,
+  &quot;self_size&quot;: 612345,        // bytes, the package's own wheel
+  &quot;total_size&quot;: 618000,       // bytes, deduplicated total
+  &quot;dep_count&quot;: 6,             // unique dependencies
+  &quot;packages&quot;: [               // each unique dependency, largest first
+    { &quot;name&quot;: &quot;Werkzeug&quot;, &quot;version&quot;: &quot;3.x&quot;, &quot;size&quot;: 234567 },
+    ...
+  ]
+}
+</code></pre>
+<h2>Documentation</h2>
+<ul>
+<li><a href="docs/how-it-works.md">How it works</a> — the resolver and the two cache layers.</li>
+<li><a href="docs/accuracy.md">Accuracy</a> — how results are verified against <code>uv</code>, and the
+known gaps.</li>
+<li><a href="ansible/README.md">Deployment</a> — Ansible playbook to run it behind nginx as a
+systemd service.</li>
+</ul>
+<h2>Verifying correctness</h2>
+<p><code>verify.py</code> resolves random popular packages and diffs the dependency set
+against a real resolver (<code>uv pip compile</code>):</p>
+<pre><code class="language-bash">uv run verify.py 5          # 5 random popular packages
+uv run verify.py flask boto3 # specific ones
+</code></pre>
+<h2>Project layout</h2>
+<p>| Path | What |
+|------|------|
+| <code>main.py</code> | FastAPI app: resolver, caching, API, serves the page |
+| <code>index.html</code> | Single-page frontend |
+| <code>verify.py</code> | Correctness check against <code>uv</code> |
+| <code>ansible/</code> | Deployment playbook (nginx + systemd) |
+| <code>Makefile</code> | Common tasks (<code>make help</code>) |
+| <code>docs/</code> | Documentation |</p>
+<h2>Status</h2>
+<p>A proof of concept. It resolves the latest version satisfying each specifier
+rather than producing a fully locked resolution, and reports wheel download
+size. Good enough to compare packages at a glance; not a substitute for actually
+installing.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

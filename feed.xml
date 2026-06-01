@@ -3,10 +3,25 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-05-23T12:08:23Z</updated>
+  <updated>2026-05-31T11:59:26Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/pysize</id>
+    <title>pysize</title>
+    <updated>2026-05-31T11:59:26Z</updated>
+    <published>2026-05-31T11:59:26Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/pysize"/>
+    <summary>Find the install size of a PyPI package — wheel + all dependencies.</summary>
+    <category term="cost"/>
+    <category term="dependencies"/>
+    <category term="performance"/>
+    <category term="pypi"/>
+    <category term="python"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/fafi</id>
@@ -241,16 +256,6 @@
     <summary>Exporting chat conversations</summary>
     <category term="chatgpt"/>
     <category term="export"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/ip5</id>
-    <title>ip5</title>
-    <updated>2026-02-19T14:57:46Z</updated>
-    <published>2026-02-19T14:57:46Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/ip5"/>
-    <summary>pick-from-5 Instapaper triage tool</summary>
     
   </entry>
   
