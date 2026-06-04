@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>elementary-patches</title>
+  <title>elementaryos-patches</title>
   <link rel="stylesheet" href="../static/style.css">
   <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
 </head>
@@ -20,7 +20,7 @@
 <div class="project-header">
   <a class="project-header__back" href="../index.html">&#8592; all projects</a>
 
-  <h1>elementary-patches</h1>
+  <h1>elementaryos-patches</h1>
 
   
   <div class="project-header__desc">Personal patches for elementary OS packages</div>
@@ -46,7 +46,7 @@
     
     
     
-    <a class="btn" href="https://github.com/svandragt/elementary-patches">&#8599; GitHub</a>
+    <a class="btn" href="https://github.com/svandragt/elementaryos-patches">&#8599; GitHub</a>
     
   </div>
 </div>
@@ -65,7 +65,7 @@ for anyone who finds them useful.</p>
 |---------|---------|-------------|
 | <a href="io.elementary.notifications/">io.elementary.notifications</a> | <a href="io.elementary.notifications/series">series</a> | Don't steal focus when a notification bubble appears on X11 |
 | <a href="gala/">gala</a> | <a href="gala/series">series</a> | Stop crash loop from unbalanced <code>WorkspaceManager.thaw_remove</code> when a workspace is added outside a swipe gesture; prevent focus-stealing on attention demand |
-| <a href="io.elementary.terminal/">io.elementary.terminal</a> | <a href="io.elementary.terminal/series">series</a> | Restore double-click on empty tab bar to open a new tab (GTK4 regression) |
+| <a href="io.elementary.terminal/">io.elementary.terminal</a> | <a href="io.elementary.terminal/series">series</a> | Restore double-click on empty tab bar to open a new tab (GTK4 regression); open OSC 8 hyperlinks on ctrl-click |
 | <a href="pantheon-files/">pantheon-files</a> | <a href="pantheon-files/series">series</a> | Double-click on empty tab bar opens a new tab (matches terminal behavior) |
 | <a href="appcenter/">appcenter</a> | <a href="appcenter/series">series</a> | Don't show AppCenter in the dock with a &quot;0&quot; badge when there are no pending updates |</p>
 <p>Target: elementary OS 8 (Ubuntu 24.04 / noble).</p>
@@ -105,6 +105,9 @@ ep edit    &lt;package&gt; &lt;file&gt;       Add a file to current patch and op
 ep refresh &lt;package&gt;              Refresh top patch after editing
 ep refresh &lt;package&gt; --rebase     Rebase all patches onto new upstream version
 ep build   &lt;package&gt; [--install]  Build package, optionally install it
+ep rebuild &lt;package&gt;|--all        Fetch latest source, re-apply patches, build and install
+                                  (--no-install to only build, --force to ignore the
+                                  up-to-date check)
 ep status  [package]              Show patch status
 </code></pre>
 <h3>Adding a new patch</h3>
@@ -116,11 +119,28 @@ git add &lt;package&gt;/
 git commit -m &quot;&lt;package&gt;: fix crash on startup&quot;
 </code></pre>
 <h3>Updating after a new upstream release</h3>
+<p>The one-command path — rebuilds every patched package against whatever the
+archive currently ships:</p>
+<pre><code class="language-bash">./ep rebuild --all
+</code></pre>
+<p>Per package it fetches the latest source, re-extracts it pristine, re-applies
+the series (auto-refreshing patches that land with offsets/fuzz), updates
+<code>VERIFIED</code>, builds and installs. Pass <code>--no-install</code> to only build.</p>
+<p>Builds can take a while, so each successful rebuild+install stamps
+<code>$WORK_DIR/.ep-built-&lt;package&gt;</code> with the source version and a hash of the
+patch series. While both are unchanged the package is reported as up to date
+and skipped — so <code>ep rebuild --all</code> is cheap to re-run. Pass <code>--force</code> to
+rebuild anyway. (The installed version can't be used for this check: a locally
+built <code>.deb</code> has the same version as the stock archive package.)</p>
+<p>A patch that fails outright skips that package and the summary lists it for a
+manual rebase:</p>
 <pre><code class="language-bash">./ep refresh io.elementary.notifications --rebase
 # Fix any failures (quilt will stop and tell you)
 git add io.elementary.notifications/
 git commit -m &quot;io.elementary.notifications: rebase patches onto 8.x&quot;
 </code></pre>
+<p>After a <code>rebuild</code> that refreshed patches, review and commit the changed
+<code>.patch</code> files the same way.</p>
 <h3>Verified-against version</h3>
 <p>Each package directory contains (or will contain after the next refresh) a
 <code>VERIFIED</code> file recording the upstream version the patch series was last
