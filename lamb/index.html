@@ -65,18 +65,19 @@
 <li>SQLite based portable single author blog.</li>
 <li>Friction
 free <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">Markdown</a>
-entry, with drag and drop image support.</li>
-<li>Hashtags support, by just typing them <code>#ahyeah</code>.</li>
-<li>Drafts, scheduled posts, and friction free trash with restore.</li>
-<li>Discoverable Atom feeds (<code>/feed</code>, plus a feed per tag).</li>
+entry with server-side syntax highlighting; drag and drop or paste images, automatically converted to WebP and downscaled.</li>
+<li>Hashtags by just typing them <code>#ahyeah</code>, plus full text search and configurable menu items.</li>
+<li>Drafts, scheduled posts, and one-click trash with restore.</li>
+<li>Discoverable Atom and JSON feeds (<code>/feed</code> and <code>/feed.json</code>, plus feeds per tag), with WebSub for instant updates.</li>
+<li>IndieWeb friendly: send and receive webmentions, write reply posts (<code>in-reply-to</code>), and publish from other apps through a Micropub endpoint.</li>
 <li>Pull external content into the blog by subscribing to feeds; ingested posts land as drafts by default.</li>
-<li>Publish from other apps through a Micropub endpoint.</li>
-<li>Full text search and configurable menu items.</li>
 <li>404 fallback redirection to your old site, plus automatic 301s when a post's slug changes.</li>
 <li>Friendly user theming, if you don't like my retro themes. ;)</li>
 </ul>
 <h1>Getting started</h1>
-<p><a href="https://svandragt.github.io/lamb">Read the documentation</a> to get started.</p>
+<p><a href="https://svandragt.github.io/lamb">Read the documentation</a> to get started. It is published from the <code>release</code>
+branch, so it always matches the latest released version.</p>
+<p>To preview the in-development docs on <code>main</code> locally, run <code>make docs</code> and open http://localhost:4000/lamb/.</p>
 <h1>Screenshots</h1>
 <p>An example blog running the 2026 theme at <a href="https://vandragt.com">vandragt.com</a>:
 <img src="src/images/demo-vandragt.png" alt="Demo Lamb instance" title="Sander van Dragt's Notes, running Lamb with the 2026 theme" /></p>
