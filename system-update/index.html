@@ -57,9 +57,12 @@
 <ul>
 <li>Only runs updates for tools that are currently installed.</li>
 <li>Adds conservative APT cleanup on <code>--full</code> with <code>autoremove</code>, <code>autoclean</code>, and <code>clean</code></li>
+<li>Cleans zypper package caches on <code>--full</code></li>
 <li>Vacuums systemd journals and forces log rotation on <code>--full</code> when supported</li>
 <li>Removes unused Flatpak runtimes on <code>--full</code></li>
-<li>Prunes unused Docker containers</li>
+<li>Applies snapper retention policy to old snapshots on <code>--full</code></li>
+<li>Prunes unused Docker containers, dangling images, and build cache</li>
+<li>Prunes the uv wheel/source cache on <code>--full</code></li>
 <li>Optionally prunes leftover tooling caches</li>
 </ul>
 <p>Support for other tools / operating systems are welcome.</p>
@@ -79,6 +82,7 @@
 <li>pipx</li>
 <li>pyenv</li>
 <li>snap</li>
+<li>snapper</li>
 <li>tldr</li>
 <li>uv</li>
 <li>zypper</li>
