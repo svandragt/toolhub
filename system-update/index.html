@@ -63,6 +63,17 @@
 <li>Applies snapper retention policy to old snapshots on <code>--full</code></li>
 <li>Prunes unused Docker containers, dangling images, and build cache</li>
 <li>Prunes the uv wheel/source cache on <code>--full</code></li>
+<li>Verifies (garbage-collects) the npm cache on <code>--full</code> when it is large, with a full wipe only past 5G</li>
+<li>Wipes the Go build cache on <code>--full</code> only when it grows past 5G</li>
+<li>Cleans the cargo registry cache on <code>--full</code> (via <code>cargo-cache</code> if present, otherwise wipes re-downloadable registry caches past 2G; leaves rustup toolchains untouched)</li>
+<li>Reports the disk space reclaimed at the end of a <code>--full</code> run</li>
+<li>Checks for firmware updates with <code>fwupd</code> (refreshes metadata and lists available updates; flashing is left to you via <code>sudo fwupdmgr update</code>)</li>
+<li>Updates VSCode / VSCodium extensions on <code>--full</code> (<code>code</code>/<code>codium --update-extensions</code>)</li>
+</ul>
+<blockquote>
+<p><strong>Note on <code>fwupd</code>:</strong> on some systems (e.g. Ubuntu 22.04) the snap build of <code>fwupd</code> is more up to date than the apt one. If you want the fresher version: <code>sudo apt remove --purge fwupd &amp;&amp; sudo snap install fwupd</code>.</p>
+</blockquote>
+<ul>
 <li>Optionally prunes leftover tooling caches</li>
 </ul>
 <p>Support for other tools / operating systems are welcome.</p>
@@ -78,6 +89,8 @@
 <li>devbox</li>
 <li>docker</li>
 <li>flatpak</li>
+<li>fwupd</li>
+<li>go</li>
 <li>npm</li>
 <li>pipx</li>
 <li>pyenv</li>
@@ -85,6 +98,7 @@
 <li>snapper</li>
 <li>tldr</li>
 <li>uv</li>
+<li>vscode / vscodium</li>
 <li>zypper</li>
 </ul>
 
