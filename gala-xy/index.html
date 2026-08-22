@@ -45,24 +45,29 @@
   <h1>gala-xy</h1>
 <p>A small plugin for <a href="https://github.com/elementary/gala">Gala</a>, the window
 manager behind elementaryOS's Pantheon desktop.</p>
-<p>Right now all it does is draw a highlighted border around the focused window,
-so you can always tell which window has focus at a glance. It does not move,
-resize, or reorder anything.</p>
-<p>It started as a <a href="https://github.com/paperwm/PaperWM">PaperWM</a>-style horizontal
-tiling plugin. That layer caused more trouble than it was worth and has been
-removed for now while the layout model gets rethought — see the git history if
-you want it back.</p>
+<p>It draws a highlighted border around the focused window so you can always tell
+which window has focus at a glance, and it switches focus between windows with
+Super+Left and Super+Right. It does not move, resize, or reorder anything.</p>
 <h2>What it does</h2>
 <ul>
 <li>The focused window gets a highlighted border, coloured to match your
 System Settings → Appearance accent colour, updating live if you change it.</li>
+<li>Super+Left and Super+Right move focus between the open windows on the current
+workspace, in most-recently-used order and wrapping at the ends — like
+Alt+Tab. Panels, docks, and excluded windows are skipped.</li>
 <li>Panels, docks, and similar chrome don't get a border (see below).</li>
 </ul>
+<h2>Shortcuts</h2>
+<p>The switch shortcuts default to Super+Left and Super+Right. Change them via
+<strong>System Settings → Window Behaviour → Shortcuts</strong>, or with <code>gsettings</code>:</p>
+<pre><code>gsettings set org.pantheon.desktop.gala.plugins.xy switch-left &quot;['&lt;Super&gt;Left']&quot;
+gsettings set org.pantheon.desktop.gala.plugins.xy switch-right &quot;['&lt;Super&gt;Right']&quot;
+</code></pre>
 <h2>Excluding windows</h2>
 <p>Wingpanel and Plank are excluded by default, matched by a substring in their
 window title; anything else can be added the same way, or by GTK application
 ID if the app has more than one window and only some should be excluded —
-either via <strong>System Settings → Tiling</strong>, or with <code>gsettings</code>:</p>
+either via <strong>System Settings → Window Behaviour → Exclusions</strong>, or with <code>gsettings</code>:</p>
 <pre><code>gsettings set org.pantheon.desktop.gala.plugins.xy excluded-title-keywords &quot;['wingpanel', 'plank', 'some-substring']&quot;
 gsettings set org.pantheon.desktop.gala.plugins.xy excluded-app-ids &quot;['com.vandragt.sidewing', 'some.other.app']&quot;
 </code></pre>

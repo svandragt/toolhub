@@ -3,10 +3,30 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-08-18T11:30:01Z</updated>
+  <updated>2026-08-21T22:55:25Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/plank</id>
+    <title>plank</title>
+    <updated>2026-08-21T22:55:25Z</updated>
+    <published>2026-08-21T22:55:25Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/plank"/>
+    <summary>Stupidly simple.</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/gala-xy</id>
+    <title>gala-xy</title>
+    <updated>2026-08-21T09:11:31Z</updated>
+    <published>2026-07-21T13:08:41Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/gala-xy"/>
+    <summary>Window organiser for gala (elementaryOS)</summary>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/jotta-tools</id>
@@ -141,16 +161,6 @@
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/gala-xy</id>
-    <title>gala-xy</title>
-    <updated>2026-07-22T22:01:52Z</updated>
-    <published>2026-07-21T13:08:41Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/gala-xy"/>
-    <summary>Window organiser for gala (elementaryOS)</summary>
-    
-  </entry>
-  
-  <entry>
     <id>https://github.com/svandragt/fafi</id>
     <title>fafi</title>
     <updated>2026-07-22T21:31:30Z</updated>
@@ -231,16 +241,6 @@
     <summary>Very lean timetracker</summary>
     <category term="linux"/>
     <category term="timetracker"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/vip-certification-prep</id>
-    <title>vip-certification-prep</title>
-    <updated>2026-06-19T15:34:41Z</updated>
-    <published>2026-06-19T15:34:41Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/vip-certification-prep"/>
-    <summary>vip-certification-prep</summary>
     
   </entry>
   

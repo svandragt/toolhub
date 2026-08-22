@@ -140,6 +140,15 @@ what lets the two coexist, since polling all the way to the confirm deadline
 legitimately outlasts the grace period by fifteen minutes. The timer
 leaves out <code>Persistent=true</code> for the same reason, since a catch-up run fires the
 moment the machine resumes and reports a miss for a sync that is fine.</p>
+<p>That clock guard only sees a suspend <em>during</em> a run. A suspend just <em>before</em> one
+is worse: the machine wakes, the network is not back yet, jottad falls into its
+own list-tree stall, and the next hourly run fires minutes later still inside the
+outage, so two misses in a row both belong to one wake. That defeats the
+second-miss hold, which assumes the two runs sample an hour apart. So any failure
+within <code>RESUME_GRACE_SECONDS</code> (the confirm deadline, 25 minutes) of the last
+<code>PM: suspend exit</code> in the kernel log is treated as a blip on every path, upload
+miss or liveness failure alike: no page, no miss recorded. A stall that outlasts
+the window still pages on a later run.</p>
 <p>A single miss does not alert either. A VPN or a brief server wobble stops
 uploads for one run and then clears on its own, so the alert waits for a
 second miss in a row, roughly an hour later on the hourly timer. With the
