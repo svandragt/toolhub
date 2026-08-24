@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arch-pantheon-btrfs-guide</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>arch-pantheon-btrfs-guide</h1>
+
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/arch-pantheon-btrfs-guide">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Arch Linux + Pantheon + Btrfs Snapshots</h1>
+<p>Command reference for installing Arch Linux with the Pantheon desktop
+(elementary OS's DE) and openSUSE-style Btrfs snapshots via Snapper +
+GRUB rollback.</p>
+<h2>Part 1: Base System</h2>
+<pre><code>iwctl
+station wlan0 connect YOUR_SSID
+exit
+</code></pre>
+<pre><code>archinstall
+</code></pre>
+<p>In the menu: Btrfs filesystem, GRUB bootloader, no desktop environment.</p>
+<h2>Part 2: Pantheon</h2>
+<pre><code>sudo pacman -Syu
+</code></pre>
+<blockquote>
+<p><strong>Known issue:</strong> <code>lightdm-pantheon-greeter</code> currently depends on <code>mutter46</code>,
+which conflicts with the regular <code>mutter</code> that <code>gala</code> itself needs. This is
+an upstream packaging lag (Arch has a history of pinning gala/wingpanel to
+older mutter versions each release cycle while catching up). Until it's
+fixed, ignore that one package and use <code>lightdm-gtk-greeter</code> instead —
+same login manager, just a plainer greeter screen.</p>
+</blockquote>
+<pre><code>sudo pacman -S --needed --ignore lightdm-pantheon-greeter \
+  pantheon lightdm-gtk-greeter network-manager-applet polkit-gnome openssh \
+  sound-theme-elementary elementary-icon-theme elementary-wallpapers \
+  pantheon-default-settings networkmanager
+</code></pre>
+<pre><code>sudo systemctl enable lightdm
+sudo systemctl enable NetworkManager
+sudo systemctl enable sshd
+sudo systemctl enable --now polkit
+sudo reboot
+</code></pre>
+<p><code>network-manager-applet</code> gives you a tray icon to manage networks,
+<code>polkit-gnome</code> handles privilege-escalation prompts inside the desktop, and
+<code>openssh</code> gives you an SSH fallback into the VM if the graphical session
+ever breaks (handy since TTY-switching can be unreliable in QEMU/KVM —
+find the VM's IP with <code>virsh domifaddr &lt;vm-name&gt;</code> from the host, then
+<code>ssh youruser@&lt;vm-ip&gt;</code>).</p>
+<p>Optional apps:</p>
+<pre><code>sudo pacman -S pantheon-files pantheon-terminal pantheon-screenshot \
+  gnome-keyring gvfs file-roller xdg-user-dirs xdg-utils
+xdg-user-dirs-update
+</code></pre>
+<p>Optional AUR helper + tweaks panel:</p>
+<pre><code>sudo pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+</code></pre>
+<pre><code>yay -S switchboard-plug-pantheon-tweaks-git
+</code></pre>
+<p>Note: Pantheon on Wayland is less mature than X11. If Plank or
+Wingpanel glitch, log out and pick the X11/&quot;Classic&quot; session.</p>
+<h2>Part 3: Btrfs Snapshots (Snapper)</h2>
+<pre><code>sudo pacman -S --needed snapper grub-btrfs inotify-tools
+</code></pre>
+<pre><code>yay -S snap-pac
+</code></pre>
+<pre><code>sudo umount /.snapshots
+sudo rm -rf /.snapshots
+sudo snapper -c root create-config /
+sudo btrfs subvolume delete /.snapshots
+sudo mkdir /.snapshots
+sudo mount -a
+sudo chmod 750 /.snapshots
+</code></pre>
+<pre><code>sudo systemctl enable --now snapper-timeline.timer
+sudo systemctl enable --now snapper-cleanup.timer
+</code></pre>
+<pre><code>sudo systemctl enable --now grub-btrfsd.service
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre>
+<p>Test:</p>
+<pre><code>sudo pacman -S cowsay
+sudo snapper -c root list
+</code></pre>
+<p>Rollback:</p>
+<pre><code>sudo snapper rollback &lt;snapshot-number&gt;
+</code></pre>
+<p>Optional GUI:</p>
+<pre><code>yay -S btrfs-assistant
+</code></pre>
+<h2>Quick Reference</h2>
+<p>| Task | Command |
+|---|---|
+| List snapshots | <code>sudo snapper -c root list</code> |
+| Create manual snapshot | <code>sudo snapper -c root create -d &quot;description&quot;</code> |
+| Roll back to a snapshot | <code>sudo snapper rollback &lt;number&gt;</code> |
+| Delete a snapshot | <code>sudo snapper -c root delete &lt;number&gt;</code> |
+| Rebuild GRUB snapshot menu | <code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code> |</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
