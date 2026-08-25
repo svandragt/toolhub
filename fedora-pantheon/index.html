@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fedora-pantheon</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>fedora-pantheon</h1>
+
+  
+  <div class="project-header__desc">Pantheon on Fedora</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/fedora-pantheon">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Fedora to Pantheon</h1>
+<p>Turn a fresh Fedora Workstation (typically a VM) into an elementary OS-style
+desktop. One script, <code>setup.sh</code>, enables SSH, installs the Pantheon desktop on
+Wayland, adds Flathub, and sets up Btrfs snapshots with Snapper.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Fedora Workstation 37 or later (<code>dnf</code>-based; Btrfs root for snapshots).</li>
+<li><code>sudo</code> access and an interactive terminal.</li>
+</ul>
+<p>Tested on Fedora 44 Workstation in a libvirt/QEMU VM (virtio-gpu).</p>
+<h2>Usage</h2>
+<pre><code class="language-bash">bash setup.sh
+</code></pre>
+<p>The script pauses at step 1 after enabling SSH so you can switch to an SSH
+session before the long package installs — handy when you're setting up a VM
+from your host. Press Enter to carry on, or Ctrl+C to stop and reconnect over
+SSH first.</p>
+<p>When it finishes, reboot and pick Pantheon from the gear menu on the GDM
+password screen. GDM remembers the choice after the first login.</p>
+<pre><code class="language-bash">sudo reboot
+</code></pre>
+<h2>What it does</h2>
+<ol>
+<li>Installs and enables <code>sshd</code>, opens SSH in the firewall, prints the VM's IPs.</li>
+<li>Installs and configures Snapper, then takes a <code>pre-setup baseline</code> snapshot
+of the pristine system — roll back to this to undo the whole run.</li>
+<li>Updates the system.</li>
+<li>Enables the <a href="https://copr.fedorainfracloud.org/coprs/garaevdi/pantheon-rpm/"><code>garaevdi/pantheon-rpm</code></a>
+COPR — the maintained Pantheon path since the old dnf group was dropped
+after Fedora 36. Wayland only.</li>
+<li>Installs the Pantheon shell and elementary apps.</li>
+<li>Forces software GL (llvmpipe) <em>only</em> when the VM has a virtio-gpu with virgl
+off, where gala otherwise segfaults on login. Real hardware is left alone.</li>
+<li>Keeps GDM as the display manager (the elementary LightDM greeter doesn't
+hand off the Wayland session correctly on Fedora yet).</li>
+<li>Applies the elementary stylesheet and icons to GTK4/libadwaita apps.</li>
+<li>Adds Flathub system-wide.</li>
+<li>Enables the Snapper timeline and cleanup timers and takes a
+<code>post-setup baseline</code> snapshot.</li>
+</ol>
+<p>The script is idempotent: each step guards against redoing work, so it's safe
+to re-run on a partially-set-up machine.</p>
+<h2>Snapshots</h2>
+<pre><code class="language-bash">sudo snapper -c root list                    # list snapshots
+sudo snapper -c root create -d &quot;description&quot;  # manual snapshot
+sudo snapper -c root rollback &lt;number&gt;        # roll back, then reboot
+</code></pre>
+<h2>Known limitations</h2>
+<ul>
+<li>Wayland only; X11 would need a COPR rebuild.</li>
+<li>The elementary greeter (LightDM) isn't working on Fedora — GDM stands in.</li>
+</ul>
+<h2>Licence</h2>
+<p><a href="LICENSE">MIT</a></p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
