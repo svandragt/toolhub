@@ -147,6 +147,14 @@ meson compile -C build
 <li>toggle whether the bar should reserve space for maximized windows on X11</li>
 <li>reload (rediscover the plugins directory and refresh all plugins)</li>
 </ul>
+<p>To reload a running bar without the menu, run:</p>
+<pre><code class="language-sh">sidewing reload
+</code></pre>
+<p>This asks the running instance to rediscover the plugins directory and refresh
+every plugin, the same as the menu action. It exits non-zero if no bar is
+running. The reload is exposed as a GApplication action, so
+<code>gapplication action com.vandragt.sidewing reload</code> works too — handy for a
+keybinding or a script that has just installed a new plugin.</p>
 <p>Each plugin's own popover ends with a footer containing a <strong>Refresh</strong> button and, when the plugin declares variables, an <strong>Edit Variables…</strong> button that opens a generated form (see <a href="#plugin-variables">Plugin Variables</a>).</p>
 <p>On X11, Sidewing also detects whether the selected monitor currently has a maximized window. That state is checked when the bar appears and then polled periodically so the bar can switch between its translucent and opaque styles as window state changes.</p>
 <h2>Plugin Naming</h2>
