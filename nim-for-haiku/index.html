@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>nim-for-haiku</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>nim-for-haiku</h1>
+
+  
+  <div class="project-header__desc">Write native Haiku GUI applications in Nim instead of C++</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">haiku-os</span>
+    
+    <span class="badge">nim-lang</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/nim-for-haiku">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Nim for Haiku</h1>
+<p>Write native <a href="https://www.haiku-os.org/">Haiku</a> GUI applications in
+<a href="https://nim-lang.org/">Nim</a> instead of C++. Your app code is pure Nim; a small,
+reusable C++ shim bridges to Haiku's native API.</p>
+<p><img src="docs/counter.png" alt="The Counter app running on Haiku" /></p>
+<p>The app above is <code>src/app.nim</code> — about 15 lines of Nim, packaged as a native
+<code>.hpkg</code> and shown in the Deskbar. No C++ in the app itself.</p>
+<h2>Why this exists</h2>
+<p>Haiku's application framework (the BeAPI) is C++, and its GUI model is built on
+subclassing: you extend <code>BWindow</code> or <code>BView</code> and override virtual methods. Nim's
+C++ backend can <em>call</em> the BeAPI directly, but it can't emit a native C++
+subclass with overridden virtuals — that one gap is the whole reason a C++ layer
+is needed at all.</p>
+<p>The answer is a thin, generic shim that subclasses the BeAPI once and forwards
+every event to a Nim callback. You write Nim; the shim is fixed library
+plumbing you never touch. This is the same shape every high-level language uses
+to bind a C++ framework.</p>
+<h2>How it works</h2>
+<p>The click path shows both directions of the bridge:</p>
+<p><img src="docs/callback-demo.png" alt="A button click handled by Nim" /></p>
+<ul>
+<li><strong>Nim to BeAPI</strong> — Nim owns <code>main</code> and calls the shim to build the window.</li>
+<li><strong>BeAPI to Nim</strong> — a button click routes through the shim into a Nim closure.</li>
+</ul>
+<p>Buttons target the application object, so click handlers run on the app thread,
+where Nim's garbage collector and closures are safe. When a handler updates a
+view, the shim locks that view's window first, as the BeAPI requires.</p>
+<h2>Repository layout</h2>
+<p>| Path | What it is |
+| --- | --- |
+| <code>src/app.nim</code> | The example app, in pure Nim. Start here. |
+| <code>src/haiku.nim</code> | The high-level Nim API. Add a widget here when you need one. |
+| <code>src/haiku_shim.cpp</code> | The generic C++ binding. Write-once; you don't edit it. |
+| <code>src/gui.nim</code>, <code>src/gui_shim.cpp</code> | Minimal annotated demo of the shim pattern. |
+| <code>packaging/</code> | Package metadata (<code>PackageInfo</code>, app signature <code>.rdef</code>). |
+| <code>ship.sh</code>, <code>test-gui.sh</code>, <code>ship-pkg.sh</code> | Build-and-run and packaging scripts. |
+| <code>JOURNAL.md</code> | How the spike went, including every gotcha and its fix. |</p>
+<h2>Requirements</h2>
+<ul>
+<li>A Haiku machine (tested on R1/beta6, x86_64) reachable over SSH as <code>haiku</code>.
+Install the toolchain there with <code>pkgman install nim rsync</code>.</li>
+<li>Nim and rsync locally, for editing and fast type-checking. <code>devbox shell</code>
+provides both.</li>
+</ul>
+<p>Development happens on Linux; the code builds and runs on Haiku over SSH. See
+<code>CLAUDE.md</code> for the SSH setup (Haiku's <code>user</code> account is root, and it reads
+authorised keys from <code>~/config/settings/ssh/authorized_keys</code>).</p>
+<h2>Build and run</h2>
+<p>Check the Nim locally without linking:</p>
+<pre><code class="language-sh">devbox run check
+</code></pre>
+<p>Build and run a target on Haiku (source syncs over, compiles, and runs there):</p>
+<pre><code class="language-sh">./ship.sh hello        # a plain CLI program
+./test-gui.sh          # the GUI demo — also screenshots the window
+</code></pre>
+<h2>Ship a package</h2>
+<p>Build an installable Haiku package:</p>
+<pre><code class="language-sh">./ship-pkg.sh          # -&gt; dist/counter-&lt;version&gt;-x86_64.hpkg
+</code></pre>
+<p>To install, copy the <code>.hpkg</code> into <code>/boot/system/packages/</code> on the Haiku machine;
+<code>packagefs</code> activates it and the app appears in the Deskbar. To ship an update,
+bump <code>version</code> in <code>packaging/PackageInfo</code> — <code>packagefs</code> ignores a rebuild that
+keeps the same version.</p>
+<h2>Status</h2>
+<p>A viability spike, and the verdict is yes: Nim is a workable higher-level
+language for Haiku apps, app code stays pure Nim, and the result ships as a
+normal package. <code>JOURNAL.md</code> has the full story.</p>
+<h2>Licence</h2>
+<p>MIT.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
