@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vivace</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>vivace</h1>
+
+  
+  <div class="project-header__desc">It is to Composer what uv was to pip</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/vivace">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>vivace</h1>
+<p><code>viv</code> installs PHP dependencies from <code>composer.lock</code> and produces a <code>vendor/</code>
+directory that is byte for byte what Composer would write. Since 0.3 it also
+resolves: <code>viv update</code>, <code>viv require</code> and <code>viv remove</code> write a <code>composer.lock</code>
+that Composer accepts unchanged, using a port of Composer's own solver.</p>
+<p>Status: proof of concept, v0.5. Linux and macOS, both tested in CI. Before
+each release a <a href="compat/README.md">compatibility sweep</a> byte-diffs <code>vendor/</code>
+against Composer on pinned popular projects and a random Packagist sample.</p>
+<h2>Numbers</h2>
+<p>Laravel-sized lock, 101 packages, same machine, three runs each. Details and
+raw data in <a href="bench/results/README.md"><code>bench/results/</code></a>.</p>
+<p>| Tool | Cold | Warm cache | No-op | Update, warm metadata |
+|---|---|---|---|---|
+| composer 2.10.2 | 8.28 s | 1.69 s | 0.50 s | 1.2 s |
+| riff 0.0.7 | 1.75 s | 0.26 s | 0.23 s | n/a |
+| viv 0.5.0 | 2.0 s | 0.042 s | 0.007 s | 4.9 s |</p>
+<p>The update column is the one viv still loses: the lock it writes is
+identical to Composer's, and 0.5 halved the time by pruning the pool and
+compiling constraints once, but two hotspots remain
+(<a href="https://github.com/svandragt/vivace/issues/89">#89</a>,
+<a href="https://github.com/svandragt/vivace/issues/90">#90</a>). Tracked per release
+like the install numbers; 0.6's target is to beat riff on every column.</p>
+<h2>Beyond Composer</h2>
+<p><strong>Fewer merge conflicts.</strong> <code>viv install</code> normalises <code>composer.json</code> before
+reading it: stable key order and whitespace, the same result as
+<code>composer normalize</code>. Two branches that each add a dependency then merge
+cleanly instead of fighting over ordering. Pass <code>--no-normalize</code> to leave the
+file alone; <code>viv normalize --check</code> reports without writing.</p>
+<p><strong>Run a tool without installing it.</strong> <code>viv x vendor/package[:constraint]</code>
+installs the package into an isolated, content-hashed environment under the
+cache and runs its binary, the way <code>uvx</code> and <code>npx</code> do. Nothing is added to
+the project's <code>composer.json</code> or <code>vendor/</code>:</p>
+<pre><code class="language-sh">viv x phpunit/phpunit:^11 tests      # 27 packages, 0.07 s on a warm cache
+viv x friendsofphp/php-cs-fixer fix src
+viv x --list                         # environments in the cache
+</code></pre>
+<h2>How it works</h2>
+<p>Each package archive is extracted once into a global store under
+<code>$XDG_CACHE_HOME/vivace/</code>, keyed by the sha256 of the archive. Installing
+hardlinks every file from the store into <code>vendor/</code>, one <code>link()</code> call per
+file instead of inflating and writing it. Store files are read-only, so an
+accidental edit to a vendor file fails instead of silently changing every
+project that shares the inode. Projects that patch vendor use
+<code>--link-mode copy</code>.</p>
+<p>A no-op install compares the lock against <code>vendor/composer/installed.json</code>
+and a small state file, spawns no PHP and makes no network requests.</p>
+<p>The autoloader (<code>vendor/autoload.php</code>, <code>vendor/composer/*.php</code>,
+<code>installed.json</code>, <code>installed.php</code>, <code>platform_check.php</code>) is a port of
+Composer's generator. Composer's own golden test cases are in the suite, and
+an end-to-end test byte-diffs <code>vendor/</code> against Composer 2.10.2 output. See
+<a href="ARCHITECTURE.md"><code>ARCHITECTURE.md</code></a> and
+<a href="docs/composer-contract.md"><code>docs/composer-contract.md</code></a>.</p>
+<h2>Install</h2>
+<p>Prebuilt binaries for Linux (x86_64, aarch64, musl) and macOS (x86_64,
+aarch64) are attached to each <a href="https://github.com/svandragt/vivace/releases">release</a>.</p>
+<pre><code class="language-sh"># download a tarball from the releases page, or:
+cargo binstall vivace
+# or build from source:
+cargo install --git https://github.com/svandragt/vivace --tag v0.3.0 vivace
+</code></pre>
+<h2>Usage</h2>
+<pre><code class="language-sh">cargo build --release
+target/release/viv install            # in a project with composer.json and composer.lock
+target/release/viv install --no-dev
+target/release/viv install --dry-run  # show the plan, change nothing
+target/release/viv install --link-mode copy
+target/release/viv update                # full update, writes composer.lock
+target/release/viv update psr/log -w     # partial update with dependencies
+target/release/viv require psr/container # edits composer.json, updates the lock
+target/release/viv remove psr/container
+target/release/viv dump-autoload -o
+target/release/viv normalize --check     # composer.json is also normalised on install
+target/release/viv cache prune
+</code></pre>
+<p><code>install</code> runs the root's lifecycle scripts (<code>pre-install-cmd</code>,
+<code>post-autoload-dump</code>, <code>post-install-cmd</code>) like Composer; <code>--no-scripts</code> skips
+them. Composer plugins cannot run natively: <code>composer/installers</code> and the
+WordPress core installers are applied natively, anything else is refused
+unless you pass <code>--no-plugins</code>. See <a href="docs/plugin-strategy.md"><code>docs/plugin-strategy.md</code></a>.</p>
+<h2>Using viv as a drop-in composer</h2>
+<p><code>cargo build</code>/<code>make install</code> also builds a <code>composer</code> binary. Put it on <code>PATH</code>
+ahead of the real Composer (or symlink it as <code>composer</code> in CI) and it maps
+<code>install</code>, <code>dump-autoload</code> and <code>normalize</code> with their supported flags to
+<code>viv</code>, execing the real Composer for everything else (<code>update</code>, <code>require</code>,
+plugins, unrecognised flags). Point <code>VIV_COMPOSER_PATH</code> at the real binary if
+it isn't first on <code>PATH</code>.</p>
+<h2>Scope</h2>
+<p>viv aims to replace Composer for the commands people run every day, not the
+whole command reference. Covered, byte for byte where output is a file or
+Composer's plain text: <code>install</code>, <code>update</code>, <code>update-lock</code>, <code>require</code>,
+<code>remove</code>, <code>dump-autoload</code>, <code>normalize</code>, <code>show</code>, <code>tree</code>, <code>why</code>, <code>outdated</code>,
+<code>audit</code>, <code>validate</code>, <code>run</code>, <code>exec</code>, the lifecycle scripts, the cache
+commands, and Satis or Private Packagist repositories. Beyond Composer:
+<code>viv x vendor/tool</code> runs a Packagist tool without installing it into the
+project, the way uvx does. Everything else
+(<code>create-project</code>, <code>init</code>, <code>search</code>, <code>config</code>, <code>global</code>, <code>self-update</code>,
+<code>diagnose</code>, <code>licenses</code>, <code>depends</code> and friends) stays with Composer, and the
+<code>composer</code> shim hands those through unchanged.</p>
+<h3>What is in and out</h3>
+<p>In: zip and tar dists, path repositories, git sources without a dist,
+credentials from <code>auth.json</code> and <code>COMPOSER_AUTH</code>, sha1 verification, PSR-4,
+PSR-0, classmap and files autoloading, <code>--optimize-autoloader</code> and
+<code>--classmap-authoritative</code>, <code>platform_check.php</code>, <code>vendor/bin</code> proxies,
+lifecycle scripts, <code>composer/installers</code> paths, full and partial <code>update</code>,
+<code>require</code>, <code>remove</code>, Packagist v2 metadata with a revalidating cache.</p>
+<p>Also in since 0.4: <code>preferred-install: source</code>, offline mode
+(<code>--offline</code>, <code>COMPOSER_DISABLE_NETWORK</code>), native adapters for the phpcs
+installer, phpstan extension-installer, spi and composer-patches, extraction
+size caps, tar.bz2, <code>viv cache size</code>, a classmap cache for <code>-o</code>.</p>
+<p>Out for now: other Composer plugins (refused, see the plugin strategy),
+<code>--minimal-changes</code>, private repositories that are not Packagist-compatible,
+Composer's condensed multi-cause problem messages, and <code>viv update</code> speed:
+it resolves correctly but takes about seven times longer than Composer on a
+large lock until the pool is pruned (#76).</p>
+<h2>Development</h2>
+<p>Tooling comes from <a href="https://www.jetify.com/devbox">devbox</a>: PHP, Composer
+and hyperfine for the fixtures and benchmarks.</p>
+<pre><code class="language-sh">make install    # put viv on your PATH (~/.cargo/bin)
+make check      # fmt, clippy, tests, cargo deny
+make test
+make bench      # composer vs riff vs viv on bench/laravel
+VIVACE_TEST_NETWORK=1 make test   # includes the end-to-end install
+</code></pre>
+<p><a href="JOURNAL.md"><code>JOURNAL.md</code></a> is the engineering log: what was measured, what
+was decided and why, including the study of
+<a href="https://github.com/shyim/riff">Riff</a> and
+<a href="https://github.com/paramientos/presto">Presto</a> that preceded the code.</p>
+<h2>Licence</h2>
+<p>MIT. <code>src/autoload/templates/</code> contains Composer's <code>ClassLoader.php</code>,
+<code>InstalledVersions.php</code> and licence, copied verbatim under Composer's MIT
+licence. Test fixtures under <code>tests/fixtures/composer/</code> are Composer's own,
+also MIT.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

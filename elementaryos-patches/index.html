@@ -62,7 +62,7 @@ for anyone who finds them useful.</p>
 <p>| Package | Patches | Description |
 |---------|---------|-------------|
 | <a href="pkgs/io.elementary.notifications/">io.elementary.notifications</a> | <a href="pkgs/io.elementary.notifications/series">series</a> | <ul><li>Fix bubbles that never appear, or appear as a rectangle of stale screen content. The carousel's initial <code>scroll_to</code> is a no-op until the widget has an allocation, which a toplevel lacks at map time, so the bubble can stay on the blank placeholder page — leaving the window unpainted, and <code>page_changed</code> reading it as a swipe-to-dismiss. Re-assert <code>scroll_to</code> from a tick callback until it lands, and only trust a page mismatch as a dismissal once the overlay page has actually been reached.</li><li>Keep the 5 most recent bubbles on screen instead of auto-hiding after 4s; only evict the oldest once a 6th arrives. Urgent notifications are never evicted.</li></ul><br>Focus stealing is handled compositor-side by gala's <code>fix-notification-focus-steal-x11.patch</code>, not here. |
-| <a href="pkgs/gala/">gala</a> | <a href="pkgs/gala/series">series</a> | <ul><li>Stop crash loop from unbalanced <code>WorkspaceManager.thaw_remove</code> when a workspace is added outside a swipe gesture</li><li>Prevent focus-stealing on attention demand</li><li>Never let notification bubbles hold keyboard focus on X11 (mutter's focus-on-map races the daemon's user-time hint — bounce focus back to the MRU window)</li></ul> |
+| <a href="pkgs/gala/">gala</a> | <a href="pkgs/gala/series">series</a> | <ul><li>Stop crash loop from unbalanced <code>WorkspaceManager.thaw_remove</code> when a workspace is added outside a swipe gesture</li><li>Prevent focus-stealing on attention demand</li><li>Never let notification bubbles hold keyboard focus on X11 (mutter's focus-on-map races the daemon's user-time hint — bounce focus back to the MRU window)</li><li>Stop the crash when dismissing a notification bubble. Upstream 8.6.1's use-after-free guard only fires for <code>NOTIFICATION</code>-type windows, but <code>NotificationsClient</code> rewrites bubbles to <code>DOCK</code>, so <code>destroy_completed</code> still ran on a freed actor</li></ul> |
 | <a href="pkgs/io.elementary.terminal/">io.elementary.terminal</a> | <a href="pkgs/io.elementary.terminal/series">series</a> | <ul><li>Restore double-click on empty tab bar to open a new tab (GTK4 regression)</li><li>Open OSC 8 hyperlinks on ctrl-click</li><li>Add &quot;Set Title…&quot; to the tab context menu</li></ul> |
 | <a href="pkgs/pantheon-files/">pantheon-files</a> | <a href="pkgs/pantheon-files/series">series</a> | Double-click on empty tab bar opens a new tab (matches terminal behavior) |
 | <a href="pkgs/appcenter/">appcenter</a> | <a href="pkgs/appcenter/series">series</a> | Don't show AppCenter in the dock with a &quot;0&quot; badge when there are no pending updates |
@@ -98,6 +98,9 @@ cat quiltrc &gt;&gt; ~/.quiltrc        # one time
 <p><code>--install</code> runs <code>sudo dpkg -i</code> on the freshly built <code>.deb</code>. The unpatched
 upstream package will be replaced; remove it later with
 <code>sudo apt install --reinstall io.elementary.notifications</code> to revert.</p>
+<p>A new gala build goes live with <code>./ep restart gala</code>, which restarts its systemd
+user unit in place; windows survive. Don't use <code>gala --replace</code> — the unit
+restarts itself alongside the manual process and the session fails.</p>
 <h3>Reverting</h3>
 <pre><code class="language-bash">sudo apt install --reinstall io.elementary.notifications
 </code></pre>
@@ -111,6 +114,7 @@ ep edit    &lt;package&gt; &lt;file&gt;       Add a file to current patch and op
 ep refresh &lt;package&gt;              Refresh top patch after editing
 ep refresh &lt;package&gt; --rebase     Rebase all patches onto new upstream version
 ep build   &lt;package&gt; [--install]  Build package, optionally install it
+ep restart &lt;package&gt;              Restart the package's systemd user service (gala)
 ep rebuild &lt;package&gt;|--all        Fetch latest source, re-apply patches, build and install
                                   (--no-install to only build, --force to ignore the
                                   up-to-date check)
