@@ -47,16 +47,16 @@
   <h1>vivace</h1>
 <p><code>viv</code> installs PHP dependencies from a Composer <code>composer.lock</code> file and
 writes a <code>vendor/</code> directory that matches what Composer would write, byte
-for byte. It's a proof of concept at v0.8.0, tested in CI on Linux and
+for byte. It's a proof of concept at v0.9.0, tested in CI on Linux and
 macOS, and not yet at 1.0.</p>
 <h2>Try it</h2>
 <p>Download a prebuilt binary from the <a href="https://github.com/svandragt/vivace/releases">releases
-page</a> (Linux x86_64 and
-aarch64 as static musl builds, also packaged as a .deb; macOS x86_64 and
-aarch64), or install it another way:</p>
+page</a> (Linux x86_64 as glibc
+and static musl builds, aarch64 as static musl, also packaged as a .deb;
+macOS x86_64 and aarch64), or install it another way:</p>
 <pre><code class="language-sh">cargo binstall --git https://github.com/svandragt/vivace vivace
 # or build from source:
-cargo install --git https://github.com/svandragt/vivace --tag v0.8.0 vivace
+cargo install --git https://github.com/svandragt/vivace --tag v0.9.0 vivace
 </code></pre>
 <p>Both commands also upgrade an existing install; add <code>--force</code> to
 <code>cargo install</code> when the version has not changed.</p>
@@ -119,15 +119,15 @@ written outside the project and the cache.</p>
 <p>viv's contract is that its output matches Composer's byte for byte. Before
 every release, a compatibility sweep installs a mix of pinned popular
 projects and a random sample of Packagist packages with both Composer and
-viv, then compares the results.[^2] The v0.8.0 sweep: 36 rows identical, 0
-differ, 4 skipped.[^3]</p>
+viv, then compares the results.[^2] The v0.9.0 sweep: 26 rows identical, 0
+differ, 14 skipped.[^3]</p>
 <p>Two of the pinned projects still need <code>--no-plugins</code> to install with
 viv, both for a Composer plugin viv doesn't yet support.[^4] See
 <a href="#plugins">Plugins</a> below.</p>
 <h2>Speed</h2>
-<p>10 projects from viv's compatibility corpus, 2026-09-09, from a local
+<p>10 projects from viv's compatibility corpus, 2026-09-10, from a local
 mirror so no network is measured, AMD Ryzen 9 7900X3D (24 threads) on
-ext4, a viv 0.8.0 development build, composer 2.10.2, riff 0.0.7,
+ext4, viv 0.9.0, composer 2.10.2, riff 0.0.7,
 <code>--no-plugins --no-scripts</code>, three runs each. Each cell is how many times
 faster viv is, with the range across projects; below 1× viv is slower.
 Per-project numbers are in
@@ -137,10 +137,18 @@ proxies, <code>installed.*</code>); the cosmetic differences are listed in
 <a href="bench/results/README.md"><code>bench/results/README.md</code></a>.</p>
 <p>| Scenario | viv vs Composer | viv vs riff |
 |---|---|---|
-| Cold | 4.5× (2.4 to 12.1) | 1.8× (0.6 to 64.4)[^5][^6] |
-| Warm | 16.9× (8.1 to 41.2) | 6.7× (2.0 to 134.4)[^6] |
-| No-op | 43.8× (19.7 to 99.8) | 20.1× (2.8 to 115.8) |
-| Update-warm | 0.7× (0.5 to 1.6)[^5] | n/a |</p>
+| Cold | 4.0× (1.6 to 10.7) | 1.7× (0.6 to 69.4)[^5][^6] |
+| Warm | 14.0× (5.9 to 40.0) | 6.5× (2.0 to 114.2)[^6] |
+| No-op | 45.0× (23.0 to 104.4) | 22.8× (2.8 to 111.7) |
+| Update-warm | 1.6× (1.1 to 3.9) | n/a |</p>
+<p>A warm update still revalidates every package's metadata with the registry,
+one conditional request each, even when nothing changed. <code>--metadata-ttl &lt;seconds&gt;</code> on <code>update</code>, <code>add</code> and <code>rm</code> (or <code>VIV_METADATA_TTL</code>; the flag wins)
+skips that revalidation for a package whose cached metadata is younger than
+the window, so a second update run shortly after the first makes no metadata
+requests at all. It's off by default (<code>0</code>, always revalidate, matching
+Composer), so turn it on only where a slightly stale registry view for a few
+minutes is an acceptable trade for the extra speed. <code>--offline</code> always wins
+over a configured window.</p>
 <h2>Everyday commands</h2>
 <pre><code class="language-sh">viv init                  # write a composer.json for a new project and stop
 viv new demo               # same, in a directory that doesn't exist yet
@@ -232,10 +240,11 @@ shared store, so an edit inside <code>vendor/</code> fails instead of changing e
 project on the machine. If you patch vendor files by hand, install with
 <code>--link-mode copy</code>, or <code>--link-mode clone</code> for writable files sharing the
 store's disk space where the filesystem supports it.</li>
-<li><strong>Updating is slower than Composer.</strong> On a real-sized lock a warm
-<code>viv update</code> takes about twice Composer's time, with no network in the
-measurement; see the table above. Installs are where viv is far ahead,
-and riff still leads cold installs on a few projects.</li>
+<li><strong>Cold installs are not always the fastest.</strong> In the corpus above riff
+leads cold installs on two of ten projects, drupal/recommended-project by
+0.6 s and slimphp/Slim-Skeleton by 50 ms; the cause is not established.
+On the other eight, and on every warm install, no-op and update, viv is
+ahead.</li>
 <li><strong>Two error messages still differ.</strong> Composer's &quot;found X but it conflicts
 with your root require&quot; wording is not ported yet, and when a version is
 skipped for a security advisory and the solve then fails, Composer's
@@ -289,10 +298,10 @@ way, including the study of prior art that shaped viv's design.[^15]</p>
 their original copyright notices.[^16]</p>
 <p>[^1]: viv relinks every package from its own content-addressed store into <code>vendor/</code>, using hardlinks so files aren't copied or re-extracted.
 [^2]: See <a href="compat/README.md"><code>compat/README.md</code></a> for how the sweep works.
-[^3]: The skips are pre-existing failures on Composer's side, such as an expired auth token — not something viv got wrong. Full results, including which projects and what was skipped, are in <a href="compat/results/v0.8.0.md"><code>compat/results/v0.8.0.md</code></a>.
+[^3]: The skips are pre-existing failures on Composer's side, such as an expired auth token — not something viv got wrong. Full results, including which projects and what was skipped, are in <a href="compat/results/v0.9.0.md"><code>compat/results/v0.9.0.md</code></a>.
 [^4]: Of viv's 20 pinned compatibility projects, the two that need <code>--no-plugins</code> are <code>symfony/demo</code> and <code>roots/bedrock</code>.
 [^5]: The ratio's range crosses 1×: within noise on some projects.
-[^6]: riff's phpunit/phpunit cold and warm times (7.7 s and 8.5 s) are an outlier against its other rows in this corpus; kept in the range, not dropped; see <a href="bench/results/corpus.md"><code>bench/results/corpus.md</code></a>.
+[^6]: riff's phpunit/phpunit cold and warm times (8.2 s and 8.6 s) are an outlier against its other rows in this corpus; kept in the range, not dropped; see <a href="bench/results/corpus.md"><code>bench/results/corpus.md</code></a>.
 [^10]: <code>install</code> runs the root's lifecycle scripts (<code>pre-install-cmd</code>, <code>post-autoload-dump</code>, <code>post-install-cmd</code>) as Composer does.
 [^11]: Normalisation follows <code>ergebnis/composer-normalize</code>'s rules, so a project already using that plugin sees no change.
 [^12]: The shim maps <code>install</code>, <code>dump-autoload</code>, <code>normalize</code> and <code>create-project</code> with their supported flags to <code>viv</code>; everything else, <code>update</code>, <code>require</code>, an unrecognised flag, it hands through to the real Composer binary unchanged. Point <code>VIV_COMPOSER_PATH</code> at the real binary if it isn't first on <code>PATH</code>. The shim only has something to hand through to if a real Composer is on <code>PATH</code> in the first place: if there isn't one, those commands fail rather than silently falling back to viv.
