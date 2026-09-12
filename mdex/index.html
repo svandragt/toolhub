@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mdex</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>mdex</h1>
+
+  
+  <div class="project-header__desc">Markdown Exporter</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/mdex">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>mdex</h1>
+<p>A two-pane markdown editor for elementary OS. Write GitHub-flavoured markdown on
+the left, see it rendered on the right, then export it to the format the
+destination actually wants.</p>
+<p>The editor is the easy half. The point is the export step: text drafted once
+leaves as a Slack message, as ADF for Jira and Confluence Cloud, or as plain
+GitHub markdown, without reformatting it by hand.</p>
+<h2>Build and run</h2>
+<p>You need elementary OS 8 or another distribution with GTK 4, Granite 7,
+WebKitGTK 6 and GtkSourceView 5.</p>
+<pre><code>sudo apt install libgtksourceview-5-dev libwebkitgtk-6.0-dev libgranite-7-dev \
+                 libgtk-4-dev valac meson ninja-build
+make run
+</code></pre>
+<p><code>make test</code> runs the unwrapping checks.</p>
+<p><code>make install</code> puts <code>mdex</code> in <code>~/.local/bin</code> and its launcher in the
+applications menu, neither of which needs sudo. For a system-wide install:</p>
+<pre><code>sudo make install PREFIX=/usr/local
+</code></pre>
+<h2>Use it</h2>
+<p>Open a file with the button in the header bar, pass a path on the command line,
+or pipe text in:</p>
+<pre><code>mdex notes.md
+claude -p &quot;draft the release notes&quot; | mdex
+</code></pre>
+<p>With no input, mdex starts on a scratch buffer. Everything autosaves a second
+after you stop typing — to the file you opened, or to
+<code>~/.cache/mdex/scratch.md</code> when there isn't one, so an unnamed session survives
+a restart.</p>
+<p>Export from the header bar menu, or with a shortcut:</p>
+<p>| Format | Shortcut | Goes to |
+| --- | --- | --- |
+| GitHub Markdown | Ctrl+Shift+G | GitHub, and anywhere that takes CommonMark |
+| Slack message | Ctrl+Shift+S | Slack |
+| ADF | Ctrl+Shift+J | Jira and Confluence Cloud |</p>
+<p>The result lands on the clipboard, ready to paste.</p>
+<h2>Hard-wrapped text</h2>
+<p>Text from a language model usually arrives hard-wrapped at about 80 columns.
+mdex treats those wraps as an artefact of how the text was written, not as
+meaning:</p>
+<ul>
+<li>Anything you open, pipe in, or restore from the scratch buffer has its
+paragraphs unwrapped on load: the hard newlines inside a paragraph go, and it
+becomes one line. Headings, lists, quotes, tables and code blocks keep their
+shape, and a deliberate line break — two trailing spaces — survives.</li>
+<li>The editor soft-wraps, so those long lines never scroll sideways.</li>
+<li>The preview reflows each paragraph, because the renderer follows CommonMark
+rather than turning every newline into a line break.</li>
+<li>The exporters collapse any remaining newlines to single spaces. Slack renders
+literal newlines, so without this a message looks ragged even when the preview
+looked right.</li>
+</ul>
+<p>Unwrapping rewrites the document, and autosave will keep it, so opening a
+hard-wrapped file and typing one character reformats its paragraphs. Press
+Ctrl+Shift+U to reflow text you pasted into an already-open document.</p>
+<h2>Write a plugin</h2>
+<p>An exporter is a JavaScript file in <code>~/.config/mdex/plugins/</code>. It gets the
+parsed token stream and the raw source, and returns a string:</p>
+<pre><code class="language-js">window.mdex.registerExporter('upper', 'Upper case', (tokens, raw) =&gt; {
+    return raw.toUpperCase();
+});
+</code></pre>
+<p><code>examples/plaintext.js</code> is a working one: copy it to <code>~/.config/mdex/plugins/</code>
+and &quot;Plain text&quot; appears in the Export menu alongside the built-in formats.</p>
+<p>Restart mdex and the format appears in the Export menu. The three built-in
+exporters register through the same call, so a plugin can do anything they can —
+including replacing one of them by reusing its id.</p>
+<h2>How it works</h2>
+<p>All markdown parsing happens once, in JavaScript, inside the preview WebView.
+Rendering and exporting both walk the same token stream from
+<a href="https://marked.js.org">marked</a>, so the preview and the export can't disagree
+about what the document says. Vala handles the window, file I/O, autosave, the
+command line and the clipboard.</p>
+<p>The export menu is built at run time by asking the WebView which exporters are
+registered. That is why a plugin is a first-class format rather than a
+second-class one.</p>
+<h2>Licence</h2>
+<p>The bundled <a href="https://github.com/markedjs/marked">marked</a> and
+<a href="https://github.com/sindresorhus/github-markdown-css">github-markdown-css</a> are
+MIT licensed and keep their own copyright notices.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
