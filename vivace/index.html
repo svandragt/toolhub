@@ -47,7 +47,7 @@
   <h1>vivace</h1>
 <p><code>viv</code> installs PHP dependencies from a Composer <code>composer.lock</code> file and
 writes a <code>vendor/</code> directory that matches what Composer would write, byte
-for byte. It's a proof of concept at v0.9.0, tested in CI on Linux and
+for byte. It's a proof of concept at v0.10.0, tested in CI on Linux and
 macOS, and not yet at 1.0.</p>
 <h2>Try it</h2>
 <p>Download a prebuilt binary from the <a href="https://github.com/svandragt/vivace/releases">releases
@@ -56,7 +56,7 @@ and static musl builds, aarch64 as static musl, also packaged as a .deb;
 macOS x86_64 and aarch64), or install it another way:</p>
 <pre><code class="language-sh">cargo binstall --git https://github.com/svandragt/vivace vivace
 # or build from source:
-cargo install --git https://github.com/svandragt/vivace --tag v0.9.0 vivace
+cargo install --git https://github.com/svandragt/vivace --tag v0.10.0 vivace
 </code></pre>
 <p>Both commands also upgrade an existing install; add <code>--force</code> to
 <code>cargo install</code> when the version has not changed.</p>
@@ -119,8 +119,9 @@ written outside the project and the cache.</p>
 <p>viv's contract is that its output matches Composer's byte for byte. Before
 every release, a compatibility sweep installs a mix of pinned popular
 projects and a random sample of Packagist packages with both Composer and
-viv, then compares the results.[^2] The v0.9.0 sweep: 26 rows identical, 0
-differ, 14 skipped.[^3]</p>
+viv, then compares the results.[^2] The v0.10.0 sweep: 34 rows identical, 0 differ, 6
+skipped, and all 10 pinned projects resolve the same <code>composer.lock</code> as
+Composer as well as installing the same <code>vendor/</code>.[^3]</p>
 <p>Two of the pinned projects still need <code>--no-plugins</code> to install with
 viv, both for a Composer plugin viv doesn't yet support.[^4] See
 <a href="#plugins">Plugins</a> below.</p>
@@ -128,7 +129,9 @@ viv, both for a Composer plugin viv doesn't yet support.[^4] See
 <p>10 projects from viv's compatibility corpus, 2026-09-10, from a local
 mirror so no network is measured, AMD Ryzen 9 7900X3D (24 threads) on
 ext4, viv 0.9.0, composer 2.10.2, riff 0.0.7,
-<code>--no-plugins --no-scripts</code>, three runs each. Each cell is how many times
+<code>--no-plugins --no-scripts</code>, three runs each. Measured on 0.9.0: the cold
+column predates 0.10.0's parallel archive extraction and parallel classmap
+scan, so cold is faster than this table shows, not slower. Each cell is how many times
 faster viv is, with the range across projects; below 1× viv is slower.
 Per-project numbers are in
 <a href="bench/results/corpus.md"><code>bench/results/corpus.md</code></a>. riff's column
@@ -297,7 +300,7 @@ way, including the study of prior art that shaped viv's design.[^15]</p>
 their original copyright notices.[^16]</p>
 <p>[^1]: viv relinks every package from its own content-addressed store into <code>vendor/</code>, using hardlinks so files aren't copied or re-extracted.
 [^2]: See <a href="compat/README.md"><code>compat/README.md</code></a> for how the sweep works.
-[^3]: The skips are pre-existing failures on Composer's side, such as an expired auth token — not something viv got wrong. Full results, including which projects and what was skipped, are in <a href="compat/results/v0.9.0.md"><code>compat/results/v0.9.0.md</code></a>.
+[^3]: The skips are packages Composer itself refuses to resolve — security advisories blocking every matching version, a <code>dev-master</code>-only package under the default <code>minimum-stability</code>, one unmet platform requirement — not something viv got wrong. Full results, including which projects and what was skipped, are in <a href="compat/results/v0.10.0.md"><code>compat/results/v0.10.0.md</code></a>.
 [^4]: Of viv's 20 pinned compatibility projects, the two that need <code>--no-plugins</code> are <code>symfony/demo</code> and <code>roots/bedrock</code>.
 [^5]: The ratio's range crosses 1×: within noise on some projects.
 [^6]: riff's phpunit/phpunit cold and warm times (8.2 s and 8.6 s) are an outlier against its other rows in this corpus; kept in the range, not dropped; see <a href="bench/results/corpus.md"><code>bench/results/corpus.md</code></a>.

@@ -55,6 +55,7 @@
 <p>A <code>Makefile</code> wraps the meson/ninja workflow. Defaults install under <code>$HOME/.local</code>.</p>
 <pre><code class="language-shell">make install                      # build + install binary, compile GSettings schema
 make link                         # symlink ~/bin/hello-browser -&gt; installed binary
+make test                         # run the unit tests
 hello-browser https://example.org
 </code></pre>
 <p>Both <code>hello-browser &lt;url&gt;</code> and <code>hello-browser --url &lt;url&gt;</code> are accepted. With no URL it loads <code>example.com</code>.</p>
