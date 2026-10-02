@@ -85,11 +85,15 @@ def load_exclusions() -> set[str]:
 # --------------------------------------------------------------------------- #
 
 def fetch_repos(client: httpx.Client) -> list[dict]:
-    """Return all public repos for the authenticated user."""
+    """Return the public repos USERNAME owns.
+
+    Not /user/repos: what that returns depends on the token's scope, and a
+    fine-grained token set to "Public repositories" lists org repos instead.
+    """
     return paginate(
         client,
-        f"{BASE_URL}/user/repos",
-        {"type": "public", "per_page": 100, "sort": "updated"},
+        f"{BASE_URL}/users/{USERNAME}/repos",
+        {"type": "owner", "per_page": 100, "sort": "updated"},
         desc="repos",
     )
 
