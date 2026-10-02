@@ -3,175 +3,184 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-09-11T15:53:48Z</updated>
+  <updated>2026-09-30T14:51:10Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
   
   <entry>
-    <id>https://github.com/svandragt/mdex</id>
-    <title>mdex</title>
-    <updated>2026-09-11T15:53:48Z</updated>
-    <published>2026-09-11T15:53:48Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/mdex"/>
-    <summary>Markdown Exporter</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/repoman</id>
-    <title>repoman</title>
-    <updated>2026-09-07T09:47:25Z</updated>
-    <published>2020-06-05T06:34:55Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/repoman"/>
-    <summary>Export and import git repository lists</summary>
+    <id>https://github.com/svandragt/tinylistings</id>
+    <title>tinylistings</title>
+    <updated>2026-09-30T14:51:10Z</updated>
+    <published>2026-09-30T14:51:10Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/tinylistings"/>
+    <summary>Small, fast listing pages for people selling on eBay: SEO landing pages rebuilt every six hours, buying stays on eBay</summary>
+    <category term="cloudflare-images"/>
+    <category term="cloudflare-pages"/>
+    <category term="ebay"/>
+    <category term="ebay-api"/>
+    <category term="ebay-seller"/>
+    <category term="github-actions"/>
+    <category term="indieweb"/>
+    <category term="jinja2"/>
+    <category term="json-ld"/>
+    <category term="microformats"/>
+    <category term="python"/>
+    <category term="schema-org"/>
+    <category term="seo"/>
+    <category term="static-site"/>
+    <category term="static-site-generator"/>
+    <category term="structured-data"/>
     
   </entry>
   
   <entry>
     <id>https://github.com/svandragt/vivace</id>
     <title>vivace</title>
-    <updated>2026-09-06T09:09:00Z</updated>
+    <updated>2026-09-29T19:22:21Z</updated>
     <published>2026-09-06T09:09:00Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/vivace"/>
-    <summary>It is to Composer what uv was to pip</summary>
+    <summary>Rust reimplementation of Composer that installs from composer.lock faster than PHP Composer</summary>
+    <category term="cli"/>
+    <category term="composer"/>
+    <category term="dependency-manager"/>
+    <category term="devops"/>
+    <category term="package-manager"/>
+    <category term="php"/>
+    <category term="rust"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/nim-for-haiku</id>
-    <title>nim-for-haiku</title>
-    <updated>2026-09-04T13:31:41Z</updated>
-    <published>2026-09-04T13:31:41Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/nim-for-haiku"/>
-    <summary>Write native Haiku GUI applications in Nim instead of C++</summary>
-    <category term="haiku-os"/>
-    <category term="nim-lang"/>
+    <id>https://github.com/svandragt/homebrew-tap</id>
+    <title>homebrew-tap</title>
+    <updated>2026-09-17T22:41:55Z</updated>
+    <published>2026-09-17T22:41:55Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/homebrew-tap"/>
+    <summary>Homebrew tap for vivace</summary>
+    <category term="composer"/>
+    <category term="homebrew"/>
+    <category term="homebrew-formula"/>
+    <category term="homebrew-tap"/>
+    <category term="php"/>
+    <category term="vivace"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/keyring-site-inventory</id>
+    <title>keyring-site-inventory</title>
+    <updated>2026-09-16T15:15:55Z</updated>
+    <published>2026-09-16T15:15:55Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/keyring-site-inventory"/>
+    <summary>Read-only WordPress site-user roster for Keyring</summary>
+    <category term="composer"/>
+    <category term="hmnmd"/>
+    <category term="multisite"/>
+    <category term="php"/>
+    <category term="security"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
     
   </entry>
   
   <entry>
     <id>https://github.com/svandragt/park</id>
     <title>park</title>
-    <updated>2026-08-28T15:06:45Z</updated>
+    <updated>2026-09-14T08:46:30Z</updated>
     <published>2026-04-20T08:35:54Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/park"/>
-    <summary>A CLI tool for saving and recalling human work context across time and space.</summary>
+    <summary>CLI tool backed by SQLite for saving and recalling work context across repos and machines</summary>
+    <category term="cli"/>
+    <category term="context-switching"/>
+    <category term="developer-tools"/>
+    <category term="go"/>
+    <category term="productivity"/>
+    <category term="sqlite"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/hello-browser</id>
-    <title>hello-browser</title>
-    <updated>2026-08-27T10:17:41Z</updated>
-    <published>2023-06-15T07:11:14Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/hello-browser"/>
-    <summary>Hello Browser is a webview window for desktop web apps (written in vala, GTK4).</summary>
-    <category term="localhost"/>
-    <category term="vala"/>
-    <category term="webview"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/lamb</id>
-    <title>lamb</title>
-    <updated>2026-08-24T22:39:33Z</updated>
-    <published>2023-03-12T11:27:19Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lamb"/>
-    <summary>Literally Another Micro Blog</summary>
-    <category term="feed-reader"/>
-    <category term="microblog"/>
+    <id>https://github.com/humanmade/hm-media-pii-cleaner</id>
+    <title>hm-media-pii-cleaner</title>
+    <updated>2026-09-10T10:30:09Z</updated>
+    <published>2026-09-10T10:30:09Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/hm-media-pii-cleaner"/>
+    <summary>Cleans up personally identifiable information from WordPress media file metadata</summary>
+    <category term="hmnmd"/>
     <category term="php"/>
-    <category term="self-hosted"/>
-    <category term="single-author"/>
+    <category term="privacy"/>
+    <category term="security"/>
+    <category term="shell"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/fedora-pantheon</id>
-    <title>fedora-pantheon</title>
-    <updated>2026-08-24T08:35:21Z</updated>
-    <published>2026-08-24T08:35:21Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/fedora-pantheon"/>
-    <summary>Pantheon on Fedora</summary>
+    <id>https://github.com/humanmade/hm-rest-ability</id>
+    <title>hm-rest-ability</title>
+    <updated>2026-08-27T11:10:34Z</updated>
+    <published>2026-08-27T11:10:34Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/hm-rest-ability"/>
+    <summary>A registered WordPress ability that exposes the REST API to agents using the current user&#39;s authentication</summary>
+    <category term="abilities-api"/>
+    <category term="ai"/>
+    <category term="rest-api"/>
+    <category term="wordpress-plugin"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/arch-pantheon-btrfs-guide</id>
-    <title>arch-pantheon-btrfs-guide</title>
-    <updated>2026-08-23T13:05:58Z</updated>
-    <published>2026-08-23T13:05:58Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/arch-pantheon-btrfs-guide"/>
-    <summary>arch-pantheon-btrfs-guide</summary>
+    <id>https://github.com/humanmade/block-pattern-diff</id>
+    <title>block-pattern-diff</title>
+    <updated>2026-08-26T18:55:42Z</updated>
+    <published>2026-08-26T18:55:42Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/block-pattern-diff"/>
+    <summary>Visualize and understand the changes to WordPress Block markup from Git diffs of FSE theme pattern or template files</summary>
+    <category term="block-editor"/>
+    <category term="blocks"/>
+    <category term="css"/>
+    <category term="gutenberg"/>
+    <category term="html"/>
+    <category term="internal-tool"/>
+    <category term="typescript"/>
+    <category term="wordpress"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/plank</id>
-    <title>plank</title>
-    <updated>2026-08-21T22:55:25Z</updated>
-    <published>2026-08-21T22:55:25Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/plank"/>
-    <summary>Stupidly simple.</summary>
+    <id>https://github.com/humanmade/content-outlet-block</id>
+    <title>content-outlet-block</title>
+    <updated>2026-08-07T16:38:38Z</updated>
+    <published>2026-08-07T16:38:38Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/content-outlet-block"/>
+    <summary>A container block which can be used to wrap other blocks within post content, and an outlet block which can expose that content elsewhere on the page template</summary>
+    <category term="block-editor"/>
+    <category term="blocks"/>
+    <category term="gutenberg"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/gala-xy</id>
-    <title>gala-xy</title>
-    <updated>2026-08-21T09:11:31Z</updated>
-    <published>2026-07-21T13:08:41Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/gala-xy"/>
-    <summary>Window organiser for gala (elementaryOS)</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/jotta-tools</id>
-    <title>jotta-tools</title>
-    <updated>2026-08-18T11:30:01Z</updated>
-    <published>2026-08-17T11:33:27Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/jotta-tools"/>
-    <summary>Jottacloud diagnostics and tooling</summary>
-    <category term="jottacloud"/>
-    <category term="linux"/>
-    <category term="monitoring"/>
-    <category term="monitoring-tool"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/linux-music-plugins-db</id>
-    <title>linux-music-plugins-db</title>
-    <updated>2026-08-10T07:35:00Z</updated>
-    <published>2026-08-10T07:35:00Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/linux-music-plugins-db"/>
-    <summary>ProtonDB-like for yabridge</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/yt-listen-later</id>
-    <title>yt-listen-later</title>
-    <updated>2026-08-04T13:04:01Z</updated>
-    <published>2026-08-04T13:04:01Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/yt-listen-later"/>
-    <summary>yt-listen-later</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/plex-janitor</id>
-    <title>plex-janitor</title>
-    <updated>2026-08-03T21:46:54Z</updated>
-    <published>2022-06-25T23:50:55Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/plex-janitor"/>
-    <summary>Delete watched episodes and films</summary>
-    <category term="maintenance"/>
-    <category term="plex"/>
-    <category term="plex-media-server"/>
+    <id>https://github.com/humanmade/eslint-config</id>
+    <title>eslint-config</title>
+    <updated>2026-08-04T23:12:03Z</updated>
+    <published>2026-08-04T23:12:03Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/eslint-config"/>
+    <summary>Human Made JavaScript coding standards</summary>
+    <category term="eslint"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="linting"/>
+    <category term="nodejs"/>
+    <category term="npm-package"/>
+    <category term="react"/>
     
   </entry>
   
@@ -181,30 +190,29 @@
     <updated>2026-08-03T09:13:54Z</updated>
     <published>2019-07-04T08:44:55Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/streamcables"/>
-    <summary>Stream nowplaying info to services like twitter.</summary>
-    <category term="info"/>
-    <category term="stream"/>
-    <category term="syndication"/>
+    <summary>Python tool that reads Icecast now-playing metadata and posts it to social media</summary>
+    <category term="automation"/>
+    <category term="icecast"/>
+    <category term="metadata"/>
+    <category term="python"/>
+    <category term="streaming"/>
+    <category term="twitter"/>
     
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/cc-status</id>
-    <title>cc-status</title>
-    <updated>2026-07-31T07:34:09Z</updated>
-    <published>2026-07-31T07:34:09Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/cc-status"/>
-    <summary>Claude/Codex status</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/nethealth</id>
-    <title>nethealth</title>
-    <updated>2026-07-28T15:49:51Z</updated>
-    <published>2026-07-28T14:28:43Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/nethealth"/>
-    <summary>Network health check for freezing video calls and slow page loads. Measures jitter, loss and latency under load, then tells you whether to blame your wifi or your ISP.</summary>
+    <id>https://github.com/humanmade/wp-theme-sync</id>
+    <title>wp-theme-sync</title>
+    <updated>2026-07-29T12:52:32Z</updated>
+    <published>2026-07-29T12:52:32Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/wp-theme-sync"/>
+    <summary>Synchronisation plugin for Full Site Editing themes</summary>
+    <category term="composer"/>
+    <category term="internal-tool"/>
+    <category term="php"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
+    <category term="wordpress-theme"/>
     
   </entry>
   
@@ -219,12 +227,125 @@
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/calibrate</id>
-    <title>calibrate</title>
-    <updated>2026-07-27T08:56:41Z</updated>
-    <published>2026-07-27T08:56:41Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/calibrate"/>
-    <summary>Per-project model policy for Claude Code: calibrate which model plans, codes, and reviews — then prove the token savings.</summary>
+    <id>https://github.com/humanmade/map-block</id>
+    <title>map-block</title>
+    <updated>2026-07-03T23:06:38Z</updated>
+    <published>2026-07-03T23:06:38Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/map-block"/>
+    <summary>A mapbox-based Gutenberg block for associating rich content with geographic data</summary>
+    <category term="block-editor"/>
+    <category term="blocks"/>
+    <category term="composer"/>
+    <category term="gutenberg"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="scss"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/block-runner</id>
+    <title>block-runner</title>
+    <updated>2026-06-22T20:45:29Z</updated>
+    <published>2026-06-22T20:45:29Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/block-runner"/>
+    <summary>Easily convert HTML into WordPress Blocks</summary>
+    <category term="block-editor"/>
+    <category term="cli"/>
+    <category term="gutenberg"/>
+    <category term="nodejs"/>
+    <category term="typescript"/>
+    <category term="wordpress"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/quiz-block</id>
+    <title>quiz-block</title>
+    <updated>2026-06-15T17:38:38Z</updated>
+    <published>2026-06-15T17:38:38Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/quiz-block"/>
+    <summary>Multi-step quiz plugin using Gutenberg blocks</summary>
+    <category term="block-editor"/>
+    <category term="blocks"/>
+    <category term="css"/>
+    <category term="gutenberg"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/svandragt</id>
+    <title>svandragt</title>
+    <updated>2026-06-10T09:37:59Z</updated>
+    <published>2026-06-10T09:37:59Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/svandragt"/>
+    <summary>Sander van Dragt&#39;s GitHub profile README with latest releases and blog posts</summary>
+    <category term="automation"/>
+    <category term="github-profile"/>
+    <category term="markdown"/>
+    <category term="profile-readme"/>
+    <category term="readme"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/hm-immersive-block</id>
+    <title>hm-immersive-block</title>
+    <updated>2026-05-28T13:11:59Z</updated>
+    <published>2026-05-28T13:11:59Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/hm-immersive-block"/>
+    <summary>A WordPress block plugin that pins a full-viewport background image or video while scrolling text slides animate into view. Scroll animation is powered by GSAP ScrollTrigger.</summary>
+    <category term="blocks"/>
+    <category term="gutenberg"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="scss"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/hm-rt-carousel-extension</id>
+    <title>hm-rt-carousel-extension</title>
+    <updated>2026-05-22T16:05:05Z</updated>
+    <published>2026-05-22T16:05:05Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/hm-rt-carousel-extension"/>
+    <summary>WordPress plugin that extends the rt-carousel block with spacing supports, a theme preset slide-gap picker, and frontend styles.</summary>
+    <category term="blocks"/>
+    <category term="gutenberg"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="scss"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/humanmade/hm-block-advanced-background</id>
+    <title>hm-block-advanced-background</title>
+    <updated>2026-05-22T09:38:13Z</updated>
+    <published>2026-05-22T09:38:13Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/humanmade/hm-block-advanced-background"/>
+    <summary>Stacked CSS background layers and backdrop blur for WordPress group blocks</summary>
+    <category term="block-editor"/>
+    <category term="blocks"/>
+    <category term="gutenberg"/>
+    <category term="hmnmd"/>
+    <category term="javascript"/>
+    <category term="php"/>
+    <category term="wordpress"/>
+    <category term="wordpress-plugin"/>
     
   </entry>
   

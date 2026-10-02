@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Do eet</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>Do eet</h1>
+
+  
+  <div class="project-header__desc">Do eet</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">gist</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://gist.github.com/svandragt/6b3fa71c134dd127b9d9100e09f23bc7">&#8599; Gist</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h2>WordPress Migration into Network</h2>
+<p>The following example migrates <strong>archies.amasan.co.uk</strong> into the <strong>amasan.co.uk</strong> network.</p>
+<h3>Requirements</h3>
+<p><a href="https://gist.github.com/svandragt/a41af34005feaa6118a8e20d15159b10">site management scripts</a></p>
+<h3>Directions</h3>
+<p>Backup the original site:</p>
+<pre><code>tar czf archies.amasan.co.uk.tgz archies.amasan.co.uk/
+</code></pre>
+<p>Remove unused plugins and themes, then copy them into the network:</p>
+<pre><code>cp plugins/ /var/www/amasan.co.uk/html/wp-content -R
+cp themes/ /var/www/amasan.co.uk/html/wp-content -R
+</code></pre>
+<p>Install https://wordpress.org/plugins/widget-settings-importexport/ into network. Export the widgets from the original site.</p>
+<p>Nginx: Add domain to server_name.</p>
+<p>Remove the old site:</p>
+<pre><code>cd /etc/nginx/sites-enabled
+site-disable.sh archies.amasan.co.uk
+</code></pre>
+<p>Create a new site, remove the example post, page and comment.
+Import the site.
+Import widgets
+Setup domain mapping.
+Setup all the bloody plugins.</p>
+<h3>Troubleshooting</h3>
+<ul>
+<li>Where are all the images gone?
+<ul>
+<li>No idea.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

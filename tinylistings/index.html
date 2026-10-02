@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tinylistings</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>tinylistings</h1>
+
+  
+  <div class="project-header__desc">Small, fast listing pages for people selling on eBay: SEO landing pages rebuilt every six hours, buying stays on eBay</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">cloudflare-images</span>
+    
+    <span class="badge">cloudflare-pages</span>
+    
+    <span class="badge">ebay</span>
+    
+    <span class="badge">ebay-api</span>
+    
+    <span class="badge">ebay-seller</span>
+    
+    <span class="badge">github-actions</span>
+    
+    <span class="badge">indieweb</span>
+    
+    <span class="badge">jinja2</span>
+    
+    <span class="badge">json-ld</span>
+    
+    <span class="badge">microformats</span>
+    
+    <span class="badge">python</span>
+    
+    <span class="badge">schema-org</span>
+    
+    <span class="badge">seo</span>
+    
+    <span class="badge">static-site</span>
+    
+    <span class="badge">static-site-generator</span>
+    
+    <span class="badge">structured-data</span>
+    
+    
+    <span class="badge">GPL-3.0</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://listings.vandragt.com">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/tinylistings">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>tinylistings</h1>
+<p>Small, fast listing pages for people selling on eBay. It turns the listings of your eBay seller accounts into crawlable landing pages, while buying, payment and delivery stay on eBay. A Python script fetches the listings from the eBay Browse API and renders plain HTML. GitHub Actions rebuilds the site every six hours and deploys it to Cloudflare Pages.</p>
+<p><a href="https://listings.vandragt.com">listings.vandragt.com</a> is a tinylistings instance.</p>
+<p>Item pages link back to eBay and use the eBay listing as their canonical URL. Category, brand, seller and &quot;new this week&quot; pages are the pages that compete in search. A hub page with fewer than three items is marked <code>noindex</code> and left out of the sitemap.</p>
+<h2>Build locally</h2>
+<p>You need Python 3.11 or later and <code>jinja2</code>.</p>
+<pre><code class="language-sh">pip install -r requirements.txt
+python build.py --config fixtures/site.toml --fixture fixtures/items.json
+python -m http.server -d _site
+python test_build.py
+</code></pre>
+<p>The <code>--fixture</code> option skips the eBay API and loads sample listings. The <code>fixtures/site.toml</code> file holds fake seller names for the tests.</p>
+<p>To build from the live API, set the secrets below and run <code>python build.py</code>. The build fails if any seller returns no items or if any request fails, so an outage never replaces the live site with an empty one.</p>
+<h2>Configuration</h2>
+<p>Edit <code>site.toml</code>:</p>
+<p>| Key | Meaning |
+|---|---|
+| <code>sellers</code> | eBay seller user names |
+| <code>site_url</code> | Public URL of the site. |
+| <code>site_name</code> | Name shown in page titles |
+| <code>marketplace</code> | <code>EBAY_GB</code>, <code>EBAY_US</code>, <code>EBAY_DE</code> or <code>EBAY_AU</code> |
+| <code>tagline</code> | Optional. Short description of the sellers. The home page uses it as its title and H1 instead of the default &quot;Listings from ...&quot; heading. |
+| <code>top_category_ids</code> | Optional. Category IDs to search for each seller. By default the build reads every top-level category from the eBay Taxonomy API. |
+| <code>image_transform</code> | Optional. URL prefix for a first-party image resizer, with <code>{width}</code> filled in, for example <code>/cdn-cgi/image/width={width},quality=80,format=auto/</code>. Tracker blockers hide images from <code>i.ebayimg.com</code>, so this keeps them visible. It needs Cloudflare Images transformations on the zone, with <code>i.ebayimg.com</code> as an allowed origin. Leave it out to link to eBay's images directly. |</p>
+<p>To add an intro above a listing page, create <code>content/{seller|category|brand}/{slug}.md</code>. Separate paragraphs with a blank line. Without a file, the page shows a line such as &quot;23 listings from 2 sellers, updated every 6 hours&quot;.</p>
+<h2>Refresh rate</h2>
+<p>eBay's licence requires listing data to be no more than six hours old, so the workflow runs every six hours (<code>0 */6 * * *</code>). Change the <code>cron</code> line in <code>.github/workflows/build.yml</code> if the licence changes.</p>
+<p>Each run refreshes title, price and availability from the search results. It calls <code>getItem</code> only for listings missing from <code>.cache/items/</code>, and the workflow keeps that folder between runs. The Browse API allows 5,000 calls a day.</p>
+<h2>Secrets and variables</h2>
+<p>Create a production keyset in the eBay developer programme. In the GitHub repository, go to <strong>Settings &gt; Secrets and variables &gt; Actions</strong> and add these secrets:</p>
+<ul>
+<li><code>EBAY_CLIENT_ID</code></li>
+<li><code>EBAY_CLIENT_SECRET</code></li>
+<li><code>CLOUDFLARE_API_TOKEN</code>, an API token with the <strong>Cloudflare Pages: Edit</strong> permission</li>
+<li><code>CLOUDFLARE_ACCOUNT_ID</code></li>
+</ul>
+<p>On the <strong>Variables</strong> tab, add <code>CF_PAGES_PROJECT</code> with your Pages project name.</p>
+<h2>Cloudflare Pages</h2>
+<ol>
+<li>Create the project once: <code>npx wrangler pages project create &lt;name&gt; --production-branch=main</code>.</li>
+<li>In the Cloudflare dashboard, open the project, go to <strong>Custom domains</strong> and add your domain, for example <code>listings.example.com</code>.</li>
+<li>If the parent zone is on Cloudflare, it adds the DNS record for you. Otherwise, add <code>listings CNAME &lt;project&gt;.pages.dev.</code> at your DNS host.</li>
+<li>If you use CAA records, allow Cloudflare's certificate authorities: <code>letsencrypt.org</code>, <code>pki.goog</code> and <code>ssl.com</code>.</li>
+</ol>
+<p>The site includes a <code>404.html</code>. Cloudflare Pages serves it with a 404 status for unknown paths.</p>
+<p>To see visits, enable Web Analytics on the Pages project. It sets no cookies, and the CSP already allows its script.</p>
+<h2>Use this for your own eBay listings</h2>
+<ol>
+<li>Fork the repository.</li>
+<li>Edit <code>site.toml</code> with your sellers, site URL, site name and marketplace.</li>
+<li>Add the secrets and the <code>CF_PAGES_PROJECT</code> variable.</li>
+<li>Create the Cloudflare Pages project and add your domain.</li>
+</ol>
+<h2>Licence</h2>
+<p>This project is licensed under the GNU General Public License v3.0 or later. See <a href="LICENSE">LICENSE</a>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
