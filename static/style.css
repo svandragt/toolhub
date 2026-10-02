@@ -226,10 +226,14 @@ main {
   text-transform: uppercase;
   letter-spacing: .1em;
   color: var(--muted);
-  margin: 1.75rem 0 .75rem;
+  margin: 0 0 .75rem;
+  padding: .5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg);
 }
 
-.section-heading:first-child { margin-top: 0; }
 
 .project-card--pinned {
   border-color: #c7d7f9;
