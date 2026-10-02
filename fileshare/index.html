@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fileshare</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>fileshare</h1>
+
+  
+  <div class="project-header__desc">Self-hosted PHP file sharing app with expiry, privacy controls and no dependencies</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">cron</span>
+    
+    <span class="badge">file-sharing</span>
+    
+    <span class="badge">file-upload</span>
+    
+    <span class="badge">php</span>
+    
+    <span class="badge">security</span>
+    
+    <span class="badge">self-hosted</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/fileshare">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Fileshare</h1>
+<p>A self-hosted file sharing app in plain PHP. No framework, no Composer, no database — the only requirement is PHP with <code>ext-fileinfo</code>.</p>
+<img width="1698" height="1014" alt="image" src="https://github.com/user-attachments/assets/81d5e234-25a7-44a6-9332-623a15235fe9" />
+<h2>Features</h2>
+<ul>
+<li>Upload files into optional folder paths</li>
+<li>Public or private visibility per file</li>
+<li>Configurable expiry (1h – 30d, or never)</li>
+<li>Automatic expiry cleanup via a cron endpoint</li>
+<li>CSRF protection on all mutating actions</li>
+<li>Bcrypt password hashing, session fixation protection, brute-force delay</li>
+<li><code>Content-Security-Policy</code> and <code>X-Content-Type-Options</code> headers</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>PHP 8.2+ with the <code>fileinfo</code> extension</li>
+<li>Nginx (or Apache) — see configuration below</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="language-bash">git clone &lt;repo&gt; fileshare
+cd fileshare
+cp .env.example .env
+</code></pre>
+<p>Edit <code>.env</code>:</p>
+<pre><code class="language-bash">USERNAME=admin
+
+# Generate a bcrypt hash for your password:
+# php -r &quot;echo password_hash('yourpassword', PASSWORD_BCRYPT);&quot;
+PASSWORD=$2y$12$...
+
+# Generate a random cron secret:
+# php -r &quot;echo bin2hex(random_bytes(32));&quot;
+CRON_SECRET=...
+</code></pre>
+<p>Create the required directories and make them writable by the PHP-FPM user:</p>
+<pre><code class="language-bash">mkdir -p uploads data
+chown www-data: uploads data   # replace www-data with your PHP-FPM user if different
+</code></pre>
+<h2>Development server</h2>
+<pre><code class="language-bash">make serve
+# → http://localhost:8000
+</code></pre>
+<p>To use a different port, set <code>PORT</code>:</p>
+<pre><code class="language-bash">make serve PORT=8080
+</code></pre>
+<h2>Tests</h2>
+<p>The project has no dependencies and no test framework. Run the smoke test with PHP alone:</p>
+<pre><code class="language-bash">make test     # or: php tests/smoke.php
+make check    # lint and test, the same commands CI runs
+</code></pre>
+<p>It copies the app to a temporary directory, starts the built-in server against that copy, and exercises the cron endpoint. Your real <code>.env</code>, <code>uploads/</code>, and <code>data/</code> are never touched.</p>
+<h2>Project structure</h2>
+<pre><code>src/
+  index.php       — bootstrap, constants, router
+  handlers.php    — route handlers and view renderers
+  helpers.php     — env loading, metadata I/O, path and output utilities
+  router.php      — PHP built-in server router (dev only)
+  simple.min.css  — Simple.css (local copy)
+  views/
+    login.php     — login page
+    dashboard.php — file management dashboard
+uploads/          — uploaded files (mirrors user-supplied folder structure)
+data/
+  files.json      — file metadata (path, private, expires, uploaded)
+  .lock           — flock coordination file (created automatically)
+.env              — credentials and secrets (not web-accessible)
+</code></pre>
+<h2>Routes</h2>
+<p>| Method | Path | Description |
+|--------|------|-------------|
+| <code>GET</code> | <code>/</code> | Login form (unauthenticated) or dashboard |
+| <code>POST</code> | <code>/login</code> | Authenticate |
+| <code>GET</code> | <code>/logout</code> | End session |
+| <code>POST</code> | <code>/upload</code> | Upload a file |
+| <code>GET</code> | <code>/download/{path}</code> | Download a file (403 if private and not logged in) |
+| <code>POST</code> | <code>/delete/{path}</code> | Delete a file |
+| <code>POST</code> | <code>/toggle/{path}</code> | Toggle public/private |
+| <code>POST</code> | <code>/expiry/{path}</code> | Set or update expiry |
+| <code>GET</code> | <code>/cron</code> | Delete expired files (403 without a valid <code>X-Cron-Secret</code> header or <code>?secret=</code> parameter) |</p>
+<h2>Nginx configuration</h2>
+<pre><code class="language-nginx">server {
+    listen 443 ssl;
+    root /path/to/fileshare/src;
+
+    # Match the application's 50 MB limit
+    client_max_body_size 50M;
+
+    # HSTS — remove max-age line and re-deploy if you ever need to revert to HTTP
+    add_header Strict-Transport-Security &quot;max-age=63072000; includeSubDomains&quot; always;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+</code></pre>
+<blockquote>
+<p><strong>Checklist before going live</strong></p>
+<ul>
+<li>Set <code>client_max_body_size</code> to match <code>MAX_UPLOAD_BYTES</code> (50 MB)</li>
+<li>Enable TLS and configure the <code>ssl_certificate</code> / <code>ssl_certificate_key</code> directives</li>
+<li>Add the <code>Strict-Transport-Security</code> header only after TLS is confirmed working</li>
+<li>Confirm <code>uploads/</code>, <code>data/</code>, and <code>.env</code> are outside the Nginx <code>root</code></li>
+<li>Confirm <code>uploads/</code> and <code>data/</code> are writable by the PHP-FPM user (<code>chown www-data: uploads data</code>)</li>
+<li>Set <code>upload_max_filesize = 50M</code> and <code>post_max_size = 52M</code> in <code>php.ini</code></li>
+<li>Do not add a browser-caching block such as <code>location ~* \.(jpg|css|js)$</code>. A regex location takes precedence over the <code>location /</code> prefix match, so <code>/download/photo.jpg</code> is looked up on disk instead of reaching <code>index.php</code>, and returns 404.</li>
+</ul>
+</blockquote>
+<h2>Cron</h2>
+<p>Set up a system cron to trigger expiry cleanup. Pass the <code>CRON_SECRET</code> from <code>.env</code> in the <code>X-Cron-Secret</code> header:</p>
+<pre><code># Run expiry cleanup every hour
+0 * * * * curl -s -H &quot;X-Cron-Secret: &lt;CRON_SECRET&gt;&quot; https://example.com/cron
+</code></pre>
+<p>Read the secret from a root-only file rather than writing it into the crontab:</p>
+<pre><code>0 * * * * curl -s -H &quot;X-Cron-Secret: $(cat /etc/fileshare-cron-secret)&quot; https://example.com/cron
+</code></pre>
+<p>The endpoint also accepts <code>?secret=&lt;CRON_SECRET&gt;</code> for existing deployments, but avoid it: query strings are recorded in the crontab, the Nginx access log, and any proxy log in between. Treat any secret used that way as exposed and rotate it.</p>
+<h3>Rotate the cron secret</h3>
+<p>Rotate whenever the secret has been sent as a query parameter, has appeared in a log or crontab, or when someone with server access leaves. Cleanup stops running between steps 2 and 3, so the only cost of a mistake is a delayed cleanup, not lost files.</p>
+<ol>
+<li>
+<p>Generate a new secret:</p>
+<pre><code>php -r &quot;echo bin2hex(random_bytes(32));&quot;
+</code></pre>
+</li>
+<li>
+<p>Write it to <code>CRON_SECRET</code> in <code>.env</code>. No restart is needed — <code>.env</code> is read on every request.</p>
+</li>
+<li>
+<p>Update the caller with the same value: edit the crontab entry, or write the new secret to <code>/etc/fileshare-cron-secret</code> if you use the file form.</p>
+</li>
+<li>
+<p>Confirm the new secret works and the old one does not:</p>
+<pre><code>curl -s -o /dev/null -w '%{http_code}\n' -H &quot;X-Cron-Secret: &lt;new-secret&gt;&quot; https://example.com/cron  # 200
+curl -s -o /dev/null -w '%{http_code}\n' -H &quot;X-Cron-Secret: &lt;old-secret&gt;&quot; https://example.com/cron  # 403
+</code></pre>
+</li>
+</ol>
+<p>If the secret leaked through a URL, also purge or rotate the Nginx access logs that recorded it.</p>
+<h2>Security notes</h2>
+<ul>
+<li><code>uploads/</code>, <code>data/</code>, and <code>.env</code> are outside the webroot and not served by Nginx</li>
+<li>All file paths are validated with <code>realpath()</code> against <code>UPLOADS_DIR</code> to prevent path traversal</li>
+<li>Passwords are stored as bcrypt hashes; login has a 300 ms fixed delay against brute force</li>
+<li>Session ID is rotated on login to prevent session fixation</li>
+<li>The cron endpoint is protected by a secret compared with <code>hash_equals()</code> to prevent timing attacks</li>
+<li>CSRF tokens are required on all POST forms</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

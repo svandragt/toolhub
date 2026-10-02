@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hello-browser</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>hello-browser</h1>
+
+  
+  <div class="project-header__desc">GTK4 WebKitGTK webview wrapper that turns a local web app into a desktop app</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">desktop-app</span>
+    
+    <span class="badge">gtk4</span>
+    
+    <span class="badge">linux</span>
+    
+    <span class="badge">vala</span>
+    
+    <span class="badge">webkitgtk</span>
+    
+    <span class="badge">webview</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/hello-browser">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <p>This is a minimal example of how to build a GTK4 native app containing just a webview (WebKitGTK 6.0, Vala).</p>
+<p>The goal is to bundle a locally-served web app into something that behaves like a native desktop app.</p>
+<p>I don't like locally served apps to be just another browser tab, which rules out just launching the URL — even though that's simpler. Browsers like GNOME Web can install a site into the applications menu, but that requires manual user interaction per site.</p>
+<h2>Build and run</h2>
+<p>A <code>Makefile</code> wraps the meson/ninja workflow. Defaults install under <code>$HOME/.local</code>.</p>
+<pre><code class="language-shell">make install                      # build + install binary, compile GSettings schema
+make link                         # symlink ~/bin/hello-browser -&gt; installed binary
+make test                         # run the unit tests
+hello-browser https://example.org
+</code></pre>
+<p>Both <code>hello-browser &lt;url&gt;</code> and <code>hello-browser --url &lt;url&gt;</code> are accepted. With no URL it loads <code>example.com</code>.</p>
+<p>To give a window its own dock identity, pass <code>--class &lt;id&gt;</code> (or the alias <code>--app-id &lt;id&gt;</code>):</p>
+<pre><code class="language-shell">hello-browser --class com.github.svandragt.hello-browser.myapp https://my-app.local:8000/
+</code></pre>
+<p>The value sets both the X11 WM_CLASS and the Wayland app_id, so GNOME can match the window against a launcher's <code>StartupWMClass</code> and group it under its own icon. Each distinct <code>--class</code> is a separate instance, so different sites run as independent apps. Without the flag, the default id is used.</p>
+<p>Add <code>--single-instance</code> to reuse one window per site: relaunching the same <code>--class</code> raises the existing window instead of opening another. Without it, each launch opens a new window.</p>
+<p>When running from <code>$HOME/.local</code>, <code>XDG_DATA_DIRS</code> must include <code>$HOME/.local/share</code> so the GSettings schema is discoverable. <code>make run</code> sets this for you.</p>
+<h2>Site launcher</h2>
+<p>To register a site as a desktop application:</p>
+<pre><code class="language-shell">make desktop NAME=&quot;My App&quot; URL=https://my-app.local:8000/ [ICON=icon-name]
+</code></pre>
+<p>This writes <code>~/.local/share/applications/hello-browser-&lt;slug&gt;.desktop</code> and refreshes the desktop database. The entry then appears in the apps menu and launches the site in its own <code>hello-browser</code> window.</p>
+<p>Each generated launcher gets a distinct <code>--class</code> (<code>com.github.svandragt.hello-browser.&lt;slug&gt;</code>) and a matching <code>StartupWMClass</code>, so GNOME groups its windows under that launcher's own dock icon rather than lumping every site together.</p>
+<h2>Dependencies</h2>
+<p>System packages: <code>meson</code>, <code>ninja-build</code>, <code>valac</code>, <code>libgtk-4-dev</code>, <code>libwebkitgtk-6.0-dev</code>.</p>
+<p><img src="https://github.com/svandragt/vala-webview/assets/594871/6c9ca0fe-c8fd-48f3-afab-c11d31dcbcbf" alt="image" /></p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

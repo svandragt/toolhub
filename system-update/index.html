@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>system-update</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>system-update</h1>
+
+  
+  <div class="project-header__desc">Bash script that updates and cleans up package managers and dev tool caches on Linux</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">bash</span>
+    
+    <span class="badge">cli</span>
+    
+    <span class="badge">devops</span>
+    
+    <span class="badge">linux</span>
+    
+    <span class="badge">package-manager</span>
+    
+    <span class="badge">shell-script</span>
+    
+    <span class="badge">system-maintenance</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/system-update">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>system-update</h1>
+<p>A system update script for developers, using Ubuntu / Debian / elementaryOS based systems or OpenSUSE based systems.</p>
+<h2>Usage</h2>
+<pre><code># Daily Example - update system packages from apt / zypper / snap / flatpak
+./system-update.sh
+
+# Weekly example - broader maintenance and safe disk cleanup
+./system-update.sh --full
+</code></pre>
+<h2>Features</h2>
+<ul>
+<li>Only runs updates for tools that are currently installed.</li>
+<li>Adds conservative APT cleanup on <code>--full</code> with <code>autoremove</code>, <code>autoclean</code>, and <code>clean</code></li>
+<li>Cleans zypper package caches on <code>--full</code></li>
+<li>Vacuums systemd journals and forces log rotation on <code>--full</code> when supported</li>
+<li>Removes unused Flatpak runtimes on <code>--full</code></li>
+<li>Applies snapper retention policy to old snapshots on <code>--full</code></li>
+<li>Prunes unused Docker containers, dangling images, and build cache</li>
+<li>Prunes the uv wheel/source cache on <code>--full</code></li>
+<li>Verifies (garbage-collects) the npm cache on <code>--full</code> when it is large, with a full wipe only past 5G</li>
+<li>Wipes the Go build cache on <code>--full</code> only when it grows past 5G</li>
+<li>Cleans the cargo registry cache on <code>--full</code> (via <code>cargo-cache</code> if present, otherwise wipes re-downloadable registry caches past 2G; leaves rustup toolchains untouched)</li>
+<li>Reports the disk space reclaimed at the end of a <code>--full</code> run</li>
+<li>Checks for firmware updates with <code>fwupd</code> (refreshes metadata and lists available updates; flashing is left to you via <code>sudo fwupdmgr update</code>)</li>
+<li>Updates VSCode / VSCodium extensions on <code>--full</code> (<code>code</code>/<code>codium --update-extensions</code>)</li>
+<li>Updates the home-manager flake and switches generations on <code>--full</code>, then collects nix garbage older than 30 days</li>
+<li>Writes package manifests with <code>hm export</code> at the end of a <code>--full</code> run</li>
+</ul>
+<blockquote>
+<p><strong>Note on <code>fwupd</code>:</strong> on some systems (e.g. Ubuntu 22.04) the snap build of <code>fwupd</code> is more up to date than the apt one. If you want the fresher version: <code>sudo apt remove --purge fwupd &amp;&amp; sudo snap install fwupd</code>.</p>
+</blockquote>
+<ul>
+<li>Optionally prunes leftover tooling caches</li>
+</ul>
+<p>Support for other tools / operating systems are welcome.</p>
+<h2>Tools</h2>
+<p>The following tools are supported (this list is periodically updated):</p>
+<ul>
+<li>apt</li>
+<li>asdf</li>
+<li>caches</li>
+<li>cargo</li>
+<li>claude</li>
+<li>home-manager / nix</li>
+<li>devbox</li>
+<li>docker</li>
+<li>flatpak</li>
+<li>fwupd</li>
+<li>go</li>
+<li>npm</li>
+<li>pipx</li>
+<li>pyenv</li>
+<li>snap</li>
+<li>snapper</li>
+<li>tldr</li>
+<li>uv</li>
+<li>vscode / vscodium</li>
+<li>zypper</li>
+</ul>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
