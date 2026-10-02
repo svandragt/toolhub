@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -44,3 +45,17 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./output
           cname: ${{ vars.CUSTOM_DOMAIN }}
+
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          open=$(gh issue list --state open --search 'in:title "Build failing"' --json number --jq length)
+          if [ "$open" = 0 ]; then
+            gh issue create --title "Build failing" --body "The build failed: $RUN_URL. If bootstrap returned 401, renew the GH_TOKEN secret."
+          else
+            echo "Issue already open; skipping."
+          fi
