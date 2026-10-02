@@ -24,10 +24,11 @@
 
 <div class="page-heading">
   <h1>Tools &amp; Projects</h1>
-  <p>105 projects</p>
+  <p>106 projects</p>
 </div>
 
 <div class="filter-bar">
+  <input class="filter-search" type="search" placeholder="Filter projects…" aria-label="Filter projects">
   <span class="filter-bar__label">Show</span>
   <div class="filter-group">
     <label class="filter-chip"><input type="checkbox" name="type" value="repo" checked> Repos</label>
@@ -214,6 +215,30 @@
   <h2 class="section-heading">Active projects</h2>
   <div class="project-grid">
     
+<div class="project-card"
+     data-type="repo" data-section="active" data-tags="dj event-directory events issue-tracker support wiki" data-license="">
+  <div class="project-card__name">
+    
+    <a href="netdjs-public/index.html">netdjs-public</a>
+  </div>
+  
+  <div class="project-card__desc">Public issue tracker and help wiki for NetDJs, the NetDJ event directory</div>
+  
+  <div class="project-card__meta">
+    <span class="badge badge--type">repo</span>
+    <button class="badge badge--tag" data-tag="dj" type="button">dj</button><button class="badge badge--tag" data-tag="event-directory" type="button">event-directory</button><button class="badge badge--tag" data-tag="events" type="button">events</button><button class="badge badge--tag" data-tag="issue-tracker" type="button">issue-tracker</button><button class="badge badge--tag" data-tag="support" type="button">support</button><button class="badge badge--tag" data-tag="wiki" type="button">wiki</button>
+  </div>
+  
+  <div class="project-card__links">
+    
+    
+    <a href="https://github.com/svandragt/netdjs-public">&#8599; repo</a>
+    
+    
+  </div>
+  
+</div>
+
 <div class="project-card"
      data-type="repo" data-section="active" data-tags="cloudflare-images cloudflare-pages ebay ebay-api ebay-seller github-actions indieweb jinja2 json-ld microformats python schema-org seo static-site static-site-generator structured-data" data-license="GPL-3.0">
   <div class="project-card__name">
@@ -2602,6 +2627,8 @@
 
 <script>
 (function () {
+  var searchInput = document.querySelector('.filter-search');
+  searchInput.addEventListener('input', function() { applyFilters(); });
   var selectedTags = new Set();
   var tagGroup = document.querySelector('.filter-group--tags');
   var tagSep = document.querySelector('.filter-sep--tags');
@@ -2673,6 +2700,7 @@
     var activeSections = new Set(
       Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
     );
+    var query = searchInput.value.trim().toLowerCase();
     document.querySelectorAll('.project-section').forEach(function(section) {
       if (!activeSections.has(section.dataset.section)) {
         section.style.display = 'none';
@@ -2686,7 +2714,8 @@
           });
         var licenseMatch = selectedLicenses.size === 0 ||
           selectedLicenses.has(card.dataset.license || '');
-        var show = activeTypes.has(card.dataset.type) && tagMatch && licenseMatch;
+        var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+        var show = activeTypes.has(card.dataset.type) && tagMatch && licenseMatch && textMatch;
         card.style.display = show ? '' : 'none';
         if (show) visible++;
       });
@@ -2734,6 +2763,8 @@
 
   renderCapsules();
   renderLicenseCapsules();
+  // Browsers can restore a typed query on back navigation
+  applyFilters();
 }());
 </script>
 

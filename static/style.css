@@ -134,6 +134,19 @@ main {
   font-size: .8rem;
 }
 
+.filter-search {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: .3em .7em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.filter-search:focus { outline: none; border-color: var(--accent); }
+
 .filter-bar__label {
   color: var(--muted);
   font-family: var(--font-mono);
