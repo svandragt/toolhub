@@ -14,6 +14,7 @@
 </div>
 
 <div class="filter-bar">
+  <input class="filter-search" type="search" placeholder="Filter projects…" aria-label="Filter projects">
   <span class="filter-bar__label">Show</span>
   <div class="filter-group">
     <label class="filter-chip"><input type="checkbox" name="type" value="repo" checked> Repos</label>
@@ -95,6 +96,8 @@
 
 <script>
 (function () {
+  var searchInput = document.querySelector('.filter-search');
+  searchInput.addEventListener('input', function() { applyFilters(); });
   var selectedTags = new Set();
   var tagGroup = document.querySelector('.filter-group--tags');
   var tagSep = document.querySelector('.filter-sep--tags');
@@ -166,6 +169,7 @@
     var activeSections = new Set(
       Array.from(document.querySelectorAll('input[name="section"]:checked')).map(function(el){ return el.value; })
     );
+    var query = searchInput.value.trim().toLowerCase();
     document.querySelectorAll('.project-section').forEach(function(section) {
       if (!activeSections.has(section.dataset.section)) {
         section.style.display = 'none';
@@ -179,7 +183,8 @@
           });
         var licenseMatch = selectedLicenses.size === 0 ||
           selectedLicenses.has(card.dataset.license || '');
-        var show = activeTypes.has(card.dataset.type) && tagMatch && licenseMatch;
+        var textMatch = !query || card.textContent.toLowerCase().indexOf(query) !== -1;
+        var show = activeTypes.has(card.dataset.type) && tagMatch && licenseMatch && textMatch;
         card.style.display = show ? '' : 'none';
         if (show) visible++;
       });
@@ -227,6 +232,8 @@
 
   renderCapsules();
   renderLicenseCapsules();
+  // Browsers can restore a typed query on back navigation
+  applyFilters();
 }());
 </script>
 {% endblock %}
