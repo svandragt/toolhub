@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>herdr-dash</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>herdr-dash</h1>
+
+  
+  <div class="project-header__desc">Kanban board for herdr-managed agent sessions</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">agent-sessions</span>
+    
+    <span class="badge">ai-agents</span>
+    
+    <span class="badge">coding-agents</span>
+    
+    <span class="badge">dashboard</span>
+    
+    <span class="badge">herdr</span>
+    
+    <span class="badge">kanban</span>
+    
+    <span class="badge">python</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/herdr-dash">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>herdr-dash</h1>
+<p>A kanban board for your <a href="https://github.com/herdrdev/herdr">herdr</a> agents.
+Every agent pane becomes a card in one of four columns: waiting for you,
+in progress, idle, done. Click a card to focus that pane in herdr.</p>
+<p>One Python file, standard library only. No install step.</p>
+<p><img src="docs/board-narrow.png" alt="The board as a narrow side pane: four stacked sections" /></p>
+<p>In a wider window the sections become columns:</p>
+<p><img src="docs/board-wide.png" alt="The board in a wide window: four columns side by side" /></p>
+<h2>Run</h2>
+<pre><code class="language-sh">./herdr-dash.py
+</code></pre>
+<p>Open http://127.0.0.1:7655. The board connects to herdr's socket at
+<code>~/.config/herdr/herdr.sock</code>; set <code>HERDR_SOCKET_PATH</code> to use another one.
+herdr doesn't need to be running first. The board retries until it is.</p>
+<h2>How it works</h2>
+<p>herdr already classifies each pane as idle, working, blocked or done. The
+board subscribes to herdr's pane events.</p>
+<p>A card that changed while you weren't looking at its pane gets a purple
+outline until you focus it. A card whose session has exited dims for half a
+minute, then disappears.</p>
+<h2>Remote herdr servers</h2>
+<p>If you run herdr on other machines too, register each one as an ssh target:</p>
+<pre><code class="language-sh">./herdr-board register my-new-machine        # host from ~/.ssh/config
+./herdr-board unregister my-new-machine
+./herdr-board list
+</code></pre>
+<p>Each host gets its own tab.</p>
+<p>The registry is a plain text file at <code>~/.config/herdr-dash/remotes</code>, one
+target per line, read on every tick. Editing it by hand works too.</p>
+<h2>Desktop launcher</h2>
+<p><code>herdr-board</code> with no arguments starts the board if needed and opens it in
+its own window. It expects <a href="https://github.com/svandragt/hello-browser">hello-browser</a>,
+a small single-site browser for Linux. Without it, run <code>herdr-dash.py</code> and
+open the URL in any browser.</p>
+<h2>Licence</h2>
+<p>MIT. See <code>LICENSE</code>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
