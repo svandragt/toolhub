@@ -63,7 +63,7 @@
   <h1>vivace</h1>
 <p><code>viv</code> is a Rust reimplementation of Composer that installs from
 <code>composer.lock</code> and writes the <code>vendor/</code> directory Composer would write,
-byte for byte. A cold <code>laravel/laravel</code> install takes 0.30 s against
+byte for byte. A cold <code>laravel/laravel</code> install from a local package mirror takes 0.30 s against
 Composer's 1.58 s, and the compatibility sweep run before every release
 finds an identical <code>vendor/</code> on every project viv installs. Merged as a
 git merge driver, <code>composer.lock</code> conflicted 228 times in 355 real merges
@@ -76,21 +76,26 @@ vehicle for package-manager design, one measured chapter at a time.</p>
 <pre><code class="language-sh">cargo binstall vivace          # or: brew install svandragt/tap/vivace
 viv install                    # in a project with composer.json and composer.lock
 </code></pre>
-<p>That also installs a <code>composer</code> shim next to <code>viv</code>; put it first on <code>PATH</code>
-and your existing scripts run through viv unedited. If Composer already
+<p><code>cargo binstall</code> also installs a <code>composer</code> shim next to <code>viv</code> (the Homebrew
+formula installs <code>viv</code> only); put the shim first on <code>PATH</code> and your existing
+scripts run through viv unedited. If Composer already
 wrote <code>vendor/</code>, viv adopts it. You can stop at any point: a <code>vendor/</code>
 viv wrote is a valid Composer install, and <code>viv cache clean</code> removes
 everything else.</p>
 <p>Prebuilt binaries for Linux and macOS, a <code>.deb</code>, a container image and a
 GitHub Action are on the <a href="https://github.com/svandragt/vivace/releases">releases page</a>
-and in the <a href="https://vivace.vandragt.com/getting-started/install.html">install guide</a>.</p>
+and in the <a href="https://vivace.vandragt.com/getting-started/install.html">install guide</a>.
+The tarballs, the <code>.deb</code> and the Homebrew formula include man pages and
+bash, zsh and fish completions; <code>viv completions &lt;shell&gt;</code> prints the script
+for any other install.</p>
 <h2>Documentation</h2>
 <ul>
 <li><a href="https://vivace.vandragt.com/getting-started/">Getting started</a> — install, first
 install, the <code>composer</code> shim, CI and Docker.</li>
 <li><a href="https://vivace.vandragt.com/guides/">Guides</a> — merging locks without
 conflicts, committing <code>viv.lock</code> alone, a PHP per project, running tools
-with <code>viv x</code>, workspaces, plugins, speed, and the reasons for and against.</li>
+with <code>viv x</code>, workspaces, plugins, prefixing a plugin's bundled libraries
+with <code>viv isolate</code>, speed, and the reasons for and against.</li>
 <li><a href="https://vivace.vandragt.com/reference/">Reference</a> — every command with
 its live <code>--help</code>, environment variables, exit codes, the files viv
 reads and writes.</li>
@@ -102,10 +107,11 @@ change, and the research programme with its measurements.</li>
 <h2>Is it safe to try</h2>
 <p>viv's contract is that its output matches Composer's byte for byte, and
 the <a href="https://vivace.vandragt.com/reference/compatibility.html">compatibility sweep</a>
-checks it before every release: on v0.20.0, all 20 install rows of the
-pinned corpus, all 10 locks and all 10 exported locks are identical, and
-every random-sample project Composer could install is identical too. One
-pinned project needs <code>--no-plugins</code>, for a plugin viv refuses by design.
+checks it before every release: on v0.21.0, all 20 install rows of the
+pinned corpus and all 10 exported locks are identical, 9 of the 10
+resolved locks are identical, and every random-sample project Composer
+could install is identical too. One pinned project needs <code>--no-plugins</code>,
+for a plugin viv refuses by design.
 It stays 0.x; Windows is not supported; a plugin without a native adapter
 stops the install with an error naming it.
 <a href="https://vivace.vandragt.com/guides/reasons.html">Reasons not to use viv</a>
@@ -113,7 +119,7 @@ has the full list.</p>
 <h2>Development</h2>
 <p>Tooling comes from <a href="https://www.jetify.com/devbox">devbox</a>: PHP, Composer
 and hyperfine for the fixtures and benchmarks.</p>
-<pre><code class="language-sh">make install    # put viv on your PATH (~/.cargo/bin); make install-shim adds the composer drop-in
+<pre><code class="language-sh">make install    # put viv on your PATH (~/.cargo/bin), refreshing an installed composer shim; make install-shim adds the shim
 make check      # fmt, clippy, tests, cargo deny, cargo machete, cargo doc
 </code></pre>
 <p>To report a bug or ask a question, see the
