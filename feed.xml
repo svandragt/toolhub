@@ -330,18 +330,18 @@
   </entry>
   
   <entry>
-    <id>https://github.com/svandragt/cc-status</id>
-    <title>cc-status</title>
-    <updated>2026-07-31T07:34:09Z</updated>
-    <published>2026-07-31T07:34:09Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/cc-status"/>
-    <summary>GTK4 app showing a traffic light per Claude Code or Codex agent session</summary>
-    <category term="claude-code"/>
-    <category term="codex"/>
-    <category term="gtk4"/>
-    <category term="linux-desktop"/>
-    <category term="status"/>
-    <category term="vala"/>
+    <id>https://github.com/svandragt/nethealth</id>
+    <title>nethealth</title>
+    <updated>2026-07-28T15:49:51Z</updated>
+    <published>2026-07-28T14:28:43Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/nethealth"/>
+    <summary>Go CLI that measures jitter, packet loss and latency to explain freezing calls and slow pages</summary>
+    <category term="cli"/>
+    <category term="diagnostics"/>
+    <category term="go"/>
+    <category term="latency"/>
+    <category term="networking"/>
+    <category term="wifi"/>
     
   </entry>
   
