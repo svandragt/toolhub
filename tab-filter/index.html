@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tab-filter</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>tab-filter</h1>
+
+  
+  <div class="project-header__desc">Firefox extension: fuzzy-search open tabs and switch with the keyboard</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+    <span class="badge">MIT</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/tab-filter">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Tab Filter</h1>
+<p>Tab Filter is a Firefox extension that finds an open tab by typing part of its title or address.</p>
+<h2>Use it</h2>
+<ol>
+<li>Press <code>Ctrl+Insert</code>, or click the Tab Filter toolbar button.</li>
+<li>Type part of the tab's title or address. The list filters as you type.</li>
+<li>Press <code>Enter</code> to switch to the first result, or use the arrow keys to pick another one.</li>
+</ol>
+<p>The selected result also shows the tab's full address, to tell tabs with similar titles apart.</p>
+<p>To close the selected tab without leaving the list, press <code>Delete</code> with the cursor at the end of your search.</p>
+<p>The search is fuzzy: <code>wkmd</code> finds &quot;Wikimedia&quot;. Letters that start a word count most, so <code>gs</code> finds &quot;GitHub Status&quot;. Fuzzy matches use the tab title; the address matches only when it contains the exact text. The matched letters are underlined.</p>
+<p>Tabs from another window, such as an installed web app, show &quot;other window&quot; next to the site name. Words can come in any order. With an empty search, the list shows your most recently used tabs first, so <code>Ctrl+Insert</code> then <code>Enter</code> returns to the previous tab.</p>
+<p>To change the shortcut, open <code>about:addons</code>, click the gear icon and choose <strong>Manage Extension Shortcuts</strong>.</p>
+<h2>Privacy</h2>
+<p>Tab Filter reads your tab titles and addresses only to show the list. It stores nothing and sends nothing anywhere.</p>
+<h2>Develop</h2>
+<p>| Command | What it does |
+|---|---|
+| <code>make run</code> | Opens Firefox with the extension loaded, and reloads it when you change a file |
+| <code>make test</code> | Tests the search scoring |
+| <code>make lint</code> | Checks the extension against Mozilla's rules |
+| <code>make build</code> | Runs the test and lint, then builds the zip for addons.mozilla.org in <code>web-ext-artifacts/</code> |
+| <code>make clean</code> | Deletes the built zips |</p>
+<p>To load the extension in your own Firefox profile instead, open <code>about:debugging#/runtime/this-firefox</code>, click <strong>Load Temporary Add-on</strong> and select <code>manifest.json</code>.</p>
+<h2>Licence</h2>
+<p>Tab Filter is released under the MIT licence. See <a href="LICENSE">LICENSE</a>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

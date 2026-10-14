@@ -3,10 +3,30 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-06T20:48:00Z</updated>
+  <updated>2026-10-13T22:36:26Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/intray</id>
+    <title>intray</title>
+    <updated>2026-10-13T22:36:26Z</updated>
+    <published>2026-10-13T22:36:26Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/intray"/>
+    <summary>An inbox for desktop notifications on elementary OS, so you can turn on Do Not Disturb and triage them later</summary>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/tab-filter</id>
+    <title>tab-filter</title>
+    <updated>2026-10-13T13:01:48Z</updated>
+    <published>2026-10-13T13:01:48Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/tab-filter"/>
+    <summary>Firefox extension: fuzzy-search open tabs and switch with the keyboard</summary>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/vivace</id>
@@ -310,38 +330,6 @@
     <category term="media-server"/>
     <category term="plex"/>
     <category term="python"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/streamcables</id>
-    <title>streamcables</title>
-    <updated>2026-08-03T09:13:54Z</updated>
-    <published>2019-07-04T08:44:55Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/streamcables"/>
-    <summary>Python tool that reads Icecast now-playing metadata and posts it to social media</summary>
-    <category term="automation"/>
-    <category term="icecast"/>
-    <category term="metadata"/>
-    <category term="python"/>
-    <category term="streaming"/>
-    <category term="twitter"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/nethealth</id>
-    <title>nethealth</title>
-    <updated>2026-07-28T15:49:51Z</updated>
-    <published>2026-07-28T14:28:43Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/nethealth"/>
-    <summary>Go CLI that measures jitter, packet loss and latency to explain freezing calls and slow pages</summary>
-    <category term="cli"/>
-    <category term="diagnostics"/>
-    <category term="go"/>
-    <category term="latency"/>
-    <category term="networking"/>
-    <category term="wifi"/>
     
   </entry>
   

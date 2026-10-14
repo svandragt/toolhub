@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>intray</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>intray</h1>
+
+  
+  <div class="project-header__desc">An inbox for desktop notifications on elementary OS, so you can turn on Do Not Disturb and triage them later</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/intray">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Intray</h1>
+<p>Intray keeps a list of every desktop notification, so you can turn
+on Do Not Disturb and triage the notifications later. It targets elementary OS.</p>
+<p>Each entry shows the app, how long ago it arrived, the summary and the body.
+Hover over the time to see the date. Select an entry or its <strong>Open</strong> button to
+launch the app that sent it, or select <strong>Done</strong> to remove the entry. <strong>Clear all</strong>
+empties the inbox and shows an <strong>Undo</strong> button for a few seconds. The
+<strong>Do Not Disturb</strong> switch in the header bar turns the elementary OS setting on
+and off. Intray skips transient notifications, which apps mark as not worth
+keeping, and remembers the size of its window.</p>
+<p>If an app sends no desktop entry, <strong>Open</strong> and the icon fall back to an installed
+app whose desktop id or name exactly matches the app name, ignoring case.
+When an app updates a notification, such as a download progress, Intray replaces
+the earlier entry with the new one.</p>
+<p>The inbox is saved to <code>~/.local/share/intray/inbox.ini</code>, so entries
+survive a restart. Notifications are only captured while the app is running.</p>
+<h2>Keep it running</h2>
+<p>Closing the window does not quit Intray, so it keeps capturing notifications.
+Launch Intray again, or select its dock icon, to show the window. To quit, open
+the menu at the end of the header bar and select <strong>Quit</strong>, or press Ctrl+Q.</p>
+<p>To capture notifications from the moment you log in, run <code>intray --background</code>
+at login. It starts Intray without showing the window.</p>
+<h2>Dock count</h2>
+<p>Intray shows the number of inbox entries as a badge on its dock icon. To hide the
+badge, open the menu at the end of the header bar and clear <strong>Show Count in Dock</strong>.
+Intray remembers the choice.</p>
+<h2>Build and run</h2>
+<p>Install <code>valac</code>, <code>meson</code>, GTK 4 and Granite 7 development files, then run:</p>
+<pre><code class="language-sh">meson setup build
+meson compile -C build
+./build/intray
+</code></pre>
+<p>To add Intray to your app launcher and dock, install it with its icon and desktop
+file. For a per-user install, run <code>meson setup build --prefix ~/.local</code> first:</p>
+<pre><code class="language-sh">meson install -C build
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
