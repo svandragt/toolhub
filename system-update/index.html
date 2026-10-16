@@ -79,7 +79,7 @@
 <li>Prunes the uv wheel/source cache on <code>--full</code></li>
 <li>Verifies (garbage-collects) the npm cache on <code>--full</code> when it is large, with a full wipe only past 5G</li>
 <li>Wipes the Go build cache on <code>--full</code> only when it grows past 5G</li>
-<li>Cleans the cargo registry cache on <code>--full</code> (via <code>cargo-cache</code> if present, otherwise wipes re-downloadable registry caches past 2G; leaves rustup toolchains untouched)</li>
+<li>Cleans the cargo registry cache on <code>--full</code> (via <code>cargo-cache</code> if present, otherwise wipes re-downloadable registry caches past 2G; leaves rustup toolchains untouched), and removes Rust build artifacts under <code>~/dev</code> that are older than 14 days (via <code>cargo-sweep</code>)</li>
 <li>Reports the disk space reclaimed at the end of a <code>--full</code> run</li>
 <li>Checks for firmware updates with <code>fwupd</code> (refreshes metadata and lists available updates; flashing is left to you via <code>sudo fwupdmgr update</code>)</li>
 <li>Updates VSCode / VSCodium extensions on <code>--full</code> (<code>code</code>/<code>codium --update-extensions</code>)</li>
