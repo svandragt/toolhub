@@ -45,15 +45,18 @@
   <h1>Intray</h1>
 <p>Intray keeps a list of every desktop notification, so you can turn
 on Do Not Disturb and triage the notifications later. It targets elementary OS.</p>
-<p>Each entry shows the app, how long ago it arrived, the summary and the body.
-Hover over the time to see the date. Select an entry or its <strong>Open</strong> button to
-launch the app that sent it, or select <strong>Done</strong> to remove the entry. <strong>Clear all</strong>
-empties the inbox and shows an <strong>Undo</strong> button for a few seconds. The
+<p>Intray groups entries by the app that sent them, with the most recent group at the
+top. Each entry shows how long ago it arrived, the summary and the body. Hover
+over the time to see the date. Select an entry to launch the app that sent it, or
+select <strong>Dismiss</strong> to remove the entry. <strong>Dismiss all</strong> in a group header removes
+every entry from that app and shows an <strong>Undo</strong> button for a few seconds. A screenshot entry opens the
+Screenshots folder instead, and an entry whose app sent a web link in an <code>x-url</code>
+hint opens the link. <strong>Clear all</strong> empties the inbox and shows an <strong>Undo</strong> button for a few seconds. The
 <strong>Do Not Disturb</strong> switch in the header bar turns the elementary OS setting on
 and off. Intray skips transient notifications, which apps mark as not worth
-keeping, and remembers the size of its window.</p>
-<p>If an app sends no desktop entry, <strong>Open</strong> and the icon fall back to an installed
-app whose desktop id or name exactly matches the app name, ignoring case.
+keeping, and on-screen displays such as the volume level, and remembers the size of its window.</p>
+<p>If an app sends no desktop entry, Intray finds the app to launch and the icon in an
+installed app whose desktop id or name exactly matches the app name, ignoring case.
 When an app updates a notification, such as a download progress, Intray replaces
 the earlier entry with the new one.</p>
 <p>The inbox is saved to <code>~/.local/share/intray/inbox.ini</code>, so entries
@@ -70,14 +73,13 @@ badge, open the menu at the end of the header bar and clear <strong>Show Count i
 Intray remembers the choice.</p>
 <h2>Build and run</h2>
 <p>Install <code>valac</code>, <code>meson</code>, GTK 4 and Granite 7 development files, then run:</p>
-<pre><code class="language-sh">meson setup build
-meson compile -C build
-./build/intray
+<pre><code class="language-sh">make run
 </code></pre>
-<p>To add Intray to your app launcher and dock, install it with its icon and desktop
-file. For a per-user install, run <code>meson setup build --prefix ~/.local</code> first:</p>
-<pre><code class="language-sh">meson install -C build
+<p>To add Intray to your app launcher and dock, install it in <code>~/.local</code> with its icon
+and desktop file:</p>
+<pre><code class="language-sh">make install
 </code></pre>
+<p>If Intray is already running, quit it and start it again to use the new version.</p>
 
 </div>
 

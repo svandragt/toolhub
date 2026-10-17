@@ -3,10 +3,32 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-13T22:36:26Z</updated>
+  <updated>2026-10-14T16:05:29Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/envlock</id>
+    <title>envlock</title>
+    <updated>2026-10-14T16:05:29Z</updated>
+    <published>2026-10-14T16:05:29Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/envlock"/>
+    <summary>Your local environments, leased like a library book. Work on several tickets at once from a shared pool of dev sites.</summary>
+    <category term="ai-agents"/>
+    <category term="bash"/>
+    <category term="claude-code"/>
+    <category term="cli"/>
+    <category term="dev-environment"/>
+    <category term="developer-tools"/>
+    <category term="flock"/>
+    <category term="git-worktree"/>
+    <category term="herdr"/>
+    <category term="local-development"/>
+    <category term="wordpress"/>
+    <category term="wordpress-vip"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/intray</id>
@@ -315,21 +337,6 @@
     <category term="rss"/>
     <category term="youtube"/>
     <category term="yt-dlp"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/plex-janitor</id>
-    <title>plex-janitor</title>
-    <updated>2026-08-03T21:46:54Z</updated>
-    <published>2022-06-25T23:50:55Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/plex-janitor"/>
-    <summary>Python script that deletes watched Plex episodes and films while keeping favourites</summary>
-    <category term="automation"/>
-    <category term="maintenance"/>
-    <category term="media-server"/>
-    <category term="plex"/>
-    <category term="python"/>
     
   </entry>
   
