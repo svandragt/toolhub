@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>semver-php</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>semver-php</h1>
+
+  
+  <div class="project-header__desc">A Rust implementation of Composer&#39;s semver library</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://crates.io/crates/semver-php">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/semver-php">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>semver-php</h1>
+<blockquote>
+<p>Rust implementation of <a href="https://github.com/composer/semver">Composer's semver</a> library for parsing and matching version constraints.</p>
+</blockquote>
+<p>This library implements <a href="https://getcomposer.org">Composer</a>'s versioning specification, which differs from standard semver in several important ways. You likely want to use <a href="https://crates.io/crates/semver">the <code>semver</code> crate</a> instead.</p>
+<h2>Differences from Standard Semver</h2>
+<p>Composer's semver differs from <a href="https://semver.org/">standard semver</a> in several ways:</p>
+<ol>
+<li><strong>Four components</strong>: Versions are normalized to <code>MAJOR.MINOR.PATCH.EXTRA</code> (e.g., <code>1.2.3.0</code>)</li>
+<li><strong>Branch handling</strong>: Dev branches like <code>dev-master</code> and <code>1.x-dev</code> are first-class citizens</li>
+<li><strong>Stability modifiers</strong>: Versions can have stability suffixes (<code>-dev</code>, <code>-alpha</code>, <code>-beta</code>, <code>-RC</code>)</li>
+<li><strong>Short forms</strong>: Stability can use short forms (<code>-a</code> for alpha, <code>-b</code> for beta, etc.)</li>
+<li><strong>Tilde behavior</strong>: <code>~1.2</code> means <code>&gt;=1.2 &lt;2.0</code> (not <code>&gt;=1.2.0 &lt;1.3.0</code> as in npm)</li>
+</ol>
+<h2>Usage</h2>
+<pre><code class="language-rust">use semver_php::Semver;
+
+// Check if a version satisfies a constraint
+assert!(Semver::satisfies(&quot;1.2.3&quot;, &quot;^1.0&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;2.0.0&quot;, &quot;^1.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;2.0.0&quot;, &quot;&gt;=1.0 &lt;3.0&quot;).unwrap());
+
+// Filter versions by constraint
+let matching = Semver::satisfied_by(&amp;[&quot;1.0&quot;, &quot;1.5&quot;, &quot;2.0&quot;, &quot;3.0&quot;], &quot;^1.0&quot;).unwrap();
+assert_eq!(matching, vec![&quot;1.0&quot;, &quot;1.5&quot;]);
+
+// Sort versions
+let sorted = Semver::sort(&amp;[&quot;2.0&quot;, &quot;1.0&quot;, &quot;1.5&quot;, &quot;3.0&quot;]).unwrap();
+assert_eq!(sorted, vec![&quot;1.0&quot;, &quot;1.5&quot;, &quot;2.0&quot;, &quot;3.0&quot;]);
+</code></pre>
+<h2>Constraint Syntax</h2>
+<p>The library supports all Composer constraint formats:</p>
+<h3>Exact Version</h3>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.2.3&quot;, &quot;1.2.3&quot;).unwrap());
+</code></pre>
+<h3>Comparison Operators</h3>
+<pre><code class="language-rust">use semver_php::Semver;
+assert!(Semver::satisfies(&quot;2.0.0&quot;, &quot;&gt;1.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;0.9.0&quot;, &quot;&lt;1.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.0.0&quot;, &quot;&gt;=1.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.0.0&quot;, &quot;&lt;=1.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;2.0.0&quot;, &quot;!=1.0&quot;).unwrap());
+</code></pre>
+<h3>Tilde Ranges (~)</h3>
+<p>The tilde operator allows patch-level changes:</p>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;~1.2&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.2.5&quot;, &quot;~1.2.3&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;1.3.0&quot;, &quot;~1.2.3&quot;).unwrap());
+</code></pre>
+<h3>Caret Ranges (^)</h3>
+<p>The caret operator allows changes that don't modify the left-most non-zero digit:</p>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.9.9&quot;, &quot;^1.2.3&quot;).unwrap());
+assert!(Semver::satisfies(&quot;0.2.9&quot;, &quot;^0.2.3&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;2.0.0&quot;, &quot;^1.2.3&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;0.3.0&quot;, &quot;^0.2.3&quot;).unwrap());
+</code></pre>
+<h3>Wildcard Ranges</h3>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;2.0.0&quot;, &quot;*&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;1.*&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.2.3&quot;, &quot;1.2.*&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;1.3.0&quot;, &quot;1.2.*&quot;).unwrap());
+</code></pre>
+<h3>Hyphen Ranges</h3>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;1.0 - 2.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;2.0.5&quot;, &quot;1.0 - 2.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;2.0.0&quot;, &quot;1.0.0 - 2.0.0&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;2.0.1&quot;, &quot;1.0.0 - 2.0.0&quot;).unwrap());
+</code></pre>
+<h3>AND Constraints</h3>
+<p>Separate constraints with a space or comma:</p>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;&gt;=1.0 &lt;2.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;&gt;=1.0, &lt;2.0&quot;).unwrap());
+</code></pre>
+<h3>OR Constraints</h3>
+<p>Separate alternatives with <code>||</code>:</p>
+<pre><code class="language-rust">use semver_php::Semver;
+
+assert!(Semver::satisfies(&quot;1.5.0&quot;, &quot;^1.0 || ^2.0&quot;).unwrap());
+assert!(Semver::satisfies(&quot;2.5.0&quot;, &quot;^1.0 || ^2.0&quot;).unwrap());
+assert!(!Semver::satisfies(&quot;3.0.0&quot;, &quot;^1.0 || ^2.0&quot;).unwrap());
+</code></pre>
+<h2>Stability Handling</h2>
+<p>Composer semver includes stability modifiers:</p>
+<pre><code class="language-rust">use semver_php::VersionParser;
+
+assert_eq!(VersionParser::normalize(&quot;1.0.0-dev&quot;).unwrap(), &quot;1.0.0.0-dev&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.0.0-RC1&quot;).unwrap(), &quot;1.0.0.0-RC1&quot;);
+assert_eq!(VersionParser::normalize(&quot;dev-master&quot;).unwrap(), &quot;dev-master&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.0.0-beta2&quot;).unwrap(), &quot;1.0.0.0-beta2&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.0.0-alpha1&quot;).unwrap(), &quot;1.0.0.0-alpha1&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.x-dev&quot;).unwrap(), &quot;1.9999999.9999999.9999999-dev&quot;);
+</code></pre>
+<h2>Version Normalization</h2>
+<p>Composer normalizes versions to a 4-component format:</p>
+<pre><code class="language-rust">use semver_php::VersionParser;
+
+assert_eq!(VersionParser::normalize(&quot;1&quot;).unwrap(), &quot;1.0.0.0&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.2&quot;).unwrap(), &quot;1.2.0.0&quot;);
+assert_eq!(VersionParser::normalize(&quot;1.2.3&quot;).unwrap(), &quot;1.2.3.0&quot;);
+assert_eq!(VersionParser::normalize(&quot;v1.2.3&quot;).unwrap(), &quot;1.2.3.0&quot;);
+</code></pre>
+<h2>Comparing Versions</h2>
+<p>For direct version comparison:</p>
+<pre><code class="language-rust">assert!(semver_php::compare(&quot;1.0&quot;, &quot;&lt;&quot;, &quot;2.0&quot;).unwrap());
+assert!(semver_php::compare(&quot;2.0&quot;, &quot;&gt;&quot;, &quot;1.0&quot;).unwrap());
+assert!(semver_php::compare(&quot;1.0&quot;, &quot;==&quot;, &quot;1.0.0&quot;).unwrap());
+
+assert!(semver_php::less_than(&quot;1.0&quot;, &quot;2.0&quot;).unwrap());
+assert!(semver_php::greater_than(&quot;2.0&quot;, &quot;1.0&quot;).unwrap());
+assert!(semver_php::equal_to(&quot;1.0.0&quot;, &quot;1.0.0.0&quot;).unwrap());
+</code></pre>
+<h2>Working with Constraints Directly</h2>
+<p>For more control, use the constraint types directly:</p>
+<pre><code class="language-rust">use semver_php::{VersionParser, Constraint, SingleConstraint, Operator};
+
+let constraint = VersionParser::parse_constraints(&quot;^1.0 || ^2.0&quot;).unwrap();
+
+assert!(constraint.matches(&amp;SingleConstraint::new(Operator::Eq, &quot;1.5.0.0&quot;)));
+</code></pre>
+<h2>Benchmarks</h2>
+<p>This library is benchmarked against the original PHP <code>composer/semver</code> using <a href="https://github.com/bheisler/criterion.rs">Criterion</a> (Rust) and <a href="https://github.com/phpbench/phpbench">PHPBench</a> (PHP).</p>
+<p>| Operation                   | PHP     | Rust    | Speedup |
+| --------------------------- | ------- | ------- | ------- |
+| Normalize (simple)          | 7.7 µs  | 3.6 µs  | 2.1x    |
+| Normalize (complex)         | 13.8 µs | 6.1 µs  | 2.3x    |
+| Parse constraints (simple)  | 19.0 µs | 9.2 µs  | 2.1x    |
+| Parse constraints (complex) | 53.2 µs | 22.4 µs | 2.4x    |
+| Satisfies check             | 64.8 µs | 38.2 µs | 1.7x    |
+| Sort (10 versions)          | 29.3 µs | 12.0 µs | 2.4x    |
+| Sort (100 versions)         | 392 µs  | 252 µs  | 1.6x    |
+| Parse stability             | 6.2 µs  | 0.9 µs  | 7.3x    |</p>
+<p><strong>Geometric mean speedup: 2.1x</strong></p>
+<p>To run the benchmarks yourself (requires Rust and PHP):</p>
+<pre><code class="language-bash">./benches/compare.sh
+</code></pre>
+<h2>License</h2>
+<p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

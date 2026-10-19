@@ -3,10 +3,20 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-14T16:05:29Z</updated>
+  <updated>2026-10-18T15:50:01Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/semver-php</id>
+    <title>semver-php</title>
+    <updated>2026-10-18T15:50:01Z</updated>
+    <published>2026-10-18T15:50:01Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/semver-php"/>
+    <summary>A Rust implementation of Composer&#39;s semver library</summary>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/envlock</id>
@@ -320,23 +330,6 @@
     <category term="vst"/>
     <category term="wine"/>
     <category term="yabridge"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/yt-listen-later</id>
-    <title>yt-listen-later</title>
-    <updated>2026-08-04T13:04:01Z</updated>
-    <published>2026-08-04T13:04:01Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/yt-listen-later"/>
-    <summary>Python script that turns a YouTube playlist into a podcast RSS feed</summary>
-    <category term="docker"/>
-    <category term="ffmpeg"/>
-    <category term="podcast"/>
-    <category term="python"/>
-    <category term="rss"/>
-    <category term="youtube"/>
-    <category term="yt-dlp"/>
     
   </entry>
   
