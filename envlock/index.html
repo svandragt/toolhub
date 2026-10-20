@@ -84,6 +84,7 @@
 <li>The lease ends when the agent finishes its turn. On its next turn the agent usually gets the same environment back, without switching code again.</li>
 <li>When every environment is busy, the agent waits its turn. envlock builds another environment in the background, up to a limit you set, and later removes or stops the ones nobody uses.</li>
 <li>An environment keeps its database between leases, so a ticket finds the data it left behind.</li>
+<li>If the project has a build watcher such as <code>npm run start</code>, an agent can ask for it with <code>--watch</code>. It runs while the ticket holds the environment and stops when the lease ends.</li>
 </ul>
 <h2>Get started</h2>
 <h3>Install</h3>
@@ -91,7 +92,7 @@
 <pre><code class="language-bash">ln -s &quot;$PWD/bin/envlock&quot; ~/.local/bin/envlock
 ln -s &quot;$PWD/skills/ticket-fleet&quot; ~/.claude/skills/ticket-fleet
 </code></pre>
-<p>envlock needs bash, git, <code>flock</code> (util-linux) and <a href="https://herdr.dev">herdr</a>. A lease belongs to the herdr agent that asked for it, so <code>envlock acquire</code> works only in a herdr pane.</p>
+<p>envlock needs Python 3.8 or later, bash (for the <code>.envpool</code> hooks), git and <a href="https://herdr.dev">herdr</a>. A lease belongs to the herdr agent that asked for it, so <code>envlock acquire</code> works only in a herdr pane.</p>
 <h3>Set up a pool</h3>
 <p>Open your agent in the main checkout of your project and ask it:</p>
 <pre><code class="language-text">Set up an envlock pool for this repo
@@ -125,6 +126,7 @@ events log: ~/.local/state/envlock/3f9a1c07d2b4/events.log
 |---|---|
 | <code>--wait 3600</code> | It waits up to an hour for a free environment, instead of giving up straight away. |
 | <code>--fresh</code> | A clean copy of the seed's database, for a ticket that runs migrations or needs clean data. The seed is the environment that serves your main checkout. |
+| <code>--watch</code> | The project's build watcher, such as <code>npm run start</code>, running while the ticket holds the environment, for hot reloading. |
 | <code>--need wp=6.9</code> | An environment on WordPress 6.9. envlock changes a free one if none matches. VIP only. |
 | <code>--want wp=6.9</code> | WordPress 6.9 if such an environment is free, and any free environment otherwise. VIP only. |
 | <code>--urgent</code> | A place ahead of every waiting ticket that did not ask for <code>--urgent</code>. |</p>
@@ -156,6 +158,7 @@ events log: ~/.local/state/envlock/3f9a1c07d2b4/events.log
 <ul>
 <li><strong>An acquire fails, or a lease ends and you do not know why.</strong> Read the events log, whose path is the last line of <code>envlock status</code>. It records each lease, release and failure, with the step that failed and its exit status.</li>
 <li><strong>An agent gives up with &quot;all environments busy&quot;.</strong> Tell it to use <code>--wait</code>, or raise the pool's limit in <code>.envpool</code>.</li>
+<li><strong>The build watcher does not run, or stops early.</strong> Read <code>watch/&lt;environment&gt;.log</code> in the directory that holds the events log. The watcher's output goes there.</li>
 <li><strong>A site does not load after you switch platforms.</strong> Another platform's proxy still holds ports 80 and 443. Stop that platform's environments.</li>
 </ul>
 
