@@ -72,6 +72,14 @@ in progress, idle, done. Click a card to focus that pane in herdr.</p>
 <p>Open http://127.0.0.1:7655. The board connects to herdr's socket at
 <code>~/.config/herdr/herdr.sock</code>; set <code>HERDR_SOCKET_PATH</code> to use another one.
 herdr doesn't need to be running first. The board retries until it is.</p>
+<h2>Open the board from your phone</h2>
+<p>To reach the board over a private network such as NetBird or Tailscale, set
+<code>HERDR_DASH_BIND</code> to this computer's address on that network:</p>
+<pre><code class="language-sh">HERDR_DASH_BIND=100.64.0.7 ./herdr-dash.py
+</code></pre>
+<p>Then open <code>http://100.64.0.7:7655</code> on the phone. The board has no login, so
+anyone on that network can see your sessions and focus panes. Start the board
+after the network is up; it skips an address that isn't there yet.</p>
 <h2>How it works</h2>
 <p>herdr already classifies each pane as idle, working, blocked or done. The
 board subscribes to herdr's pane events.</p>
