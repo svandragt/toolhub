@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>micropub-adapter</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>micropub-adapter</h1>
+
+  
+  <div class="project-header__desc">The easiest way to add micropub support to existing or new applications.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/micropub-adapter">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>taproot/micropub-adapter</h1>
+<p><a href="https://packagist.org/packages/taproot/micropub-adapter"><img src="http://poser.pugx.org/taproot/micropub-adapter/v" alt="Latest Stable Version" /></a> <a href="https://github.com/Taproot/micropub-adapter/actions/workflows/php.yml"><img src="https://github.com/taproot/micropub-adapter/actions/workflows/php.yml/badge.svg?branch=main" alt="" /></a> <a href="https://packagist.org/packages/taproot/micropub-adapter"><img src="http://poser.pugx.org/taproot/micropub-adapter/license" alt="License" /></a> <a href="https://packagist.org/packages/taproot/micropub-adapter"><img src="http://poser.pugx.org/taproot/micropub-adapter/downloads" alt="Total Downloads" /></a></p>
+<p>taproot/micropub-adapter is a simple and flexible way to add <a href="https://indieweb.org/Micropub">Micropub</a> support to any PHP web app using PSR-7.</p>
+<h2>Quick Links</h2>
+<ul>
+<li><a href="https://taproot.github.io/micropub-adapter/namespaces/taproot-micropub.html">API Documentation</a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/coverage/">Code Coverage</a></li>
+<li><a href="https://micropub.rocks/implementation-reports/servers/580/D3vyg58QCHfWI4TavNiT">micropub.rocks implementation report</a></li>
+</ul>
+<h2>Installation</h2>
+<p>taproot/micropub-adapter is currently tested against and compatible with PHP 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 and 8.5.</p>
+<p>Install taproot/micropub-adapter using <a href="https://getcomposer.org/">composer</a>:</p>
+<pre><code>composer.phar require taproot/micropub-adapter
+composer.phar install (or composer.phar update)
+</code></pre>
+<p>Versioned releases are GPG signed so you can verify that the code hasn’t been tampered with.</p>
+<pre><code>gpg --recv-keys 1C00430B19C6B426922FE534BEF8CE58118AD524
+cd vendor/taproot/micropub-adapter
+git tag -v v0.1.3 # Replace with the version you have installed
+</code></pre>
+<h2>Usage</h2>
+<h3>Subclassing MicropubAdapter</h3>
+<p>micropub-adapter defines an abstract class, <a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html"><code>Taproot\Micropub\MicropubAdapter</code></a>, which implements the request handling logic for micropub and micropub media endpoints. It parses incoming micropub requests and dispatches them to callback methods for each action (create, delete, update, etc.). It handles basic validation and error conditions, normalises incoming data for you, and converts return values from callback methods to valid responses.</p>
+<p>All you need to do is subclass <code>MicropubAdapter</code> and implement the relevant callback methods for the actions you want to support. Then, in your app, make an instance of your adapter, and call <code>handleRequest()</code> and <code>handleMediaEndpointRequest()</code> within your micropub and media endpoint requests, respectively.</p>
+<p>See <a href="https://github.com/Taproot/micropub-adapter/tree/main/example">the example app</a> for an example of how to subclass and use <code>MicropubAdapter</code>.</p>
+<h4>Callback Methods</h4>
+<p>Refer to the API documentation for the paramters and possible return values of each callback. Optional callbacks have a default no-op implementation.</p>
+<p><strong>Required</strong> for any functionality:</p>
+<ul>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_verifyAccessTokenCallback"><code>verifyAccessTokenCallback()</code></a>: this callback is responsible for validating the access token used to authorize micropub requests, and providing user/scope data for use in the other callbacks.</li>
+</ul>
+<p><strong>Micropub endpoint action callbacks</strong> — implement whichever are relevant for your use-case:</p>
+<ul>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_configurationQueryCallback"><code>configurationQueryCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_sourceQueryCallback"><code>sourceQueryCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_createCallback"><code>createCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_updateCallback"><code>updateCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_deleteCallback"><code>deleteCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_undeleteCallback"><code>undeleteCallback()</code></a></li>
+</ul>
+<p><strong>Media Endpoint callbacks</strong> — implement to enable the media endpoint. As routing is out of the scope of this library, you’ll have to add a <code>media-endpoint</code> value to the array returned by <code>configurationQueryCallback()</code> in order for clients to be able to discover the media endpoint.</p>
+<ul>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_mediaEndpointCallback"><code>mediaEndpointCallback()</code></a></li>
+</ul>
+<p><strong>Extension callbacks</strong> — these are called after the incoming request is authenticated, but before any micropub-specific handling occurs. This allows your subclass to implement <a href="https://indieweb.org/Micropub-extensions">micropub extensions</a>. Implementations of these methods should check to see if a request requires extension handling (e.g. a <code>?q=source</code> request without a <code>url</code> parameter, which would return an error if handled by the logic surrounding <code>sourceQueryCallback()</code>). If the request requires extension handling, handle it and return a Response or error value. Otherwise, return <code>false</code> to continue handling the request as usual.</p>
+<ul>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_extensionCallback"><code>extensionCallback()</code></a></li>
+<li><a href="https://taproot.github.io/micropub-adapter/classes/Taproot-Micropub-MicropubAdapter.html#method_mediaEndpointExtensionCallback"><code>mediaEndpointExtensionCallback()</code></a></li>
+</ul>
+<h3>Access Tokens and IndieAuth</h3>
+<p>You’ll need some way of verifying the access tokens used to authenticate micropub requests — indeed, <code>verifyAccessTokenCallback()</code> is the only method which you’re absolutely required to implement! If your app doesn’t yet have <a href="https://indieweb.org/IndieAuth">IndieAuth</a> endpoints capable of creating and verifying access tokens, you may want to use the companion library <a href="https://github.com/taproot/indieauth/">taproot/indieauth</a> to add indieauth support to your app. The example app uses taproot/indieauth, so you can refer to that for an example of how to use the two libraries together.</p>
+<h2>Contributing</h2>
+<p>If you have any questions about using this library, join the <a href="https://indieweb.org/discuss">indieweb chatroom</a> and ping <code>barnaby</code>.</p>
+<p>If you find a bug or problem with the library, or want to suggest a feature, please <a href="https://github.com/Taproot/micropub-adapter/issues/new">create an issue</a>.</p>
+<p>If discussions lead to you wanting to submit a pull request, following this process, while not required, will increase the chances of it quickly being accepted:</p>
+<ul>
+<li>Fork this repo to your own github account, and clone it to your development computer.</li>
+<li>Run <code>./run_coverage.sh</code> and ensure that all tests pass — you’ll need XDebug for code coverage data.</li>
+<li>If applicable, write failing regression tests e.g. for a bug you’re fixing.</li>
+<li>Make your changes.</li>
+<li>Run <code>./run_coverage.sh</code> and <code>open docs/coverage/index.html</code>. Make sure that the changes you made are covered by tests. taproot/micropub-adapter had 100% test coverage from version 0.1.0, and that number should never go down!</li>
+<li>Run <code>./vendor/bin/psalm</code> and and fix any warnings it brings up.</li>
+<li>Install and run <code>./phpDocumentor.phar</code> to regenerate the documentation if applicable.</li>
+<li>Push your changes and submit the PR.</li>
+</ul>
+<h2>Changelog</h2>
+<h3>Unreleased</h3>
+<ul>
+<li>Fixed the PHP 8.4 deprecation for the implicitly nullable <code>$properties</code> parameter of <code>sourceQueryCallback()</code>.</li>
+<li>Added PHP 8.2, 8.3, 8.4 and 8.5 to the test matrix.</li>
+</ul>
+<h3>v0.1.3</h3>
+<p>2023-07-24</p>
+<ul>
+<li>Handle JSON requests correctly when there is more than one <code>content-type</code> header — thanks @oddevan!</li>
+</ul>
+<p>(0.1.2 missing due to tagging of incorrect commit)</p>
+<h3>v0.1.1</h3>
+<p>2022-10-03</p>
+<ul>
+<li>Updated example to use latest features from taproot/indieauth</li>
+<li>Allowed use of psr/log v2 and v3</li>
+<li>Allowed use of monolog v3 when testing</li>
+<li>Added PHP 8.1 to the test matrix, enabled manual dispatch.</li>
+</ul>
+<h3>v0.1.0</h3>
+<p>2021-06-24</p>
+<p>Initial release.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

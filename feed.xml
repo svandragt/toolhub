@@ -3,10 +3,37 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-26T11:47:26Z</updated>
+  <updated>2026-10-28T00:41:48Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/vivace</id>
+    <title>vivace</title>
+    <updated>2026-10-28T00:41:48Z</updated>
+    <published>2026-09-06T09:09:00Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/vivace"/>
+    <summary>Rust reimplementation of Composer that installs from composer.lock faster than PHP Composer</summary>
+    <category term="cli"/>
+    <category term="composer"/>
+    <category term="dependency-manager"/>
+    <category term="devops"/>
+    <category term="package-manager"/>
+    <category term="php"/>
+    <category term="rust"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/micropub-adapter</id>
+    <title>micropub-adapter</title>
+    <updated>2026-10-27T22:31:47Z</updated>
+    <published>2026-10-27T22:31:47Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/micropub-adapter"/>
+    <summary>The easiest way to add micropub support to existing or new applications.</summary>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/herdr-dash</id>
@@ -74,23 +101,6 @@
     <published>2026-10-13T13:01:48Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/tab-filter"/>
     <summary>Firefox extension: fuzzy-search open tabs and switch with the keyboard</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/vivace</id>
-    <title>vivace</title>
-    <updated>2026-10-06T20:48:00Z</updated>
-    <published>2026-09-06T09:09:00Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/vivace"/>
-    <summary>Rust reimplementation of Composer that installs from composer.lock faster than PHP Composer</summary>
-    <category term="cli"/>
-    <category term="composer"/>
-    <category term="dependency-manager"/>
-    <category term="devops"/>
-    <category term="package-manager"/>
-    <category term="php"/>
-    <category term="rust"/>
     
   </entry>
   
@@ -314,22 +324,6 @@
     <category term="linux"/>
     <category term="taskbar"/>
     <category term="vala"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/linux-music-plugins-db</id>
-    <title>linux-music-plugins-db</title>
-    <updated>2026-08-10T07:35:00Z</updated>
-    <published>2026-08-10T07:35:00Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/linux-music-plugins-db"/>
-    <summary>Crowd-sourced compatibility tracker for audio plugins running on Linux via yabridge</summary>
-    <category term="compatibility"/>
-    <category term="linux-audio"/>
-    <category term="python"/>
-    <category term="vst"/>
-    <category term="wine"/>
-    <category term="yabridge"/>
     
   </entry>
   
