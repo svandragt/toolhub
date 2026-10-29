@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>over-and-out</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>over-and-out</h1>
+
+  
+  <div class="project-header__desc">Push-to-talk walkie-talkie in the browser. Send a link, hold to talk, hear crackly old-radio audio ending in KRRGGG.</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">github-pages</span>
+    
+    <span class="badge">peer-to-peer</span>
+    
+    <span class="badge">peerjs</span>
+    
+    <span class="badge">push-to-talk</span>
+    
+    <span class="badge">voice-chat</span>
+    
+    <span class="badge">walkie-talkie</span>
+    
+    <span class="badge">web-audio</span>
+    
+    <span class="badge">webrtc</span>
+    
+    
+    <span class="badge">GPL-3.0</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://svandragt.github.io/over-and-out/">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/over-and-out">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Over &amp; Out</h1>
+<p>Over &amp; Out is a free push-to-talk walkie-talkie that runs in your browser. Two people share one channel. Your voice comes through crackly and band-limited, like an old handheld radio, and every transmission ends with a burst of squelch.</p>
+<p>Try it at https://svandragt.github.io/over-and-out/.</p>
+<h2>Talk to someone</h2>
+<ol>
+<li>Open the site and tap <strong>Tap to tune in</strong>. Allow microphone access when the browser asks.</li>
+<li>Tap <strong>Copy</strong> and send the link to the other person.</li>
+<li>The other person opens the link and taps <strong>Tap to tune in</strong>. The status changes to <strong>Connected</strong>.</li>
+<li>To talk, hold the big button, or hold Space on a keyboard. Release it to finish your transmission.</li>
+</ol>
+<p>A channel holds two people. If a third person opens the link, they replace the second person.</p>
+<h2>Refresh or lose the connection</h2>
+<ul>
+<li>If you started the channel and refresh within two minutes, you get the same channel back, and the link you sent still works.</li>
+<li>If the other person drops out, the status shows <strong>Signal lost…</strong> and then <strong>Disconnected</strong>. If you joined through a link, the page keeps trying to reconnect, and the call resumes when the other person comes back.</li>
+<li>If the channel no longer exists, the page shows <strong>That channel is off the air</strong>. To start your own channel, select <strong>Start a new channel</strong>.</li>
+</ul>
+<h2>Fix microphone problems</h2>
+<p>If the page shows <strong>Microphone unavailable</strong>, it also shows steps for your device. Most often, the browser or the operating system has blocked the microphone for this site. Allow it in the browser's site settings or in your system's privacy settings, then reload the page.</p>
+<h2>Run it locally</h2>
+<p>The site is plain HTML and JavaScript with no build step.</p>
+<pre><code class="language-sh">python3 -m http.server
+</code></pre>
+<p>Open http://localhost:8000. Browsers allow microphone access on <code>localhost</code> without HTTPS.</p>
+<p>To change the sound, edit <code>app.js</code>. The value <code>k</code> sets how much distortion the voice gets, and <code>crushCurve(4)</code> sets the bit depth. Use fewer bits for a rougher sound.</p>
+<h2>Known limits</h2>
+<ul>
+<li>The site connects people through the free public PeerJS service, which has no uptime guarantee. If that service is down, nobody can connect.</li>
+<li>Some mobile networks and office networks block direct connections between browsers. People on those networks cannot connect.</li>
+<li>Both people must keep the page open. A phone that puts the tab to sleep can drop the call.</li>
+</ul>
+<h2>Licence</h2>
+<p>Over &amp; Out is free software under the GNU General Public License v3.0. See <a href="LICENSE">LICENSE</a>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

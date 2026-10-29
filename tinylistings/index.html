@@ -115,6 +115,7 @@ python test_build.py
 <li><code>CLOUDFLARE_ACCOUNT_ID</code></li>
 </ul>
 <p>On the <strong>Variables</strong> tab, add <code>CF_PAGES_PROJECT</code> with your Pages project name.</p>
+<p>To have Bing and Yandex pick up changes within hours, also add <code>INDEXNOW_KEY</code> with a random hex string, for example from <code>openssl rand -hex 16</code>. Each deploy then notifies IndexNow of the pages in the sitemap. Google does not use IndexNow.</p>
 <h2>Cloudflare Pages</h2>
 <ol>
 <li>Create the project once: <code>npx wrangler pages project create &lt;name&gt; --production-branch=main</code>.</li>

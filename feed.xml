@@ -3,10 +3,71 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-28T00:41:48Z</updated>
+  <updated>2026-10-28T22:55:00Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/tinylistings</id>
+    <title>tinylistings</title>
+    <updated>2026-10-28T22:55:00Z</updated>
+    <published>2026-09-30T14:51:10Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/tinylistings"/>
+    <summary>Small, fast listing pages for people selling on eBay: SEO landing pages rebuilt every six hours, buying stays on eBay</summary>
+    <category term="cloudflare-images"/>
+    <category term="cloudflare-pages"/>
+    <category term="ebay"/>
+    <category term="ebay-api"/>
+    <category term="ebay-seller"/>
+    <category term="github-actions"/>
+    <category term="indieweb"/>
+    <category term="jinja2"/>
+    <category term="json-ld"/>
+    <category term="microformats"/>
+    <category term="python"/>
+    <category term="schema-org"/>
+    <category term="seo"/>
+    <category term="static-site"/>
+    <category term="static-site-generator"/>
+    <category term="structured-data"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/over-and-out</id>
+    <title>over-and-out</title>
+    <updated>2026-10-28T14:05:48Z</updated>
+    <published>2026-10-28T14:05:48Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/over-and-out"/>
+    <summary>Push-to-talk walkie-talkie in the browser. Send a link, hold to talk, hear crackly old-radio audio ending in KRRGGG.</summary>
+    <category term="github-pages"/>
+    <category term="peer-to-peer"/>
+    <category term="peerjs"/>
+    <category term="push-to-talk"/>
+    <category term="voice-chat"/>
+    <category term="walkie-talkie"/>
+    <category term="web-audio"/>
+    <category term="webrtc"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/herdr-dash</id>
+    <title>herdr-dash</title>
+    <updated>2026-10-28T13:21:16Z</updated>
+    <published>2026-09-16T10:15:31Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/herdr-dash"/>
+    <summary>Kanban board for herdr-managed agent sessions</summary>
+    <category term="agent-sessions"/>
+    <category term="ai-agents"/>
+    <category term="coding-agents"/>
+    <category term="dashboard"/>
+    <category term="herdr"/>
+    <category term="kanban"/>
+    <category term="python"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/vivace</id>
@@ -32,23 +93,6 @@
     <published>2026-10-27T22:31:47Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/micropub-adapter"/>
     <summary>The easiest way to add micropub support to existing or new applications.</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/herdr-dash</id>
-    <title>herdr-dash</title>
-    <updated>2026-10-26T11:47:26Z</updated>
-    <published>2026-09-16T10:15:31Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/herdr-dash"/>
-    <summary>Kanban board for herdr-managed agent sessions</summary>
-    <category term="agent-sessions"/>
-    <category term="ai-agents"/>
-    <category term="coding-agents"/>
-    <category term="dashboard"/>
-    <category term="herdr"/>
-    <category term="kanban"/>
-    <category term="python"/>
     
   </entry>
   
@@ -101,32 +145,6 @@
     <published>2026-10-13T13:01:48Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/tab-filter"/>
     <summary>Firefox extension: fuzzy-search open tabs and switch with the keyboard</summary>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/tinylistings</id>
-    <title>tinylistings</title>
-    <updated>2026-09-30T14:51:10Z</updated>
-    <published>2026-09-30T14:51:10Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/tinylistings"/>
-    <summary>Small, fast listing pages for people selling on eBay: SEO landing pages rebuilt every six hours, buying stays on eBay</summary>
-    <category term="cloudflare-images"/>
-    <category term="cloudflare-pages"/>
-    <category term="ebay"/>
-    <category term="ebay-api"/>
-    <category term="ebay-seller"/>
-    <category term="github-actions"/>
-    <category term="indieweb"/>
-    <category term="jinja2"/>
-    <category term="json-ld"/>
-    <category term="microformats"/>
-    <category term="python"/>
-    <category term="schema-org"/>
-    <category term="seo"/>
-    <category term="static-site"/>
-    <category term="static-site-generator"/>
-    <category term="structured-data"/>
     
   </entry>
   
@@ -308,22 +326,6 @@
     <category term="linux"/>
     <category term="pantheon"/>
     <category term="snapper"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/plank</id>
-    <title>plank</title>
-    <updated>2026-08-21T22:55:25Z</updated>
-    <published>2026-08-21T22:55:25Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/plank"/>
-    <summary>Vala GTK dock for Linux desktops, focused on doing only what a dock needs</summary>
-    <category term="desktop-environment"/>
-    <category term="dock"/>
-    <category term="gtk"/>
-    <category term="linux"/>
-    <category term="taskbar"/>
-    <category term="vala"/>
     
   </entry>
   

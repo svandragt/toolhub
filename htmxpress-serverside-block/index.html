@@ -54,13 +54,14 @@
 </div>
 
 <div class="readme">
-  <h3>Htmx Server Block</h3>
-<p>Contributors:      The WordPress Contributors<br>
-Tags:              block<br>
-Tested up to:      6.1<br>
-Stable tag:        0.1.0<br>
-License:           GPL-2.0-or-later<br>
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html<br></p>
+  <h1>Htmx Server Block</h1>
+<ul>
+<li>Contributors: The WordPress Contributors</li>
+<li>Tags: block</li>
+<li>Tested up to: 6.1</li>
+<li>Stable tag: 0.1.0</li>
+<li>License: <a href="https://www.gnu.org/licenses/gpl-2.0.html">GPL-2.0-or-later</a></li>
+</ul>
 <p>Example block scaffolded with Create Block tool, adapted for serverside rendering, and interactivity using <a href="https://github.com/svandragt/htmxpress">HTMXpress</a>.</p>
 <h2>Description</h2>
 <p>The <code>render_callback</code> funcions simply includes a template:</p>
@@ -82,7 +83,8 @@ add_filter( 'htmx.template_paths', static function ( $paths ) {
 <p>The templates/random_posts.php template contains a WP_Query to load 3 random posts and a button which refreshes only the posts:</p>
 <pre><code class="language-php">    echo '&lt;button hx-post=&quot;/htmx/random_posts&quot; hx-target=&quot;#random-posts&quot;&gt; More &lt;/button&gt;';
 </code></pre>
-<h2>Demo:</h2>
+<h2>Demo</h2>
+<!-- markdownlint-disable-next-line MD034 -- GitHub only embeds the video from a bare URL. -->
 <p>https://github.com/svandragt/htmxpress-serverside-block/assets/594871/99bdb328-2102-469c-944f-d53baff46594</p>
 
 </div>
