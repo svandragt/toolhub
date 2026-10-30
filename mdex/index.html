@@ -117,7 +117,8 @@ mp configure
 | Ctrl+I | Wrap the selection in <code>_italic_</code> |
 | Ctrl+L | Turn the selection into <code>[a link]()</code>, cursor in the brackets |
 | Ctrl+1 to Ctrl+6 | Make the current line a heading of that level |
-| Ctrl+0 | Remove the heading |</p>
+| Ctrl+0 | Remove the heading |
+| Ctrl+F | Search the document. Enter or Ctrl+G goes to the next match, Shift+Enter to the previous one, and Esc closes the search bar |</p>
 <p>With nothing selected, the markers go in at the cursor with the cursor between them. Pasting a URL over selected text links it: select the words, paste, done.</p>
 <h2>Write a plugin</h2>
 <p>An exporter is a JavaScript file in <code>~/.config/mdex/plugins/</code>. It gets the parsed token stream and the raw source, and returns a string:</p>
