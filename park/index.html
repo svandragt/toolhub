@@ -70,10 +70,11 @@
 <h2>Install</h2>
 <pre><code class="language-bash">go install github.com/svandragt/park@latest
 </code></pre>
+<p><code>go install</code> writes the binary to <code>$(go env GOBIN)</code>, or to <code>$(go env GOPATH)/bin</code> if <code>GOBIN</code> is unset. Check that <code>command -v park</code> points at the new binary, because if another <code>park</code> comes earlier on your <code>PATH</code> (for example <code>~/.local/bin/park</code>), that one runs instead. Run <code>park version</code> to confirm the new build before anything destructive such as <code>park rebuild</code>.</p>
 <h2>Usage</h2>
 <pre><code class="language-bash">park add --name &quot;fix auth bug&quot; --desc &quot;Session token issue&quot; --body &quot;...&quot; --why &quot;Blocks release&quot; --how &quot;Start at auth.go:42&quot;
 park edit &lt;id&gt; --body &quot;updated context&quot; --tags &quot;auth,urgent&quot;
-park edit &lt;id&gt; --append-body &quot;new notes&quot;   # adds to the body instead of replacing it
+park edit &lt;id&gt; --append-body &quot;new notes&quot;   # adds to the body instead of replacing it; --append-how does the same for how-to-apply
 park edit &lt;id&gt; --status resolved   # equivalent to park done &lt;id&gt;
 park add --name &quot;child&quot; --parent 240   # group under a milestone (240, #240 or - for most recent)
 park edit &lt;id&gt; --parent 240        # set the parent; --parent &quot;&quot; clears it
@@ -96,6 +97,7 @@ park search --remote github.com/org/repo &quot;fix&quot;  # search within a repo
 park search --current &quot;token&quot;      # search in current git remote + branch
 park show &lt;id&gt;                     # full detail
 park show -                        # show most recently added item
+park show --current                # first active item for the current remote + branch
 park done &lt;id&gt;                     # mark resolved
 park done -                        # resolve most recently added item
 park archive &lt;id&gt;                  # archive
