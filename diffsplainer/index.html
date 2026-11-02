@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>diffsplainer</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>diffsplainer</h1>
+
+  
+  <div class="project-header__desc">Review GitHub pull requests with a Claude Code explanation next to each diff chunk</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">claude-code</span>
+    
+    <span class="badge">code-review</span>
+    
+    <span class="badge">developer-tools</span>
+    
+    <span class="badge">github</span>
+    
+    <span class="badge">pull-requests</span>
+    
+    <span class="badge">python</span>
+    
+    
+    <span class="badge">GPL-3.0</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/diffsplainer">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>diffsplainer</h1>
+<p>Diff explanations for GitHub pull requests, powered by Claude Code.</p>
+<p>Open a PR and the app shows its diff split into logical chunks on the right. On the left, next to each chunk, is Claude's explanation of <strong>what</strong> the change does, <strong>why</strong> it's made, and anything worth checking.</p>
+<p><img src="https://raw.githubusercontent.com/svandragt/diffsplainer/main/docs/screenshot.png" alt="Diffsplainer showing a pull request's overview, and a diff chunk with its explanation beside it" /></p>
+<h2>Run</h2>
+<p>Requirements: Python 3.11+, <a href="https://docs.astral.sh/uv/">uv</a>, and the <a href="https://claude.com/claude-code">Claude Code</a> CLI (<code>claude</code>), logged in.</p>
+<pre><code class="language-sh">uvx diffsplainer
+</code></pre>
+<p>Then open <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+<p>Private repos need you to be logged in with the GitHub CLI (<code>gh auth login</code>), or to set <code>GITHUB_TOKEN</code>. If you log in with <code>gh</code> after starting the app, restart it.</p>
+<p>Open a PR in either of these ways:</p>
+<ul>
+<li>paste the PR URL into the address field, or</li>
+<li>swap <code>github.com</code> for the app's host in the browser address bar:
+<code>http://localhost:3000/owner/repo/pull/123</code></li>
+</ul>
+<p>To open any GitHub PR with one click, drag the Diffsplain link from the start page to your bookmarks bar, then click it on a PR page.</p>
+<p>The address bar always shows the PR you're reviewing, so links can be shared. To change how many related PRs Claude reads, add <code>?prs=N</code> (0–10, default 3) to the address.</p>
+<h2>How it works</h2>
+<p>The app fetches the PR from GitHub and splits each file's diff into chunks. Claude Code explains each chunk, and the explanation appears next to the chunk as soon as it is ready.</p>
+<p>Claude also gets the PR description, the project's instruction files (such as <code>CLAUDE.md</code> and <code>AGENTS.md</code>) and a few earlier merged PRs that touched the same files. The &quot;Context given to Claude&quot; panel lists the ones it used.</p>
+<p>The app runs Claude Code without your own MCP servers, hooks, slash commands and <code>CLAUDE.md</code>, so each call stays small. Closing or reloading the page stops the Claude calls it started.</p>
+<p>To look up a word or phrase in an explanation, select it and click <strong>Explain</strong>. A popup shows what it means in general and what it does in this PR.</p>
+<p>Opening the same PR again reuses the explanations while its commits stay the same. The app drops them when it restarts, or when it makes room for newer PRs (it keeps 50). Editing the PR title or description does not refresh them.</p>
+<p>Code in the diff is syntax-highlighted for common languages, chosen by file extension.</p>
+<p>PRs over 1,000 changed lines show the diff without explanations. Set <code>MAX_CHANGED_LINES</code> to change the limit.</p>
+<h2>Configuration</h2>
+<p>| Env var | Default | Purpose |
+| --- | --- | --- |
+| <code>PORT</code> | <code>3000</code> | HTTP port. The app listens on <code>127.0.0.1</code> only. |
+| <code>GITHUB_TOKEN</code> / <code>GH_TOKEN</code> | GitHub CLI token | GitHub API auth |
+| <code>GITHUB_API</code> | <code>https://api.github.com</code> | API base URL (for GitHub Enterprise) |
+| <code>CLAUDE_BIN</code> | <code>claude</code> | Path to the Claude Code CLI |
+| <code>CLAUDE_MODEL</code> | <code>sonnet</code> | Model passed to <code>--model</code>. The app ignores the model set in your Claude Code settings. |
+| <code>CLAUDE_CONCURRENCY</code> | <code>6</code> | Parallel Claude calls |
+| <code>CLAUDE_TIMEOUT_MS</code> | <code>240000</code> | Timeout for each Claude call |
+| <code>MAX_CHANGED_LINES</code> | <code>1000</code> | Largest PR (additions plus deletions) that gets explanations |</p>
+<p>The app uses only the Python standard library. The browser UI is plain HTML/CSS/JS in <code>src/diffsplainer/static/</code>.</p>
+<h2>Development</h2>
+<p>To run the app from a clone of the repository:</p>
+<pre><code class="language-sh">git clone https://github.com/svandragt/diffsplainer
+cd diffsplainer
+uv run diffsplainer            # http://localhost:3000
+</code></pre>
+<p>Without uv: <code>PYTHONPATH=src python -m diffsplainer</code>.</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

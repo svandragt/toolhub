@@ -144,6 +144,7 @@ FAFI_BLOCKLIST_REFRESH=6h
 <h2>Command-line arguments</h2>
 <p>Each of the environment variables are available as a longform command-line argument by discarding <code>FAFI_</code> and lower-casing the result, replacing underscores with dashes. For example <code>FAFI_ENABLE_INDEXING=0</code> and <code>--enable-indexing=0</code> are equivalent.</p>
 <h2>Build and run</h2>
+<p>To skip building, download <code>fafi2</code> for Linux (amd64, arm64) or macOS (arm64) from the <a href="https://github.com/svandragt/fafi/releases">releases page</a>.</p>
 <p>The project uses <a href="https://www.jetify.com/devbox">devbox</a> to pin the Go toolchain. With devbox installed:</p>
 <pre><code class="language-shell">make build              # build tmp/fafi2 (--tags fts5)
 make test               # go test -race ./...

@@ -3,10 +3,60 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-10-30T16:01:36Z</updated>
+  <updated>2026-11-01T12:59:40Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/streamcables</id>
+    <title>streamcables</title>
+    <updated>2026-11-01T12:59:40Z</updated>
+    <published>2019-07-04T08:44:55Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/streamcables"/>
+    <summary>Python tool that reads Icecast now-playing metadata and posts it to social media</summary>
+    <category term="automation"/>
+    <category term="icecast"/>
+    <category term="metadata"/>
+    <category term="python"/>
+    <category term="streaming"/>
+    <category term="twitter"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/fafi</id>
+    <title>fafi</title>
+    <updated>2026-11-01T12:30:49Z</updated>
+    <published>2020-03-08T12:05:45Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/fafi"/>
+    <summary>Go CLI and web UI that indexes browser bookmarks and full-text searches their content</summary>
+    <category term="bookmarks"/>
+    <category term="cli"/>
+    <category term="firefox"/>
+    <category term="full-text-search"/>
+    <category term="go"/>
+    <category term="indexer"/>
+    <category term="search-engine"/>
+    <category term="tui"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/diffsplainer</id>
+    <title>diffsplainer</title>
+    <updated>2026-11-01T12:20:00Z</updated>
+    <published>2026-10-31T09:02:04Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/diffsplainer"/>
+    <summary>Review GitHub pull requests with a Claude Code explanation next to each diff chunk</summary>
+    <category term="claude-code"/>
+    <category term="code-review"/>
+    <category term="developer-tools"/>
+    <category term="github"/>
+    <category term="pull-requests"/>
+    <category term="python"/>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/park</id>
@@ -274,58 +324,6 @@
     <category term="vala"/>
     <category term="webkitgtk"/>
     <category term="webview"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/lamb</id>
-    <title>lamb</title>
-    <updated>2026-08-24T22:39:33Z</updated>
-    <published>2023-03-12T11:27:19Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lamb"/>
-    <summary>Self-hosted PHP microblogging platform with SQLite storage, Micropub, and full-text search</summary>
-    <category term="blogging"/>
-    <category term="microblog"/>
-    <category term="micropub"/>
-    <category term="php"/>
-    <category term="self-hosted"/>
-    <category term="single-author"/>
-    <category term="sqlite"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/fedora-pantheon</id>
-    <title>fedora-pantheon</title>
-    <updated>2026-08-24T08:35:21Z</updated>
-    <published>2026-08-24T08:35:21Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/fedora-pantheon"/>
-    <summary>Shell script that turns Fedora Workstation into a Pantheon desktop with Btrfs snapshots</summary>
-    <category term="btrfs"/>
-    <category term="elementary-os"/>
-    <category term="fedora"/>
-    <category term="linux"/>
-    <category term="pantheon"/>
-    <category term="shell"/>
-    <category term="snapper"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/arch-pantheon-btrfs-guide</id>
-    <title>arch-pantheon-btrfs-guide</title>
-    <updated>2026-08-23T13:05:58Z</updated>
-    <published>2026-08-23T13:05:58Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/arch-pantheon-btrfs-guide"/>
-    <summary>Command reference for installing Arch Linux with Pantheon desktop and Btrfs snapshot rollback</summary>
-    <category term="arch-linux"/>
-    <category term="btrfs"/>
-    <category term="documentation"/>
-    <category term="elementaryos"/>
-    <category term="grub"/>
-    <category term="linux"/>
-    <category term="pantheon"/>
-    <category term="snapper"/>
     
   </entry>
   
