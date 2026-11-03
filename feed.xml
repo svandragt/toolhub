@@ -48,7 +48,7 @@
     <updated>2026-11-01T12:20:00Z</updated>
     <published>2026-10-31T09:02:04Z</published>
     <link rel="alternate" type="text/html" href="https://github.com/svandragt/diffsplainer"/>
-    <summary>Review GitHub pull requests with a Claude Code explanation next to each diff chunk</summary>
+    <summary>Experiment to review GitHub pull requests with a Claude Code explanation next to each diff chunk</summary>
     <category term="claude-code"/>
     <category term="code-review"/>
     <category term="developer-tools"/>

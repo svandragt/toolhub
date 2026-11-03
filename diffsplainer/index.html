@@ -23,7 +23,7 @@
   <h1>diffsplainer</h1>
 
   
-  <div class="project-header__desc">Review GitHub pull requests with a Claude Code explanation next to each diff chunk</div>
+  <div class="project-header__desc">Experiment to review GitHub pull requests with a Claude Code explanation next to each diff chunk</div>
   
 
   <div class="project-header__meta">
@@ -66,8 +66,10 @@
 </code></pre>
 <p>Then open <a href="http://localhost:3000">http://localhost:3000</a>.</p>
 <p>Private repos need you to be logged in with the GitHub CLI (<code>gh auth login</code>), or to set <code>GITHUB_TOKEN</code>. If you log in with <code>gh</code> after starting the app, restart it.</p>
-<p>Open a PR in either of these ways:</p>
+<p>Open a PR in any of these ways:</p>
 <ul>
+<li>pass the PR URL when you start the app, which opens it in your browser:
+<code>uvx diffsplainer https://github.com/owner/repo/pull/123</code></li>
 <li>paste the PR URL into the address field, or</li>
 <li>swap <code>github.com</code> for the app's host in the browser address bar:
 <code>http://localhost:3000/owner/repo/pull/123</code></li>
