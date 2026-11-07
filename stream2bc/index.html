@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>stream2bc</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>stream2bc</h1>
+
+  
+  <div class="project-header__desc">List the albums you favourited on Tidal and add them to your Bandcamp wishlist</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    <span class="badge">bandcamp</span>
+    
+    <span class="badge">music</span>
+    
+    <span class="badge">python</span>
+    
+    <span class="badge">tampermonkey</span>
+    
+    <span class="badge">tidal</span>
+    
+    <span class="badge">userscript</span>
+    
+    <span class="badge">wishlist</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/stream2bc">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Stream To Bandcamp (stream2bc)</h1>
+<p>Finds the Tidal albums you favourited, or where you favourited at least two tracks, and helps you add each album to your Bandcamp wishlist.</p>
+<p>The script lists the albums in a table on a web page, with a link to the album on Tidal and a Bandcamp search link for each one. A userscript in your own browser adds an album to your wishlist when you open it from that page.</p>
+<h2>Set up</h2>
+<ol>
+<li>
+<p>Log in to Tidal once. The command prints a link, which you open and approve:</p>
+<pre><code class="language-sh">uv run stream2bc.py --login
+</code></pre>
+</li>
+<li>
+<p>Install <code>stream2bc.user.js</code> in Tampermonkey or Violentmonkey.</p>
+</li>
+</ol>
+<p>The Tidal session is stored in <code>~/.config/stream2bc/tidal-session.json</code>, readable only by you. It stays on your machine. Your Bandcamp login stays in your browser. The script never contacts Bandcamp.</p>
+<h2>Find albums</h2>
+<pre><code class="language-sh">uv run stream2bc.py
+</code></pre>
+<p>The script writes <code>out/albums.html</code>, which lists the albums that currently qualify. An album qualifies if you favourited the album, or if you favourited at least two of its tracks (change the limit with <code>--min-favs</code>). An album that no longer qualifies drops off the page. The script remembers when it first listed each album in <code>~/.config/stream2bc/seen.json</code>.</p>
+<p>Each row shows:</p>
+<ul>
+<li><strong>Artist</strong> and <strong>Album</strong>.</li>
+<li><strong>Favourite album</strong>: &quot;yes&quot; if you favourited the album.</li>
+<li><strong>Favourite tracks</strong>: how many of its tracks you favourited.</li>
+<li><strong>Score</strong>: the favourite tracks, plus 3 if you favourited the album.</li>
+<li><strong>First seen</strong>: the date the script first listed the album.</li>
+<li><strong>Tidal</strong>: a link to the album on Tidal.</li>
+<li><strong>Bandcamp</strong>: a <strong>Search</strong> link that looks for the album on Bandcamp.</li>
+</ul>
+<p>The page opens with the highest score first. Albums with the same score are ordered by the date they were first seen, newest first, and then by artist. To sort by another column, click its heading. Click it again to reverse the order. The arrow in the heading shows the current sort.</p>
+<p>To run it daily at 07:00 from cron:</p>
+<pre><code class="language-cron">0 7 * * * cd /path/to/stream2bc &amp;&amp; uv run stream2bc.py
+</code></pre>
+<p>If the Tidal session has expired, the script exits with an error and does not wait for input. Run <code>--login</code> again.</p>
+<h2>Add albums to your wishlist</h2>
+<ol>
+<li>Open <code>out/albums.html</code> in your browser and log in to Bandcamp.</li>
+<li>Click a <strong>Search</strong> link. The Bandcamp search opens in a new tab.</li>
+<li>Click the matching album.</li>
+</ol>
+<p>The album is added to your wishlist when it opens. The button in the corner changes to &quot;Wishlisted by stream2bc&quot;, or to &quot;stream2bc: failed, see console&quot;.</p>
+<p>Albums you open any other way are not added automatically. On those pages, click <strong>Add to wishlist (stream2bc)</strong> to add the album, and an alert says whether it worked. To turn the automatic adding off, choose &quot;stream2bc: auto-wishlist on/off&quot; in the userscript manager's menu. The same entry turns it back on.</p>
+<p>First time: open the browser console, open an album from the list, then check the <code>stream2bc: resolved fields</code> line. The script reads the album id from a page key that is not confirmed yet. The console also shows the key names of the page data it can read your fan id from. If any field is missing, nothing is posted and the missing field is named.</p>
+<h2>Tests</h2>
+<pre><code class="language-sh">uv run --with pytest --with tidalapi==0.8.11 pytest
+node --test stream2bc.user.test.js
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
