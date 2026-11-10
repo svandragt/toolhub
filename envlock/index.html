@@ -88,9 +88,14 @@
 </ul>
 <h2>Get started</h2>
 <h3>Install</h3>
-<p>Link the script onto your <code>PATH</code> and the skill into Claude Code:</p>
+<p>Link the script onto your <code>PATH</code>:</p>
 <pre><code class="language-bash">ln -s &quot;$PWD/bin/envlock&quot; ~/.local/bin/envlock
-ln -s &quot;$PWD/skills/ticket-fleet&quot; ~/.claude/skills/ticket-fleet
+</code></pre>
+<p>Install the skill with the <a href="https://skills.sh/">skills CLI</a>:</p>
+<pre><code class="language-bash">npx skills add svandragt/envlock
+</code></pre>
+<p>Or link it into Claude Code from your clone:</p>
+<pre><code class="language-bash">ln -s &quot;$PWD/skills/ticket-fleet&quot; ~/.claude/skills/ticket-fleet
 </code></pre>
 <p>envlock needs Python 3.8 or later, bash (for the <code>.envpool</code> hooks), git and <a href="https://herdr.dev">herdr</a>. A lease belongs to the herdr agent that asked for it, so <code>envlock acquire</code> works only in a herdr pane.</p>
 <h3>Set up a pool</h3>
