@@ -104,6 +104,7 @@ park archive &lt;id&gt;                  # archive
 park reopen &lt;id&gt;                   # move back to active
 park delete &lt;id&gt;                   # hard-delete an item
 park prune --days 30               # hard-delete resolved/archived items older than N days
+park stats                         # how parked items were surfaced, viewed and resolved (--days N, default 30)
 park migrate &lt;dest-dir&gt;            # copy DB to new location, print PARK_DB export line
 park rename-remote &lt;old&gt; &lt;new&gt;     # update remote URL across all items
 park retype &lt;old&gt; &lt;new&gt;            # change the type of every item of one type (for example project task)
@@ -190,8 +191,18 @@ it sees up to five matching items, one line each, and runs <code>park show</code
 The match is the file's path relative to the repository root, or its file name when no item
 names the path and fewer than six items name the file name. Each item shows once per
 session. Codex has no matching event, so its install adds only the <code>SessionStart</code> hook.</p>
-<p><code>park show</code> records when you last viewed an item. The record stays on the machine and does
-not sync.</p>
+<h3>See whether parked items get used</h3>
+<p>Park keeps a local record of when an item is surfaced (by the session hook, the file hook,
+<code>park search</code> or <code>park list --tag</code>), viewed (<code>park show</code>) and resolved (<code>park done</code>).
+The session hook counts only the items that fit in the first 2 KB of its output, because
+the agent does not see the rest. The record stays on the machine and does not sync.</p>
+<pre><code class="language-bash">park stats              # the last 30 days
+park stats --days 7
+</code></pre>
+<p>The report counts events by kind and source, and gives the share of surfaced items that
+were viewed or resolved afterwards. A table shows how items came back: each view or
+resolve is credited to the way the item was most recently surfaced in the 2 hours before,
+or to <code>direct</code> when it was not surfaced.</p>
 <p>The installer merges into any existing <code>SessionStart</code> and <code>PostToolUse</code> hooks rather than
 replacing them.
 Hooks load at session start, so the change takes effect next session; in Claude Code,
