@@ -76,7 +76,9 @@ make run
 <pre><code>mdex notes.md
 claude -p &quot;draft the release notes&quot; | mdex
 </code></pre>
+<p>A file opened from the command line, or brought forward by a second launch, starts read-only, so typing meant for another window cannot end up in it. A banner says so, and a click in the text makes it editable.</p>
 <p>With no input, mdex reopens the document you had last time, or a scratch buffer if there wasn't one. Everything autosaves a second after you stop typing — to the file you opened, or to <code>~/.cache/mdex/scratch.md</code> when there isn't one, so an unnamed session survives a restart. Every launch is a separate instance, so run <code>mdex</code> twice to work on two documents side by side. A document that is already open in a window opens only there: opening it again from the command line, Ctrl+O or New file brings that window to the front.</p>
+<p>The preview shows what a document says but does not run it: scripts and styles inside a Markdown file are ignored. A link opens in your browser or mail program only when it starts with <code>http:</code>, <code>https:</code> or <code>mailto:</code>.</p>
 <p>Export from the header bar menu, or with a shortcut:</p>
 <p>| Format | Shortcut | Goes to |
 | --- | --- | --- |
@@ -91,10 +93,17 @@ claude -p &quot;draft the release notes&quot; | mdex
 | --- | --- |
 | Original | when a document is opened or piped in |
 | export, publish | when you export or publish, because that version went out |
+| external | when the file changes on disk while you have unsaved edits, because autosave then replaces that text |
+| before reload | when a change on disk replaces the text in the editor, whether you pressed Reload or mdex reloaded by itself, so the text you had can be restored; skipped when a snapshot already holds it |
 | pause | on the first edit after five minutes away, keeping the version that sat still |
 | manual | when you press Ctrl+S |
 | before restore | when you restore an older snapshot |</p>
 <p>Snapshots live in <code>~/.cache/mdex/revisions/</code>, one directory per document; starting a new scratch buffer clears the old scratch history.</p>
+<h2>Comments</h2>
+<p>To comment on a passage, select it in the preview and press C, or click the Comment button that appears by the selection. Type your comment and press Enter. The first comment on a document also opens the Comments pane. The passage is underlined in the preview. A comment on text that appears more than once stays on the occurrence you selected. Hover over it to read the comment and any reply, or click it to open the Comments pane at that comment.</p>
+<p>The Comments button in the header bar opens a pane on the right. It lists open comments first, each with Resolve and Dismiss, and Edit until someone has replied. Resolved and dismissed comments wait in a collapsed list below. Click a comment to scroll the preview to its passage. A comment whose passage is no longer in the document says &quot;Text changed&quot;.</p>
+<p>A coding session that edits the same file can answer your comments. Its reply appears under the comment, and mdex reloads the document. If you have unsaved edits, a banner above the editor offers Reload or Keep mine and stays until you pick one. If the session rewrote the passage, the underline and the scroll follow it to the new text. When you have unsaved edits, mdex keeps the text now on disk as an &quot;external&quot; snapshot, so Restore in the revisions window brings it back after autosave has replaced it.</p>
+<p>Comments are kept outside the document, in <code>~/.cache/mdex/comments/</code>, so they never end up in the file, its exports or its git diff. <code>mdex --comments-path notes.md</code> prints where the comments for <code>notes.md</code> live, for a session to find.</p>
 <h2>Publish to your blog</h2>
 <p>The send button in the header bar publishes the document to your Micropub endpoint through <a href="https://github.com/mjdescy/mp">mp</a>, so mdex never handles your endpoint or token. The button appears once mp is on your PATH. Install and configure it once:</p>
 <pre><code>cargo install --git https://github.com/mjdescy/mp --tag v0.1.1 -p mpcli
