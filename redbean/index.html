@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>redbean</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>redbean</h1>
+
+  
+  <div class="project-header__desc">ORM layer that creates models, config and database on the fly</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    <a class="btn btn--primary" href="https://www.redbeanphp.com">&#8599; Website</a>
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/redbean">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>RedBeanPHP 5</h1>
+<p><a href="https://travis-ci.org/gabordemooij/redbean"><img src="https://travis-ci.org/gabordemooij/redbean.svg?branch=master" alt="Build Status" /></a></p>
+<p>RedBeanPHP is an easy to use ORM tool for PHP.</p>
+<ul>
+<li>Automatically creates tables and columns as you go</li>
+<li>No configuration, just fire and forget</li>
+<li>No complicated package tools, no autoloaders, just ONE file</li>
+</ul>
+<h2>Installation (recommended)</h2>
+<p>Download RedBeanPHP from the website:</p>
+<p>https://redbeanphp.com/download</p>
+<p>Extract the archive and put it in your PHP project, voila!</p>
+<p>Optional: sha256sum and check signature.</p>
+<h2>Installation via Composer (not recommended)</h2>
+<p>Just open your composer.json file and add the package name <code>(e.g. &quot;gabordemooij/redbean&quot;: &quot;dev-master&quot;)</code> in your require list.</p>
+<pre><code class="language-json">{
+    &quot;require&quot;: {
+        &quot;gabordemooij/redbean&quot;: &quot;dev-master&quot;
+    }
+}
+</code></pre>
+<p><strong>NOTE</strong>:
+You will find many examples on the RedBean website make use of RedBean's <code>R</code> class. Because of namespaced autoloading in Composer, this class will be available as <code>\RedbeanPHP\R</code> instead of <code>R</code>. If you desire to use the much shorter <code>R</code> alias, you can add a <code>use</code> statement at the beginning of your code:</p>
+<pre><code class="language-php">use \RedBeanPHP\R as R;
+</code></pre>
+<p><strong>NOTE:</strong>
+It is important to note that when using RedBeanPHP with Composer, there are some extra precautions needed when working with <a href="https://redbeanphp.com/index.php?p=/models">Models</a>. Due to the namespace requirements of Composer, when creating Models we need to use the <code>SimpleModel</code> to extend, not <code>RedBean_SimpleModel</code>. Furthermore, we need to specify the namespace of the <code>SimpleModel</code>, so a full example of using a Model with RedBean with Composer is as follows:</p>
+<pre><code class="language-php">use \RedBeanPHP\R;
+
+class User extends \RedBeanPHP\SimpleModel
+{
+    ...
+}
+</code></pre>
+<p>Notice that we also need to add the <code>use \RedBeanPHP\R</code> statement so that we can use the <code>R::</code> shortcut within the Model.</p>
+<h2>Quick Example</h2>
+<p>How we store a book object with RedBeanPHP:</p>
+<pre><code class="language-php">$book = R::dispense(&quot;book&quot;);
+$book-&gt;author = &quot;Santa Claus&quot;;
+$book-&gt;title = &quot;Secrets of Christmas&quot;;
+$id = R::store( $book );
+</code></pre>
+<p>Yep, it's that simple.</p>
+<h2>More information</h2>
+<p>For more information about RedBeanPHP please consult
+the RedBeanPHP website:</p>
+<p>https://www.redbeanphp.com/</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>

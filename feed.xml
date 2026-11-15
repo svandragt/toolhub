@@ -3,10 +3,37 @@
   <id>https://tools.vandragt.com/feed.xml</id>
   <title>~/tools</title>
   <subtitle>Tools &amp; Projects</subtitle>
-  <updated>2026-11-06T14:08:33Z</updated>
+  <updated>2026-11-14T13:54:33Z</updated>
   <link rel="alternate" type="text/html" href="https://tools.vandragt.com"/>
   <link rel="self" type="application/atom+xml" href="https://tools.vandragt.com/feed.xml"/>
   <author><name>svandragt</name></author>
+  
+  <entry>
+    <id>https://github.com/svandragt/lamb</id>
+    <title>lamb</title>
+    <updated>2026-11-14T13:54:33Z</updated>
+    <published>2023-03-12T11:27:19Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lamb"/>
+    <summary>Self-hosted PHP microblogging platform with SQLite storage, Micropub, and full-text search</summary>
+    <category term="blogging"/>
+    <category term="microblog"/>
+    <category term="micropub"/>
+    <category term="php"/>
+    <category term="self-hosted"/>
+    <category term="single-author"/>
+    <category term="sqlite"/>
+    
+  </entry>
+  
+  <entry>
+    <id>https://github.com/svandragt/redbean</id>
+    <title>redbean</title>
+    <updated>2026-11-14T08:57:53Z</updated>
+    <published>2026-11-14T08:57:53Z</published>
+    <link rel="alternate" type="text/html" href="https://github.com/svandragt/redbean"/>
+    <summary>ORM layer that creates models, config and database on the fly</summary>
+    
+  </entry>
   
   <entry>
     <id>https://github.com/svandragt/stream2bc</id>
@@ -22,23 +49,6 @@
     <category term="tidal"/>
     <category term="userscript"/>
     <category term="wishlist"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/lamb</id>
-    <title>lamb</title>
-    <updated>2026-11-04T14:37:25Z</updated>
-    <published>2023-03-12T11:27:19Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/lamb"/>
-    <summary>Self-hosted PHP microblogging platform with SQLite storage, Micropub, and full-text search</summary>
-    <category term="blogging"/>
-    <category term="microblog"/>
-    <category term="micropub"/>
-    <category term="php"/>
-    <category term="self-hosted"/>
-    <category term="single-author"/>
-    <category term="sqlite"/>
     
   </entry>
   
@@ -312,21 +322,6 @@
     <category term="slack"/>
     <category term="vala"/>
     <category term="webkitgtk"/>
-    
-  </entry>
-  
-  <entry>
-    <id>https://github.com/svandragt/repoman</id>
-    <title>repoman</title>
-    <updated>2026-09-07T09:47:25Z</updated>
-    <published>2020-06-05T06:34:55Z</published>
-    <link rel="alternate" type="text/html" href="https://github.com/svandragt/repoman"/>
-    <summary>Bash script that exports and re-clones a list of local git repositories</summary>
-    <category term="backup"/>
-    <category term="bash"/>
-    <category term="cli"/>
-    <category term="git"/>
-    <category term="sync"/>
     
   </entry>
   
