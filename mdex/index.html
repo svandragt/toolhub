@@ -104,6 +104,31 @@ claude -p &quot;draft the release notes&quot; | mdex
 <p>The Comments button in the header bar opens a pane on the right. It lists open comments first, each with Resolve and Dismiss, and Edit until someone has replied. Resolved and dismissed comments wait in a collapsed list below. Click a comment to scroll the preview to its passage. A comment whose passage is no longer in the document says &quot;Text changed&quot;.</p>
 <p>A coding session that edits the same file can answer your comments. Its reply appears under the comment, and mdex reloads the document. If you have unsaved edits, a banner above the editor offers Reload or Keep mine and stays until you pick one. If the session rewrote the passage, the underline and the scroll follow it to the new text. When you have unsaved edits, mdex keeps the text now on disk as an &quot;external&quot; snapshot, so Restore in the revisions window brings it back after autosave has replaced it.</p>
 <p>Comments are kept outside the document, in <code>~/.cache/mdex/comments/</code>, so they never end up in the file, its exports or its git diff. <code>mdex --comments-path notes.md</code> prints where the comments for <code>notes.md</code> live, for a session to find.</p>
+<h2>Ticket coverage</h2>
+<p>Open a ticket file whose name ends in <code>.ticket.md</code>, such as <code>391.ticket.md</code>, with its plan next to it under the same name without <code>.ticket</code> (<code>391.md</code>), and mdex shows which parts of the ticket the plan covers. A ticket with no plan beside it looks like any other document.</p>
+<p>The plan's <code>## Criteria</code> section drives it. Each numbered criterion quotes the ticket text it comes from in a <code>&lt;q&gt;</code> element that names the ticket file, and a line that starts with <code>Not covered:</code> quotes text the plan leaves out on purpose. Text in ordinary double quotes is not a quote, so a criterion can still mention an error message:</p>
+<pre><code>## Criteria
+1. `viv show --all` lists every version — &lt;q cite=&quot;391.ticket.md&quot;&gt;lists the available versions&lt;/q&gt;
+
+Not covered: &lt;q cite=&quot;391.ticket.md&quot;&gt;a greeting&lt;/q&gt; — it asks for nothing.
+</code></pre>
+<p>A <code>&lt;q&gt;</code> whose <code>cite</code> names another file is not looked up in the ticket, so a criterion that quotes only other files shows as &quot;Added&quot;.</p>
+<p>In the ticket's preview:</p>
+<ul>
+<li>Quoted text gets a blue highlight and a badge with the criterion's number. Hover over it to read the criterion.</li>
+<li>Text under <code>Not covered:</code> gets a grey highlight. Hover over it to read the reason.</li>
+<li>A paragraph or list item in the ticket's description that has neither gets a bar in the left margin, so a gap you did not choose stands out. The title, the table above the description and the comments are not checked.</li>
+<li>Comment underlines still show on covered text.</li>
+<li>In any preview, a <code>&lt;q&gt;</code> element with a <code>cite</code> attribute gets the same blue highlight and shows &quot;Quoted from&quot; and its source on hover, so the quotes in the plan's preview stand out.</li>
+</ul>
+<p>The Criteria button in the header bar, which appears only for a ticket with a plan and opens by itself the first time, shows a pane with the criteria:</p>
+<ul>
+<li>Each criterion shows its number and text, and says &quot;Quotes the ticket&quot;, &quot;Added&quot; when it has no quote, or &quot;Quote not found in 391.ticket.md&quot; with the missing quote, because a quote may be misquoted.</li>
+<li>The Not covered lines follow, each with its reason.</li>
+<li>Click a criterion or a Not covered line, or move to it with Tab and press Enter, to scroll the preview to its first highlight.</li>
+<li>Open plan opens the plan in a new window and leaves the ticket as it is. If a window already shows the plan, that window comes to the front instead.</li>
+</ul>
+<p>Edit the plan and the ticket window updates.</p>
 <h2>Publish to your blog</h2>
 <p>The send button in the header bar publishes the document to your Micropub endpoint through <a href="https://github.com/mjdescy/mp">mp</a>, so mdex never handles your endpoint or token. The button appears once mp is on your PATH. Install and configure it once:</p>
 <pre><code>cargo install --git https://github.com/mjdescy/mp --tag v0.1.1 -p mpcli
