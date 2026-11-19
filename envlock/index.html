@@ -136,6 +136,7 @@ events log: ~/.local/state/envlock/3f9a1c07d2b4/events.log
 | <code>--want wp=6.9</code> | WordPress 6.9 if such an environment is free, and any free environment otherwise. VIP only. |
 | <code>--urgent</code> | A place ahead of every waiting ticket that did not ask for <code>--urgent</code>. |</p>
 <p><code>--need</code> and <code>--want</code> take any attribute the pool reports, such as <code>php=8.2</code>, and repeat for more than one.</p>
+<p>To keep tickets off old versions, set <code>ENVPOOL_MIN=&quot;wp=7.1 php=8.2&quot;</code> in <code>.envpool</code> to what production runs. A ticket then gets an environment at or above those versions, and envlock updates one that is older before it leases it. <code>--need</code> and <code>--want</code> refuse an older version. Newer environments are leased as they are. VIP only. The pool's configure step must also update the database, as <code>wp core update-db</code> does in the VIP example.</p>
 <p>An agent that waits at a permission prompt keeps its lease. To free an environment early, run <code>envlock release</code> from the ticket's worktree. <code>envlock env</code> prints the environment that the worktree leases.</p>
 <h2>Look after the pool</h2>
 <p>envlock grows, shrinks and stops the pool by itself:</p>
