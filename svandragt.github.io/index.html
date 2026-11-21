@@ -54,7 +54,16 @@
 </div>
 
 <div class="readme">
-  
+  <h1>svandragt.github.io</h1>
+<p>A visual browser for all my GitHub Pages projects.</p>
+<ul>
+<li><code>config.json</code>: excluded repos and row categories (matched against topics and description words)</li>
+<li><code>scripts/build.mjs</code>: fetches Pages repos, screenshots each site, writes <code>data/sites.json</code> and <code>thumbs/</code> (generated, not committed)</li>
+<li><code>.github/workflows/build.yml</code>: builds and deploys to Pages daily, on demand, and on every push to master</li>
+</ul>
+<p>Local: <code>npm i playwright &amp;&amp; npx playwright install chromium &amp;&amp; GITHUB_TOKEN=... node scripts/build.mjs</code>, then serve the folder (add <code>--no-shots</code> to skip screenshots).</p>
+<p>To include private repos that publish public Pages, add a <code>PAGES_TOKEN</code> repo secret: a fine-grained token with read-only <strong>Metadata</strong> access to all your repositories.</p>
+
 </div>
 
   </main>
