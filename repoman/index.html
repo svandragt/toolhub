@@ -78,6 +78,9 @@
 <pre><code class="language-bash">repoman.sh repoman.lst
 cat repoman.lst | repoman.sh
 </code></pre>
+<p>Repoman clones in path order, so a repository clones before any repository nested inside it, such as its <code>.wiki</code>.</p>
+<p>If the <a href="https://cli.github.com/">GitHub CLI</a> is installed and logged in, Repoman clones GitHub repositories with <code>gh repo clone</code>, so private repositories clone on a new machine without extra git setup. Other remotes use <code>git clone</code>. To pull or push in those clones later without a password prompt, run <code>gh auth setup-git</code> once.</p>
+<p>When a clone fails, Repoman shows the error from git or gh followed by the likely fix, for example logging in with <code>gh auth login</code> for a private repository.</p>
 <p>Lines without a remote (the output of <code>-n</code>, and part of the output of <code>-a</code>) can't be cloned. Repoman reports them as invalid entries and carries on.</p>
 <h2>Why use this</h2>
 <p>It's bad practice to use cloud sync solutions to sync working copies (https://git.seveas.net/how-to-back-up-a-git-repository.html).</p>
