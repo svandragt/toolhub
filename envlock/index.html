@@ -97,7 +97,7 @@
 <p>Or link it into Claude Code from your clone:</p>
 <pre><code class="language-bash">ln -s &quot;$PWD/skills/ticket-fleet&quot; ~/.claude/skills/ticket-fleet
 </code></pre>
-<p>envlock needs Python 3.8 or later, bash (for the <code>.envpool</code> hooks), git and <a href="https://herdr.dev">herdr</a>. A lease belongs to the herdr agent that asked for it, so <code>envlock acquire</code> works only in a herdr pane.</p>
+<p>envlock needs Python 3.8 or later, bash (for the <code>.envpool</code> hooks), git, and one of two agent hosts: <a href="https://herdr.dev">herdr</a> or T3 Code. A lease belongs to the agent session that asked for it, so <code>envlock acquire</code> works only in a herdr pane or a T3 Code thread.</p>
 <h3>Set up a pool</h3>
 <p>Open your agent in the main checkout of your project and ask it:</p>
 <pre><code class="language-text">Set up an envlock pool for this repo
@@ -115,7 +115,7 @@
 <p>In Claude Code, give the skill your project and tickets:</p>
 <pre><code class="language-text">/ticket-fleet ~/dev/my-project ABC-101 ABC-102 ABC-103
 </code></pre>
-<p>The skill creates a worktree and a Claude Code session per ticket, and tells each session to run <code>envlock acquire</code> when it needs an environment.</p>
+<p>The skill creates a worktree and a Claude Code session per ticket, in herdr or T3 Code, and tells each session to run <code>envlock acquire</code> when it needs an environment.</p>
 <h3>Check the pool</h3>
 <p>Run <code>envlock status</code> from any worktree of the project:</p>
 <pre><code class="language-console">$ envlock status
@@ -124,7 +124,7 @@ site2  held by ~/worktrees/my-project/ABC-101 (ABC-101-fix-menu) pane w3:p1 pid 
 site3  free  wp=7.1 php=8.4
 events log: ~/.local/state/envlock/3f9a1c07d2b4/events.log
 </code></pre>
-<p>It shows which environments are in use, by which ticket and herdr pane, who is waiting, and which environments are <code>not created</code> yet or <code>suspended</code>. On VIP, each line ends with the environment's versions.</p>
+<p>It shows which environments are in use, by which ticket and herdr pane or T3 Code thread, who is waiting, and which environments are <code>not created</code> yet or <code>suspended</code>. On VIP, each line ends with the environment's versions.</p>
 <h2>Ask for what a ticket needs</h2>
 <p>Agents run <code>envlock acquire</code> themselves. To change what a ticket gets, tell its agent to add one of these options:</p>
 <p>| Option | What the ticket gets |
