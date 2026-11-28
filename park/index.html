@@ -183,7 +183,9 @@ hook format. Run <code>park hook</code> on its own to print the config block wit
 or pass <code>--agent claude</code>, <code>--agent codex</code>, or <code>--settings &lt;path&gt;</code> to target one file.</p>
 <p>At the start of each session, <code>park hook run</code> reads the session's working directory,
 resolves its git remote, and injects that repo's active items as session context, one
-line per item with its name and tags. Tags that the name already contains are left out,
+line per item with its name and tags. Items parked on the current branch come first,
+then items tagged with the ticket key in the branch name (<code>ABC-123</code> for
+<code>ABC-123-slug</code> or <code>feature/ABC-123-slug</code>, <code>1234</code> for <code>1234-slug</code>), then the rest, newest first. Tags that the name already contains are left out,
 so more items fit in the part of the context the agent reads. To keep every tag, change the
 hook command to <code>park hook run --compact=false</code>. The agent runs <code>park search</code> or
 <code>park list --tag</code> for the detail. You also
@@ -198,16 +200,19 @@ names the path and fewer than six items name the file name. Each item shows once
 session. Codex has no matching event, so its install adds only the <code>SessionStart</code> hook.</p>
 <h3>See whether parked items get used</h3>
 <p>Park keeps a local record of when an item is surfaced (by the session hook, the file hook,
-<code>park search</code> or <code>park list --tag</code>), viewed (<code>park show</code>) and resolved (<code>park done</code>).
-The session hook counts only the items that fit in the first 2 KB of its output, because
-the agent does not see the rest. The record stays on the machine and does not sync.</p>
+<code>park search</code> or <code>park list --tag</code>), viewed (<code>park show</code>), resolved (<code>park done</code>) and
+archived (<code>park archive</code>). The session hook counts only the items that fit in the first
+2 KB of its output, because the agent does not see the rest. The record stays on the
+machine and does not sync.</p>
 <pre><code class="language-bash">park stats              # the last 30 days
 park stats --days 7
 </code></pre>
 <p>The report counts events by kind and source, and gives the share of surfaced items that
-were viewed or resolved afterwards. A table shows how items came back: each view or
-resolve is credited to the way the item was most recently surfaced in the 2 hours before,
-or to <code>direct</code> when it was not surfaced.</p>
+were viewed, resolved or archived afterwards. A table shows how items came back: each
+view, resolve or archive is credited to the way the item was most recently surfaced in the
+2 hours before, or to <code>direct</code> when it was not surfaced. An item you resolve and then
+archive, for example to correct a <code>park done</code>, counts in both shares, so the shares can
+add up to more than 100%.</p>
 <p>The installer merges into any existing <code>SessionStart</code> and <code>PostToolUse</code> hooks rather than
 replacing them.
 Hooks load at session start, so the change takes effect next session; in Claude Code,

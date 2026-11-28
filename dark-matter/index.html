@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dark-matter</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="alternate" type="application/atom+xml" title="~/tools" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__name"><a href="../index.html">~/tools</a></span>
+      
+    </div>
+  </header>
+
+  <main>
+    
+<div class="project-header">
+  <a class="project-header__back" href="../index.html">&#8592; all projects</a>
+
+  <h1>dark-matter</h1>
+
+  
+  <div class="project-header__desc">A highly opinionated domain mapping plugin for WordPress Networks</div>
+  
+
+  <div class="project-header__meta">
+    <span class="badge badge--type">repo</span>
+    
+    
+    <span class="badge">Other</span>
+    
+  </div>
+
+  <div class="project-header__actions">
+    
+    
+    
+    <a class="btn" href="https://github.com/svandragt/dark-matter">&#8599; GitHub</a>
+    
+  </div>
+</div>
+
+<div class="readme">
+  <h1>Dark Matter</h1>
+<p>Dark Matter is a highly opinionated domain mapping plugin for WordPress
+Networks, designed to work out of the box as-is with no setup. Unlike other
+plugins such as Donncha's &quot;WordPress MU Domain Mapping&quot; and WPMU Dev's premium
+domain mapping plugin, Dark Matter offers virtually no options beyond mapping
+individual domains.</p>
+<h2>Constants</h2>
+<h3>Set Media Domains</h3>
+<p>Media Domains can be setup through the CLI commands on a per site basis, or setup for all sites on a Multisite using a
+constant. The constant can support one or more domains.</p>
+<pre><code class="language-php">define( 'DM_NETWORK_MEDIA', [
+    'media1.example.com',
+    /** 'media2.example.com', */
+    /** 'media3.example.com', */
+] );
+</code></pre>
+<h2>CLI Commands</h2>
+<h3>Add / Update / Remove Domains</h3>
+<p>Examples of adding, removing and updating a domain for a Site.</p>
+<pre><code>wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain add www.example.com --primary --https
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain remove www.example.com
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain remove www.example.com --force
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set www.example.com --primary
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set www.example.com --secondary
+</code></pre>
+<h3>Add / Update / Remove Media Domains</h3>
+<p>Set a media domain for a site.</p>
+<pre><code>wp --url=&quot;sites.my.com/sitefifteen&quot; darkmatter domain add example.mycdn.com --type=media
+</code></pre>
+<p>Convert a secondary domain into a media domain. Useful for when repurposing an old domain for use a CDN for media assets.</p>
+<pre><code>wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set example.mycdn.com --type=media
+</code></pre>
+<p>Convert a Media domain to a main domain. This is useful in scenarios when a media domain is redundant and to ensure it redirects to the website.</p>
+<pre><code>wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set secondarydomain.com --type=main --secondary
+</code></pre>
+<h3>Listing Domains</h3>
+<p>Examples of listing domains for a Site.</p>
+<pre><code>wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain list
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain list --format=json
+</code></pre>
+<p>Examples of listing domains for the entire Network.</p>
+<pre><code>wp darkmatter domain list
+wp darkmatter domain list --format=csv
+</code></pre>
+<p>Retrieve all the primary domains for the Network.</p>
+<pre><code>wp darkmatter domain list --primary
+</code></pre>
+<h3>Reserving Domains</h3>
+<p>Reserving a domain. This allows an administrator to setup the primary and / or secondary domains but stop Dark Matter performing redirects and rewrites. Please note; domains are enabled by default.</p>
+<pre><code>wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain add www.example.com --primary --https --disable
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set www.example.com --enable
+wp --url=&quot;sites.my.com/siteone&quot; darkmatter domain set www.example.com --disable
+</code></pre>
+<h3>Restricting Domains</h3>
+<p>Examples of adding and removing a restricted domains for a Network. This permits administrators to stop domains from being used for a WordPress website; useful for organisations which use multiple CMS.</p>
+<pre><code>wp darkmatter restrict add www.example.com
+wp darkmatter restrict remove www.example.com
+</code></pre>
+<p>Examples of retrieving a list of all restricted domains for a Network.</p>
+<pre><code>wp darkmatter restrict list
+wp darkmatter restrict list --format=json
+wp darkmatter restrict list --format=ids
+</code></pre>
+<h2>Reporting problems</h2>
+<p>You can use the Issues system here on Github to report problems with the Dark
+Matter plugin. To aid and speed-up diagnosing the problem, you are best to
+include as much as the following as you possibly can;</p>
+<ul>
+<li>Check here to ensure the problem has not been reported by someone else.</li>
+<li>WordPress;
+<ul>
+<li>Version of WordPress itself.</li>
+<li>List of active plugins (installed but unused <em>should</em> rarely cause problems)</li>
+</ul>
+</li>
+<li>Hosting information;
+<ul>
+<li>Either
+<ul>
+<li>Apache / Nginx</li>
+<li>Operating System (Linux or Windows)</li>
+</ul>
+</li>
+<li>Or;
+<ul>
+<li>Host provider (Digital Ocean, Dreamhosts, GoDaddy, WP Engine, etc)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Browser (Chrome, IE, Firefox, Opera, etc with version)</li>
+<li>Any additional information such as;
+<ul>
+<li>Using Cloudflare.</li>
+</ul>
+</li>
+</ul>
+<p>All issues reported are taken seriously and are checked, but please bear in mind
+that responses are not always instant.</p>
+<h3>Syntax</h3>
+<p>Dark Matter does not have a coding style guide but there are several rules which
+should be observed;</p>
+<ul>
+<li>Unix line breaks.</li>
+<li>Tabs, not spaces.</li>
+<li><a href="https://en.wikipedia.org/wiki/Yoda_conditions">Yoda conditions</a>.</li>
+<li>Code should be concise rather than terse.</li>
+<li>Comments should not extend beyond the 80th character (default in Atom) unless;
+<ul>
+<li>Text for a bullet point.</li>
+<li>Code example in comments.</li>
+<li>PHPDoc conventions for @@link or @@param in describing a class or function.</li>
+</ul>
+</li>
+</ul>
+<h3>URLs to check</h3>
+<p>The following is a list of example URLs which are worth checking (depending on
+the change) when developing with Dark Matter.</p>
+<p>Using www.wpnetwork.com as the &quot;Admin domain&quot; and www.example.com as the
+&quot;Primary domain&quot;, Dark Matter should be tested with the following URLs;</p>
+<ul>
+<li>http://www.wpnetwork.com/sitetwo/ (with trailing forward slash) =&gt; http://www.example.com/</li>
+<li>http://www.wpnetwork.com/sitetwo (without trailing forward slash) =&gt; http://www.example.com/</li>
+<li>http://www.wpnetwork.com/sitetwo/index.php (query string processing, without trailing forward slash) =&gt; http://www.example.com/</li>
+<li>http://www.wpnetwork.com/sitetwo/index.php/ (query string processing, with trailing forward slash) =&gt; http://www.example.com/</li>
+<li>http://www.wpnetwork.com/sitetwo/?utm_source=test (with query string) =&gt; http://www.example.com/?utm_source=test</li>
+<li>http://www.wpnetwork.com/sitetwo?utm_source=test (with query string, without trailing forward slash) =&gt; http://www.example.com/?utm_source=test</li>
+<li>http://www.wpnetwork.com/sitetwo/#test (hash URL test) =&gt; http://www.example.com/</li>
+<li>http://www.wpnetwork.com/sitetwo#test (hash URL test, without trailing forward slash) =&gt; http://www.example.com/</li>
+</ul>
+<h2>Development</h2>
+<h3>Prerequisites</h3>
+<p>To develop with Dark Matter plugin requires the following to be installed.</p>
+<ul>
+<li>Composer 2.0+</li>
+<li>Node 16.13+</li>
+<li>PHP 7.0+</li>
+<li>WordPress 5.9+</li>
+</ul>
+<p>For a developer environment, Dark Matter plugin is most commonly built with VVV. However this is not a hard requirement
+and any WordPress development environment should work without any complications.</p>
+<h3>Initial Setup</h3>
+<p>If you have NVM installed, then you can ensure the most recent compatible version of Node is installed and ready for
+use.</p>
+<pre><code class="language-shell">nvm use
+</code></pre>
+<p>And then you can run the following:</p>
+<pre><code class="language-shell">npm run start
+</code></pre>
+<p>This NPM script will do the following:</p>
+<ul>
+<li>Install all Composer dependencies, including dev dependencies.</li>
+<li>Install all NPM dependencies, including dev dependencies.</li>
+<li>Build both the production and developer scripts.</li>
+</ul>
+<p>After this point, the plugin is ready for use with your local WordPress installation.</p>
+<h3>Unit Tests</h3>
+<p>Use the following command to setup PHPUnit and the WordPress environment for it.</p>
+<pre><code class="language-shell">composer run test-setup
+</code></pre>
+<p>After the setup has completed successfully, then the following command can be used to run the unit tests.</p>
+<pre><code class="language-shell">composer run test
+</code></pre>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built with <a href="https://tools.vandragt.com/toolhub/">ToolHub</a>
+  </footer>
+</body>
+</html>
